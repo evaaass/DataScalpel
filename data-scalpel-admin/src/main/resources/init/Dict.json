@@ -1,0 +1,32 @@
+[
+  {
+    "type": "DictType",
+    "name": "模型分层",
+    "value": "LayerType"
+  },
+  {
+    "type": "DictType",
+    "name": "系统配置",
+    "value": "SysSetting"
+  },
+  {
+    "type": "SysSetting",
+    "name": "init",
+    "value": "true"
+  },
+  {
+    "type": "LayerType",
+    "name": "ODS",
+    "value": "ODS"
+  },
+  {
+    "type": "LayerType",
+    "name": "主题区",
+    "value": "DW"
+  },
+  {
+    "type": "LayerType",
+    "name": "数据集市",
+    "value": "DM"
+  }
+]
