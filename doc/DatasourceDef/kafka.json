@@ -1,0 +1,15 @@
+{
+  "group": "消息服务器",
+  "code": "KAFKA",
+  "name": "S3协议存储",
+  "fieldDefs": [
+    {
+      "displayName": "bootstrapServers",
+      "name": "bootstrapServers",
+      "tip": "ip:port,ip:port,ip:port......",
+      "type": "INPUT",
+      "required": true,
+      "defaultValue": null
+    }
+  ]
+}

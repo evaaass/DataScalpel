@@ -1,0 +1,12 @@
+{
+  "name": "table",
+  "typeCategory": "STRUCT",
+  "superTypes": "file-entity",
+  "superType": "entity",
+  "attributes": [
+    {
+      "name": "columns",
+      "typeName": "array<column>"
+    }
+  ]
+}

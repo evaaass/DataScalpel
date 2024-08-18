@@ -1,0 +1,21 @@
+{
+  "id": "UUID-JOIN",
+  "category": "PROCESSOR",
+  "type": ".processor.Join",
+  "configuration": {
+    "actions": [
+      {
+        "newTable": "newtable",
+        "leftTable": "datasourceId|点数据",
+        "rightTable": "datasourceId|行政区",
+        "joinType": "LEFT",
+        "conditions": [
+          {
+            "leftTableField": "entity_name",
+            "rightTableField": "ad_code"
+          }
+        ]
+      }
+    ]
+  }
+}

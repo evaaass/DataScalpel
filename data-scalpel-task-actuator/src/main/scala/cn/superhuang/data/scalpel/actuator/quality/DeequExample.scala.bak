@@ -1,0 +1,59 @@
+package cn.superhuang.data.scalpel.actuator.quality
+
+import com.amazon.deequ.analyzers.runners.{AnalysisRunner, AnalyzerContext}
+import com.amazon.deequ.analyzers.{Analysis, InMemoryStateProvider}
+import org.apache.spark.sql.SparkSession
+
+object DeequExample {
+  def main(args: Array[String]): Unit = {
+    // 创建 SparkSession
+    val spark = SparkSession.builder()
+      .appName("Deequ Example")
+      .master("local")
+      .getOrCreate()
+
+    // 从 JDBC 数据源读取表数据
+    val driver = "org.postgresql.Driver";
+    val url = "jdbc:postgresql://10.0.0.172:5432/sde02?stringtype=unspecified";
+    val table = "市政府";
+    val username = "postgres";
+    val password = "Gistack@123";
+
+    val df = spark.read
+      .format("jdbc")
+      .option("driver", driver)
+      .option("url", url)
+      .option("dbtable", table)
+      .option("user", username)
+      .option("password", password)
+      .load()
+
+
+    val stateStore = InMemoryStateProvider()
+    val analysis = Analysis().addAnalyzer(com.amazon.deequ.analyzers.Maximum("objectid"))
+      .addAnalyzer(com.amazon.deequ.analyzers.Compliance("length", "objectid >= 200"))
+    val verificationResult: AnalyzerContext = AnalysisRunner.run(data = df, analysis = analysis, saveStatesWith = Option.apply(stateStore))
+
+
+    AnalyzerContext.successMetricsAsDataFrame(spark, verificationResult).show();
+
+    println(verificationResult)
+    println(stateStore)
+    //    // 创建 Deequ 的 VerificationSuite
+    //    val verificationResult: VerificationResult = VerificationSuite()
+    //      .onData(df)
+    //      .addCheck(
+    //        Check(CheckLevel.Error, "Data completeness check")
+    //          .isComplete("CWS_CODE")
+    //          .where(s"column_name IS NULL")
+    //      )
+    //      .run()
+    //
+    //    // 输出检查结果
+    //    println(verificationResult.status)
+    //    println(verificationResult.checkResults)
+    //
+    //    // 停止 SparkSession
+    //    spark.stop()
+  }
+}

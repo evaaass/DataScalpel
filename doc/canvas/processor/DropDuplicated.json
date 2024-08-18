@@ -1,0 +1,16 @@
+{
+  "id": "UUID-DropDuplicated",
+  "category": "PROCESSOR",
+  "type": ".processor.DropDuplicated",
+  "configuration": {
+    "actions": [
+      {
+        "table": "xxxxxxxxxxx",
+        "fields": [
+          "name",
+          "code"
+        ]
+      }
+    ]
+  }
+}

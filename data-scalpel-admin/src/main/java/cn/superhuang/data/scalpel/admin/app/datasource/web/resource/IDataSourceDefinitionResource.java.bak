@@ -1,0 +1,46 @@
+package cn.superhuang.data.scalpel.admin.app.datasource.web.resource;
+
+
+import cn.superhuang.data.scalpel.admin.app.datasource.domain.DatasourceDefinition;
+import cn.superhuang.data.scalpel.model.web.GenericResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URISyntaxException;
+import java.util.List;
+
+@RequestMapping("/api")
+@Tag(name = "数据源定义管理")
+public interface IDataSourceDefinitionResource {
+
+    @Operation(summary = "创建数据源定义")
+    @PostMapping("/data-source-definitions")
+    GenericResponse<DatasourceDefinition> createDatasourceDefinition(@RequestBody DatasourceDefinition datasourceDefinition)
+            throws URISyntaxException ;
+
+    @Operation(summary = "更新数据源定义")
+    @PutMapping("/data-source-definitions/{id}")
+    GenericResponse<DatasourceDefinition> updateDatasourceDefinition(
+            @PathVariable(value = "id", required = false) final String id,
+            @RequestBody DatasourceDefinition datasourceDefinition
+    ) throws URISyntaxException ;
+
+    @PatchMapping(value = "/data-source-definitions/{id}", consumes = {"application/json", "application/merge-patch+json"})
+    GenericResponse<DatasourceDefinition> partialUpdateDatasourceDefinition(
+            @PathVariable(value = "id", required = false) final String id,
+            @RequestBody DatasourceDefinition datasourceDefinition
+    ) throws URISyntaxException ;
+
+    @Operation(summary = "获取所有数据源定义")
+    @GetMapping("/data-source-definitions")
+    List<DatasourceDefinition> getAllDatasourceDefinitions() ;
+
+    @Operation(summary = "获取数据源定义详情")
+    @GetMapping("/data-source-definitions/{id}")
+    GenericResponse<DatasourceDefinition> getDatasourceDefinition(@PathVariable String id) ;
+
+    @Operation(summary = "删除数据源定义")
+    @DeleteMapping("/data-source-definitions/{id}")
+    GenericResponse<Void> deleteDatasourceDefinition(@PathVariable String id) ;
+}

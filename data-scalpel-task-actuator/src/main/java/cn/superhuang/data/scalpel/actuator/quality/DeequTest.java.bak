@@ -1,0 +1,56 @@
+package cn.superhuang.data.scalpel.actuator.quality;
+
+import com.amazon.deequ.VerificationResult;
+import com.amazon.deequ.VerificationSuite;
+import com.amazon.deequ.analyzers.Analysis;
+import com.amazon.deequ.analyzers.Analyzer;
+import com.amazon.deequ.analyzers.Compliance;
+import com.amazon.deequ.analyzers.MinLength;
+import com.amazon.deequ.checks.Check;
+import com.amazon.deequ.checks.CheckLevel;
+import com.amazon.deequ.constraints.Constraint;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
+import scala.Option;
+import scala.collection.JavaConverters;
+import scala.collection.Seq;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DeequTest {
+    public static void main(String[] args) {
+        String driver = "org.postgresql.Driver";
+        String url = "jdbc:postgresql://10.0.0.172:5432/sde02?stringtype=unspecified";
+        String table = "sys_user";
+        String username = "postgres";
+        String password = "Gistack@123";
+
+        SparkSession sparkSession = SparkSession.builder().master("local").getOrCreate();
+        Dataset<Row> dataset = sparkSession.read()
+                .format("jdbc")
+                .option("driver", driver)
+                .option("url", url)
+                .option("dbtable", "\"ATT_CWS_BASE\"")
+                .option("user", username)
+                .option("password", password)
+                .load();
+
+        dataset.show();
+//        List<Analyzer> analyzerList = new ArrayList<>();
+//        Compliance compliance = new Compliance("length", "len(CWS_CODE)>4", Option.empty(), null);
+//        new Analysis(JavaConverters.asScalaIteratorConverter(analyzerList.iterator()).asScala().toSeq());
+
+        VerificationSuite verificationSuite = new VerificationSuite();
+        VerificationResult verificationResult = verificationSuite.onData(dataset)
+                .addCheck(
+                        new Check(CheckLevel.Error(), "unit test my data",
+                                JavaConverters.asScalaIteratorConverter(new ArrayList<Constraint>().iterator())
+                                        .asScala().toSeq())
+                                .isComplete("CWS_CODE", Option.empty()))
+                .run();
+
+        System.out.println(verificationResult);
+    }
+}

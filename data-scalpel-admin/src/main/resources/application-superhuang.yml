@@ -1,0 +1,30 @@
+task-boot:
+  type: local
+  localRunCommand:
+    - java
+    - --add-opens=java.base/java.lang=ALL-UNNAMED
+    - --add-opens=java.base/java.lang.invoke=ALL-UNNAMED
+    - --add-opens=java.base/java.lang.reflect=ALL-UNNAMED
+    - --add-opens=java.base/java.io=ALL-UNNAMED
+    - --add-opens=java.base/java.net=ALL-UNNAMED
+    - --add-opens=java.base/java.nio=ALL-UNNAMED
+    - --add-opens=java.base/java.util=ALL-UNNAMED
+    - --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+    - --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED
+    - --add-opens=java.base/sun.nio.ch=ALL-UNNAMED
+    - --add-opens=java.base/sun.nio.cs=ALL-UNNAMED
+    - --add-opens=java.base/sun.security.action=ALL-UNNAMED
+    - --add-opens=java.base/sun.util.calendar=ALL-UNNAMED
+    - --add-opens=java.security.jgss/sun.security.krb5=ALL-UNNAMED
+    - -Djava.security.egd=file:/dev/./urandom,-Dfile.encoding=utf-8
+    - -jar
+    - C:\workspaces\superhuang\DataScalpel\data-scalpel\data-scalpel-task-actuator\target\data-scalpel-task-actuator-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+    - http://localhost:8080
+
+data-scalpel:
+  storage:
+    s3:
+      endpoint: http://10.0.0.5:9000
+      access-key: minioadmin
+      secret-key: Gistack@123
+      bucket: data-scalpel

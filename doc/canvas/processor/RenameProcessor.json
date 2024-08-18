@@ -1,0 +1,14 @@
+{
+  "id": "UUID-DataFilter",
+  "category": "PROCESSOR",
+  "type": ".processor.DataFilter",
+  "configuration": {
+    "actions": [
+      {
+        "table": "oldsName",
+        "newTableName": "newName",
+        "newTableCnName": "新表名"
+      }
+    ]
+  }
+}

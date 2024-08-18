@@ -1,0 +1,119 @@
+spring:
+  devtools:
+    restart:
+      enabled: true
+      additional-exclude: static/**
+    livereload:
+      enabled: false # we use Webpack dev server + BrowserSync for livereload
+  mvc:
+#    static-path-pattern: /resources/**
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+      indent-output: true
+    date-format: yyyy-MM-dd HH:mm:ss
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://home.superhuang.cn:5432/DataScalpel?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: postgres
+    password: Gistack@123
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate.jdbc.time_zone: UTC
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      # modify batch size as necessary
+      hibernate.jdbc.batch_size: 25
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+      hibernate.query.fail_on_pagination_over_collection_fetch: true
+      hibernate.query.in_clause_parameter_padding: true
+
+    hibernate:
+      ddl-auto: update
+  #      naming:
+  #        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+  #        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+
+  quartz:
+    job-store-type: jdbc #数据持久化方式，可选值：MEMORY、JDBC
+    auto-startup: true   #初始化后是否自动启动计划程序,默认为  true
+    overwrite-existing-jobs: false #配置的作业是否应覆盖现有的作业定义
+    scheduler-name: QuartzScheduler # 计划程序的名称
+    startup-delay: 10s #初始化完成后启动计划程序的延迟时间，默认为 0 秒
+    wait-for-jobs-to-complete-on-shutdown: false # 关闭时是否等待正在运行的作业完成
+    properties:
+      org:
+        quartz:
+          #          quartzDataSource:
+          #            URL: jdbc:postgresql://10.0.0.5:5432/DataScalpel
+          #            driver: org.postgresql.Driver
+          #            user: postgres
+          #            password: Gistack@123
+          jobStore:
+            #如果不需要将调度命令（例如添加和删除triggers）绑定到其他事务，那么可以通过使用 JobStoreTX 管理事务
+            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+            #设置数据库驱动代理，StdJDBCDelegate 是一个使用 JDBC 代码来执行其工作的代理. 其他代理可以在"org.quartz.impl.jdbcjobstore“包或其子包中找到
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+            #通知 JobStore 使用的表前缀
+            tablePrefix: QRTZ_
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool  #quartz 使用的线程池类型，org.quartz.spi.ThreadPool
+            threadCount: 15   #线程池中的线程总个数，表示最多可以同时执行的个任务/作业个数
+            threadPriority: 5   #线程优先级
+            threadsInheritContextClassLoaderOfInitializingThread: true #线程继承初始化线程的上下文类加载器
+  main:
+    allow-bean-definition-overriding: true
+
+org:
+  quartz:
+    jobStore:
+      class: org.quartz.impl.jdbcjobstore.JobStoreTX
+      driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+      dataSource: quartzDataSource
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+#    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: cn.superhuang.data.scalpel.admin
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+    enableDynamicParameter: true
+
+application:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
+
+data-scalpel:
+  storage:
+    s3:
+      endpoint: http://home.superhuang.cn:9000
+      access-key: minioadmin
+      secret-key: Gistack@123
+      bucket: data-scalpel

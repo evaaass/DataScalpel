@@ -1,0 +1,47 @@
+{
+  "group": "文件服务器",
+  "code": "S3",
+  "name": "S3协议存储",
+  "content": [
+    {
+      "displayName": "地址",
+      "name": "endpoint",
+      "tip": "http://ip:port，如果是SSL请使用https",
+      "type": "INPUT",
+      "required": true,
+      "defaultValue": null
+    },
+    {
+      "displayName": "存储桶",
+      "name": "bucket",
+      "tip": "请输入要使用的bucket名称",
+      "type": "INPUT",
+      "required": true,
+      "defaultValue": null
+    },
+    {
+      "displayName": "AccessKey",
+      "name": "accessKey",
+      "tip": "请输入AccessKey",
+      "type": "INPUT",
+      "required": true,
+      "defaultValue": null
+    },
+    {
+      "displayName": "SecretKey",
+      "name": "secretKey",
+      "tip": "请输入SecretKey",
+      "type": "INPUT_PASSWORD",
+      "required": true,
+      "defaultValue": null
+    },
+    {
+      "displayName": "文件夹路径",
+      "name": "folder",
+      "tip": "为空则为根目录，不为空请以/开头，/和空等效",
+      "type": "INPUT",
+      "required": false,
+      "defaultValue": null
+    }
+  ]
+}

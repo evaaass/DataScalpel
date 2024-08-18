@@ -1,0 +1,63 @@
+{
+  "group": "JDBC数据库",
+  "code": "JDBC",
+  "name": "JDBC关系数据库",
+  "fieldDefs": [
+    {
+      "displayName": "数据库类型",
+      "name": "type",
+      "tip": "请选择数据库类型",
+      "type": "SELECT",
+      "required": true,
+      "defaultValue": null
+    },
+    {
+      "displayName": "地址",
+      "name": "host",
+      "tip": "请输入数据库IP地址或域名",
+      "type": "INPUT",
+      "required": true,
+      "defaultValue": null
+    },
+    {
+      "displayName": "端口",
+      "name": "port",
+      "tip": "请输入数据库端口号，仅支持数字",
+      "type": "INPUT_NUMBER",
+      "required": true,
+      "defaultValue": null
+    },
+    {
+      "displayName": "用户名",
+      "name": "username",
+      "tip": "请输入账户名",
+      "type": "INPUT",
+      "required": true,
+      "defaultValue": null
+    },
+    {
+      "displayName": "密码",
+      "name": "password",
+      "tip": "请输入账户密码",
+      "type": "INPUT_PASSWORD",
+      "required": true,
+      "defaultValue": null
+    },
+    {
+      "displayName": "数据库",
+      "name": "database",
+      "tip": "请输入数据库名,如果是Oracle请输入SID或ServiceName",
+      "type": "INPUT",
+      "required": true,
+      "defaultValue": null
+    },
+    {
+      "displayName": "扩展参数",
+      "name": "options",
+      "tip": "根据数据库不同，可填入不同的扩展参数",
+      "type": "KV_FORM",
+      "required": false,
+      "defaultValue": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "entity",
+  "typeCategory": "ENTITY",
+  "attributes": [
+    {
+      "name": "uri",
+      "typeName": "string"
+    },
+    {
+      "name": "name",
+      "typeName": "string"
+    },
+    {
+      "name": "description",
+      "typeName": "string"
+    },
+    {
+      "name": "createTime",
+      "typeName": "date"
+    },
+    {
+      "name": "modifyTime",
+      "typeName": "date"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "image_entity",
+  "typeCategory": "ENTITY",
+  "superType": "entity",
+  "attributes": [
+    {
+      "name": "imageType",
+      "typeName": "string"
+    },
+    {
+      "name": "width",
+      "typeName": "int"
+    },
+    {
+      "name": "height",
+      "typeName": "int"
+    }
+  ]
+}

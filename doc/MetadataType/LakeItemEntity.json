@@ -1,0 +1,11 @@
+{
+  "name": "lake-item",
+  "typeCategory": "ENTITY",
+  "superType":"entity",
+  "attributes": [
+    {
+      "name": "size",
+      "typeName": "long"
+    }
+  ]
+}

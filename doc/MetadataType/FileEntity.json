@@ -1,0 +1,11 @@
+{
+  "name": "file-entity",
+  "typeCategory": "ENTITY",
+  "superType": "entity",
+  "attributes": [
+    {
+      "name": "type",
+      "typeName": "string"
+    }
+  ]
+}

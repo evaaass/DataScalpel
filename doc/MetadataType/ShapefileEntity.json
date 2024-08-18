@@ -1,0 +1,31 @@
+{
+  "name": "shapefile_entity",
+  "typeCategory": "ENTITY",
+  "superType": "file_entity",
+  "attributes": [
+    {
+      "name": "extent",
+      "typeName": "string"
+    },
+    {
+      "name": "wk",
+      "typeName": "string"
+    },
+    {
+      "name": "wk_id",
+      "typeName": "string"
+    },
+    {
+      "name": "geometry_type",
+      "typeName": "string"
+    },
+    {
+      "name": "spatial_column",
+      "typeName": "string"
+    },
+    {
+      "name": "columns",
+      "typeName": "array<column>"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "canvas": {
+    "nodes": [
+      {
+        "id": "UUID-01",
+        "category": "INPUT",
+        "type": ".input.JdbcInput",
+        "configuration": {
+          "datasourceId": "2c9980828c20f809018c378dd5fa0038",
+          "items": [
+            {
+              "item": "zfw_grid_info"
+            },
+            {
+              "item": "zfw_grid_gis"
+            }
+          ]
+        }
+      },
+      {
+        "id": "UUID-02",
+        "category": "OUTPUT",
+        "type": ".output.ModelOutput",
+        "configuration": {
+          "mappings": [
+            {
+              "sourceTable": "zfw_grid_info",
+              "targetItem": "8a8080d88c3e7f51018c3e81aaeb0001",
+              "fieldMappings": [
+                {
+                  "sourceFieldName": "belonggrid",
+                  "targetFieldName": "guid"
+                }
+              ],
+              "saveMode": "OVERWRITE"
+            }
+          ]
+        }
+      }
+    ],
+    "lines": [
+      {
+        "from": "UUID-01",
+        "to": "UUID-02"
+      }
+    ]
+  }
+}

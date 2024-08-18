@@ -1,0 +1,108 @@
+package cn.superhuang.data.scalpel.admin.web.resource;
+
+import cn.superhuang.data.scalpel.admin.BaseException;
+import cn.superhuang.data.scalpel.admin.app.datasource.domain.DatasourceDefinition;
+import cn.superhuang.data.scalpel.admin.app.datasource.repository.DatasourceDefinitionRepository;
+import cn.superhuang.data.scalpel.admin.app.datasource.web.resource.IDataSourceDefinitionResource;
+import cn.superhuang.data.scalpel.model.web.GenericResponse;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+@RestController
+@Transactional
+public class DataSourceDefinitionResource implements IDataSourceDefinitionResource {
+
+    private final DatasourceDefinitionRepository datasourceDefinitionRepository;
+
+    public DataSourceDefinitionResource(DatasourceDefinitionRepository datasourceDefinitionRepository) {
+        this.datasourceDefinitionRepository = datasourceDefinitionRepository;
+    }
+
+    public GenericResponse<DatasourceDefinition> createDatasourceDefinition(DatasourceDefinition datasourceDefinition)
+            throws URISyntaxException {
+        //code不能重复哦
+        if (datasourceDefinition.getId() != null) {
+            throw new BaseException("A new datasourceDefinition cannot already have an ID");
+        }
+        DatasourceDefinition result = datasourceDefinitionRepository.save(datasourceDefinition);
+        return GenericResponse.ok(result);
+    }
+
+    public GenericResponse<DatasourceDefinition> updateDatasourceDefinition(
+            final String id,
+            DatasourceDefinition datasourceDefinition
+    ) throws URISyntaxException {
+        if (datasourceDefinition.getId() == null) {
+            throw new BaseException("Invalid id");
+        }
+        if (!Objects.equals(id, datasourceDefinition.getId())) {
+            throw new BaseException("Invalid ID");
+        }
+
+        if (!datasourceDefinitionRepository.existsById(id)) {
+            throw new BaseException("Entity not found");
+        }
+
+        DatasourceDefinition result = datasourceDefinitionRepository.save(datasourceDefinition);
+        return GenericResponse.ok(result);
+
+    }
+
+    public GenericResponse<DatasourceDefinition> partialUpdateDatasourceDefinition(
+            final String id,
+            DatasourceDefinition datasourceDefinition
+    ) throws URISyntaxException {
+        if (datasourceDefinition.getId() == null) {
+            throw new BaseException("Invalid id");
+        }
+        if (!Objects.equals(id, datasourceDefinition.getId())) {
+            throw new BaseException("Invalid ID");
+        }
+
+        if (!datasourceDefinitionRepository.existsById(id)) {
+            throw new BaseException("Entity not found");
+        }
+
+        Optional<DatasourceDefinition> result = datasourceDefinitionRepository
+                .findById(datasourceDefinition.getId())
+                .map(existingDatasourceDefinition -> {
+                    if (datasourceDefinition.getGroup() != null) {
+                        existingDatasourceDefinition.setGroup(datasourceDefinition.getGroup());
+                    }
+                    if (datasourceDefinition.getCode() != null) {
+                        existingDatasourceDefinition.setCode(datasourceDefinition.getCode());
+                    }
+                    if (datasourceDefinition.getName() != null) {
+                        existingDatasourceDefinition.setName(datasourceDefinition.getName());
+                    }
+                    if (datasourceDefinition.getContent() != null) {
+                        existingDatasourceDefinition.setContent(datasourceDefinition.getContent());
+                    }
+
+                    return existingDatasourceDefinition;
+                })
+                .map(datasourceDefinitionRepository::save);
+
+        return null;
+    }
+
+    public List<DatasourceDefinition> getAllDatasourceDefinitions() {
+        return datasourceDefinitionRepository.findAll();
+    }
+
+    public GenericResponse<DatasourceDefinition> getDatasourceDefinition(@PathVariable String id) {
+        Optional<DatasourceDefinition> datasourceDefinition = datasourceDefinitionRepository.findById(id);
+        return GenericResponse.wrapOrNotFound(datasourceDefinition);
+    }
+
+    public GenericResponse<Void> deleteDatasourceDefinition(@PathVariable String id) {
+        datasourceDefinitionRepository.deleteById(id);
+        return GenericResponse.ok();
+    }
+}

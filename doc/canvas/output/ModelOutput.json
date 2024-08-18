@@ -1,0 +1,24 @@
+{
+  "id": "UUID-02",
+  "category": "OUTPUT",
+  "type": ".output.ModelOutput",
+  "configuration": {
+    "mappings": [
+      {
+        "sourceTable": "RES202311201352590001|成都市_行政区",
+        "targetItem": "f4c8594610844dbeb326a976363cfe77",
+        "fieldMappings": [
+          {
+            "sourceFieldName": "objectid",
+            "targetFieldName": "id"
+          },
+          {
+            "sourceFieldName": "ad_name",
+            "targetFieldName": "name"
+          }
+        ],
+        "saveMode": "OVERWRITE"
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "UUID-01",
+  "category": "INPUT",
+  "type": ".input.JdbcInput",
+  "configuration": {
+    "datasourceId": "RES202311201352590001",
+    "items": [
+      {
+        "item": "行政区",
+        "partitionFieldName": null,
+        "partitionNum": null
+      }
+    ]
+  }
+}

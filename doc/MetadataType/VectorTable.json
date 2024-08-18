@@ -1,0 +1,23 @@
+{
+  "name": "vector_table",
+  "typeCategory": "STRUCT",
+  "superType":"table",
+  "attributes": [
+    {
+      "name": "extent",
+      "typeName": "string"
+    },
+    {
+      "name": "wk",
+      "typeName": "string"
+    },
+    {
+      "name": "wk_id",
+      "typeName": "string"
+    },
+    {
+      "name": "geometry_type",
+      "typeName": "string"
+    }
+  ]
+}

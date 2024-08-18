@@ -1,0 +1,38 @@
+{
+  "name": "column",
+  "typeCategory": "STRUCT",
+  "attributes": [
+    {
+      "name": "name",
+      "typeName": "string"
+    },
+    {
+      "name": "cnName",
+      "typeName": "string"
+    },
+    {
+      "name": "description",
+      "typeName": "string"
+    },
+    {
+      "name": "type",
+      "typeName": "string"
+    },
+    {
+      "name": "size",
+      "typeName": "int"
+    },
+    {
+      "name": "digit",
+      "typeName": "int"
+    },
+    {
+      "name": "nullable",
+      "typeName": "boolean"
+    },
+    {
+      "name": "pk",
+      "typeName": "boolean"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "gdb-entity",
+  "typeCategory": "ENTITY",
+  "superTypes": "file-entity",
+  "attributes": [
+    {
+      "name": "tables",
+      "typeName": "array<geo_table>"
+    },
+    {
+      "name": "compressed",
+      "typeName": "boolean"
+    }
+  ]
+}

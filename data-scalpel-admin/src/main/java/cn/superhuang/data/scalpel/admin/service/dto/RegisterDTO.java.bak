@@ -1,0 +1,19 @@
+package cn.superhuang.data.scalpel.admin.service.dto;
+
+import cn.superhuang.data.scalpel.admin.domain.enumeration.Role;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class RegisterDTO {
+    private String firstname;
+    private String lastname;
+    private String username;
+    private String password;
+    private Role role;
+}

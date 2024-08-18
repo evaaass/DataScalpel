@@ -1,0 +1,13 @@
+{
+  "id": "UUID-UUID",
+  "category": "PROCESSOR",
+  "type": ".processor.UUID",
+  "configuration": {
+    "actions": [
+      {
+        "table": "xxxxxxxxxxx",
+        "fieldName": "myguid"
+      }
+    ]
+  }
+}

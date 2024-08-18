@@ -1,0 +1,16 @@
+{
+  "id": "UUID-ColumnFilter",
+  "category": "PROCESSOR",
+  "type": ".processor.ColumnFilter",
+  "configuration": {
+    "actions": [
+      {
+        "table": "xxxxxxxxxxx",
+        "fields": [
+          "name",
+          "code"
+        ]
+      }
+    ]
+  }
+}
