@@ -57,6 +57,10 @@ public class JdbcTableService {
                 throw new BaseException("表已经存在，请先删除表后再进行创建");
             }
             JdbcUtils.createTable(conn, tableWithSchema, schema, true, jdbcOptionsInWrite);
+            //TODO 给表添加中文注释
+            //TODO 创建主键
+            //TODO 创建nullable
+            //TODO 创建comment
         }
     }
 
@@ -119,6 +123,9 @@ public class JdbcTableService {
         //新字段列表里面，如果ID为null，说明是要新增的
         List<TableChange> addColumnChanges = newFields.stream().filter(f -> f.getId() == null).map(f -> TableChange.addColumn(new String[]{f.getName()}, getDataType(f), f.getNullable(), f.getDescription())).collect(Collectors.toList());
 
+        //TODO 主键变化
+        //TODO nullable变化
+        //TODO comment变化
 
         //顺序应该按:删除，修改，更新类型，新增来，避免冲突
         List<TableChange> tableChanges = new ArrayList<>();

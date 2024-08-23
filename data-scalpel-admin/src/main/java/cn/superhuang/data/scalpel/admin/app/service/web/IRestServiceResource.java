@@ -21,7 +21,7 @@ import java.net.URISyntaxException;
 
 @Validated
 @ApiSupport(order = 6)
-@Tag(name = "6.服务管理")
+@Tag(name = "40.服务管理")
 @RequestMapping("/api/v1")
 public interface IRestServiceResource {
 

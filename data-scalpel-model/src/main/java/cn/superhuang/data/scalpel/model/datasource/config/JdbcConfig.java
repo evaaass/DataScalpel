@@ -59,8 +59,8 @@ public class JdbcConfig extends DatasourceConfig {
     }
 
 
-    public void setJDBCDbType(DbType dbType) {
-        getParams().put(JDBC_DB_TYPE, dbType.name());
+    public void setDbType(DbType jdbcDbType) {
+        getParams().put(JDBC_DB_TYPE, jdbcDbType.name());
     }
 
     public void setDatabase(String database) {

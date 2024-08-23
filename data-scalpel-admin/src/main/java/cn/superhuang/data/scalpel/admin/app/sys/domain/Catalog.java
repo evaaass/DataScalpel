@@ -26,6 +26,10 @@ public class Catalog extends AbstractAuditingEntity<String> implements Serializa
     @Column(name = "id")
     private String id;
 
+    private String fullIdPath;
+
+    private String fullNamePath;
+
     @Column(name = "type")
     private String type;
 

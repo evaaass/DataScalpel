@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Validated
 @ApiSupport(order = 1)
-@Tag(name = "2.系统管理-日志模块")
+@Tag(name = "04.系统管理-日志模块")
 @RequestMapping("/api/v1")
 public interface ISysLogResource {
     @Operation(summary = "查询日志")

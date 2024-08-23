@@ -28,7 +28,7 @@ import java.util.List;
 
 @Validated
 @ApiSupport(order = 10)
-@Tag(name = "4.数据源管理")
+@Tag(name = "10.数据源管理")
 @RequestMapping("/api/v1")
 public interface IDataSourceResource {
 

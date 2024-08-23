@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@Tag(name = "模型管理")
+@Tag(name = "20.模型管理")
 @RequestMapping("/api/v1")
 public interface IModelResource {
 

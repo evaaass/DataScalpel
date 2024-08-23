@@ -83,6 +83,8 @@ public class ModelService {
                 modelFieldRepository.saveAll(newFields);
             } else if (model.getState() == ModelState.OFFLINE) {
                 List<ModelField> oldFields = modelFieldRepository.findAllByModelId(modelId);
+
+                //TODO 表中文注释变化
                 List<TableChange> tableChanges = jdbcTableService.getTableChanges(oldFields, newFields);
                 modelFieldRepository.saveAll(newFields);
 

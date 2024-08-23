@@ -18,8 +18,6 @@ import java.time.Instant;
 @Table(name = "admin_model")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Model extends AbstractAuditingEntity<String> implements Serializable {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")

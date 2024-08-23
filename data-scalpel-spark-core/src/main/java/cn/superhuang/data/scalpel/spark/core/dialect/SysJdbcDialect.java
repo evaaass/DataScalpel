@@ -101,6 +101,7 @@ public abstract class SysJdbcDialect extends JdbcDialect implements Serializable
         return new HashMap<>();
     }
 
+
     public SQLTemplates getSQLTemplates() {
         return SQLTemplates.DEFAULT;
     }

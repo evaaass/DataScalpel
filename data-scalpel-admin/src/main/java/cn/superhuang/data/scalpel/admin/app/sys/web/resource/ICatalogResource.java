@@ -19,7 +19,7 @@ import java.util.List;
 
 @Validated
 @ApiSupport(order = 2)
-@Tag(name = "3.系统管理-目录管理")
+@Tag(name = "05.系统管理-目录管理")
 @RequestMapping("/api/v1")
 public interface ICatalogResource {
     @Operation(summary = "获取目录")

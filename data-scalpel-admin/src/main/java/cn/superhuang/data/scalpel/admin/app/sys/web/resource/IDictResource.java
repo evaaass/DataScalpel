@@ -20,13 +20,13 @@ import java.net.URISyntaxException;
 
 @Validated
 @ApiSupport(order = 0)
-@Tag(name = "1.系统管理-字典")
+@Tag(name = "03.系统管理-字典")
 @RequestMapping("/api/v1")
 public interface IDictResource {
 
     @ApiOperationSupport(order = 0)
     @Operation(summary = "列表")
-    @GetMapping("/dict/")
+    @GetMapping("/dict")
     @ResponseBody
     public GenericResponse<Page<Dict>> search(@ParameterObject GenericSearchRequestDTO searchRequest);
 
