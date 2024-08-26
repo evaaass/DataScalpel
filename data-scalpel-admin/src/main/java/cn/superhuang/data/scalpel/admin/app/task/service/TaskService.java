@@ -84,7 +84,16 @@ public class TaskService {
                 scheduleTask(existingTask);
             }
         });
+    }
 
+    public void updateTaskDefinition(String id, String definition) {
+        taskRepository.findById(id).ifPresent(existingTask -> {
+            if (existingTask.getStatus() == TaskStatus.ENABLE) {
+                throw new RuntimeException("启用状态不能修改");
+            }
+            existingTask.setDefinition(definition);
+            taskRepository.save(existingTask);
+        });
     }
 
 
@@ -125,7 +134,7 @@ public class TaskService {
                 JobDataMap jobDataMap = new JobDataMap();
                 jobDataMap.put("taskId", task.getId());
                 Class<? extends Job> jobClass = null;
-                if (task.getTaskType() == TaskType.NATIVE_SQL) {
+                if (task.getTaskType() == TaskType.BATCH_CANVAS) {
                     jobClass = NativeSQLJob.class;
                 } else {
                     jobClass = SparkJob.class;

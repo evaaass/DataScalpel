@@ -29,37 +29,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
-            @NonNull                HttpServletResponse response,
-            @NonNull        FilterChain filterChain) throws ServletException, IOException {
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        String authHeader=request.getHeader("Authorization");
+        String authHeader = request.getHeader("Authorization");
         // Authorization başlığı yoksa veya "Bearer" ile başlamıyorsa filtreyi geçiyoruz
-        if (authHeader==null || !authHeader.startsWith("Bearer"))
-        {
-            filterChain.doFilter(request,response);
+        if (authHeader == null || !authHeader.startsWith("Bearer")) {
+            filterChain.doFilter(request, response);
             return;
         }
-        String token=authHeader.substring(7);
-        String username=jwtService.extractUsername(token);
+        String token = authHeader.substring(7);
+        String username = jwtService.extractUsername(token);
         //Kullanıcı adı mevcutsa ve daha kimlik doğrulama yapılmamışssa
-        if (username!=null && SecurityContextHolder.getContext().getAuthentication()==null)
-        {
-            //Kullanıcı bilgilerini al
-            UserDetails userDetails= userDetailService.loadUserByUsername(username);
-            //Token geçerli mi kontrol et
-            if (jwtService.isValid(token,userDetails))
-            {
-                UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(
-                        userDetails,null,userDetails.getAuthorities()
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDetailService.loadUserByUsername(username);
+            if (jwtService.isValid(token, userDetails)) {
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities()
                 );
-                authenticationToken.setDetails(
-                        //Kullanıcı detayları ayarlanır IP adresi oturum bilgileri gibi
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                //SecurityContext'e kimlik bilgileri eklenir
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }

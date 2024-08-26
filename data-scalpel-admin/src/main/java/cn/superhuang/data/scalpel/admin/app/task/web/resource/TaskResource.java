@@ -6,6 +6,7 @@ import cn.superhuang.data.scalpel.admin.app.task.repository.TaskRepository;
 import cn.superhuang.data.scalpel.admin.app.task.service.TaskService;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskContentValidateRequestVO;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskCreateRequestVO;
+import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskDefinitionUpdateRequestVO;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskUpdateRequestVO;
 import cn.superhuang.data.scalpel.admin.model.dto.TaskDTO;
 import cn.superhuang.data.scalpel.admin.model.dto.TaskUpdateDTO;
@@ -66,6 +67,11 @@ public class TaskResource extends BaseResource implements ITaskResource {
 	}
 
 	@Override
+	public GenericResponse<Void> updateTaskConfiguration(String id, TaskDefinitionUpdateRequestVO updateRequest) throws Exception {
+		return GenericResponse.ok();
+	}
+
+	@Override
 	public GenericResponse<Void> deleteTask(String id) throws Exception {
 		taskService.delete(id);
 		return GenericResponse.ok();
@@ -83,13 +89,6 @@ public class TaskResource extends BaseResource implements ITaskResource {
 		return GenericResponse.ok();
 	}
 
-	@Override
-	public GenericResponse<ValidateResultDTO> validateTaskContent(TaskContentValidateRequestVO validateRequest) throws Exception {
-		ValidateResultDTO validateResultDTO = new ValidateResultDTO();
-		validateResultDTO.setVail(true);
-		return GenericResponse.ok(validateResultDTO);
-
-	}
 
 	@Override
 	public GenericResponse<Void> runOnceTask(String id) throws Exception {

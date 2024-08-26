@@ -10,8 +10,6 @@ import java.util.Date;
 public class TaskUpdateRequestVO {
     private String name;
 
-    private String content;
-
     private String catalogId;
 
     @Schema(description = "调度类型：TIMER为运行一次，CRON为周期运行,NONE为暂不调度")

@@ -2,6 +2,7 @@ package cn.superhuang.data.scalpel.admin.app.task.web.resource;
 
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskContentValidateRequestVO;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskCreateRequestVO;
+import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskDefinitionUpdateRequestVO;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskUpdateRequestVO;
 import cn.superhuang.data.scalpel.admin.model.dto.ValidateResultDTO;
 import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
@@ -33,6 +34,10 @@ public interface ITaskResource {
     @PutMapping("/tasks/{id}")
     public GenericResponse<Void> updateTask(@PathVariable("id") String id, @RequestBody TaskUpdateRequestVO createRequest) throws Exception;
 
+    @Operation(summary = "更新任务")
+    @PutMapping("/tasks/{id}/definition")
+    public GenericResponse<Void> updateTaskConfiguration(@PathVariable("id") String id, @RequestBody TaskDefinitionUpdateRequestVO updateRequest) throws Exception;
+
     @Operation(summary = "删除任务")
     @DeleteMapping("/tasks/{id}")
     public GenericResponse<Void> deleteTask(@PathVariable("id") String id) throws Exception;
@@ -44,11 +49,6 @@ public interface ITaskResource {
     @Operation(summary = "禁用任务")
     @PostMapping("/tasks/{id}/actions/disable")
     public GenericResponse<Void> disableTask(@PathVariable("id") String id) throws Exception;
-
-    @Operation(summary = "验证任务信息")
-    @PostMapping("/tasks/actions/validate-content")
-    public GenericResponse<ValidateResultDTO> validateTaskContent(@RequestBody TaskContentValidateRequestVO validateRequest) throws Exception;
-
 
     @Operation(summary = "立即运行任务")
     @PostMapping("/tasks/{id}/actions/run-once")

@@ -1,5 +1,6 @@
 package cn.superhuang.data.scalpel.admin.app.datafile.domain;
 
+import cn.superhuang.data.scalpel.admin.app.datafile.model.enumeration.DataFileState;
 import cn.superhuang.data.scalpel.admin.app.datafile.model.enumeration.DataFileType;
 import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
 import cn.superhuang.data.scalpel.admin.repository.converter.MapConverter;
@@ -42,7 +43,14 @@ public class DataFile extends AbstractAuditingEntity<String> implements Serializ
     @Column
     private DataFileType type;
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private DataFileState state;
+
     @Convert(converter = MapConverter.class)
     @Column(length = 1000)
     private Map<String, String> props;
+
+    @Column(columnDefinition = "TEXT")
+    private String metadata;
 }

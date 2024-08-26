@@ -1,6 +1,7 @@
 package cn.superhuang.data.scalpel.admin.app.task.domain;
 
 import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
+import cn.superhuang.data.scalpel.admin.model.enumeration.TaskCategory;
 import cn.superhuang.data.scalpel.admin.model.enumeration.TaskScheduleType;
 import cn.superhuang.data.scalpel.admin.model.enumeration.TaskStatus;
 import cn.superhuang.data.scalpel.model.enumeration.TaskInstanceExecutionStatus;
@@ -36,6 +37,10 @@ public class Task extends AbstractAuditingEntity<String> implements Serializable
 
     @Enumerated(EnumType.STRING)
     @Column
+    private TaskCategory category;
+
+    @Enumerated(EnumType.STRING)
+    @Column
     private TaskType taskType;
 
     @Column(name = "catalog_id")
@@ -55,8 +60,8 @@ public class Task extends AbstractAuditingEntity<String> implements Serializable
     @Column(name = "failure_count")
     private Long failureCount;
 
-    @Column(name = "脚本ID")
-    private String scriptId;
+    @Column(name = "任务定义")
+    private String definition;
 
     @Schema(description = "调度类型：TIMER为运行一次，CRON为周期运行,NONE为暂不调度")
     @Enumerated(EnumType.STRING)

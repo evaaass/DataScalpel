@@ -1,8 +1,12 @@
 package cn.superhuang.data.scalpel.admin.app.task.web.resource.request;
 
+import cn.superhuang.data.scalpel.admin.model.enumeration.TaskCategory;
 import cn.superhuang.data.scalpel.admin.model.enumeration.TaskScheduleType;
 import cn.superhuang.data.scalpel.model.enumeration.TaskType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,6 +15,9 @@ import java.util.Date;
 public class TaskCreateRequestVO {
     @Schema(description = "任务名称")
     private String name;
+
+    @Schema(description = "任务种类：批处理还是流处理")
+    private TaskCategory category;
 
     @Schema(description = "任务类型：画布模式传CANVAS就行")
     private TaskType taskType;

@@ -1,10 +1,7 @@
 package cn.superhuang.data.scalpel.admin.app.sys.web.resource;
 
 import cn.superhuang.data.scalpel.admin.app.sys.domain.Dict;
-import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.DictCreateRequestVO;
-import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.DictUpdateRequestVO;
-import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.UserCreateRequest;
-import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.UserUpdateRequest;
+import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.*;
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.vo.UserVO;
 import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
@@ -46,4 +43,23 @@ public interface IUserResource {
     @Operation(summary = "删除")
     @DeleteMapping("/users/{id}")
     public GenericResponse<Void> delete(@PathVariable @NotNull String id);
+
+
+    @Operation(summary = "启用")
+    @PostMapping("/users/{id}/actions/enable")
+    public GenericResponse<Void> enable(
+            @PathVariable(value = "id", required = true) @NotNull final String id
+    ) throws URISyntaxException;
+
+    @Operation(summary = "禁用")
+    @PostMapping("/users/{id}/actions/disable")
+    public GenericResponse<Void> disable(
+            @PathVariable(value = "id", required = true) @NotNull final String id
+    ) throws URISyntaxException;
+
+    @Operation(summary = "禁用")
+    @PostMapping("/users/{id}/actions/change-password")
+    public GenericResponse<Void> disable(
+            @PathVariable(value = "id", required = true) @NotNull final String id, @RequestBody UserChangePasswordRequest changePasswordRequest
+    ) throws URISyntaxException;
 }

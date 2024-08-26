@@ -3,8 +3,10 @@ package cn.superhuang.data.scalpel.admin.app.sys.web.resource;
 import cn.hutool.core.bean.BeanUtil;
 import cn.superhuang.data.scalpel.admin.app.sys.domain.Role;
 import cn.superhuang.data.scalpel.admin.app.sys.domain.User;
+import cn.superhuang.data.scalpel.admin.app.sys.model.enumeration.UserState;
 import cn.superhuang.data.scalpel.admin.app.sys.repository.UserRepository;
 import cn.superhuang.data.scalpel.admin.app.sys.service.UserService;
+import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.UserChangePasswordRequest;
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.UserCreateRequest;
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.UserUpdateRequest;
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.vo.UserVO;
@@ -55,6 +57,28 @@ public class UserResource extends BaseResource implements IUserResource {
     @Override
     public GenericResponse<Void> delete(String id) {
         userService.deleteUser(id);
+        return GenericResponse.ok();
+    }
+
+    @Override
+    public GenericResponse<Void> enable(String id) throws URISyntaxException {
+        User user = new User();
+        user.setId(id);
+        user.setState(UserState.DISABLE);
+        return GenericResponse.ok();
+    }
+
+    @Override
+    public GenericResponse<Void> disable(String id) throws URISyntaxException {
+        User user = new User();
+        user.setId(id);
+        user.setState(UserState.DISABLE);
+        return GenericResponse.ok();
+    }
+
+    @Override
+    public GenericResponse<Void> disable(String id, UserChangePasswordRequest changePasswordRequest) throws URISyntaxException {
+        userService.changePassword(id, changePasswordRequest.getPassword());
         return GenericResponse.ok();
     }
 }
