@@ -49,6 +49,16 @@
             <artifactId>sedona-sql-3.0_2.13</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-aws</artifactId>
+            <version>3.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-dynamodb</artifactId>
+            <version>1.12.770</version>
+        </dependency>
+        <dependency>
             <groupId>com.crealytics</groupId>
             <artifactId>spark-excel_2.13</artifactId>
             <version>3.5.1_0.20.4</version>

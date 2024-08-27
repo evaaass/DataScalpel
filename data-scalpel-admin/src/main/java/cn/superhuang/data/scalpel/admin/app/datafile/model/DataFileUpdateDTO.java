@@ -16,7 +16,6 @@ public class DataFileUpdateDTO {
 
     private String description;
 
-    private DataFileType type;
 
     private Map<String, String> props;
 

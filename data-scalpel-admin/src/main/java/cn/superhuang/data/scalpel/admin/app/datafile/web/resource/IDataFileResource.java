@@ -37,17 +37,16 @@ public interface IDataFileResource {
     @Operation(summary = "修改")
     @PostMapping("/data-files/{id}")
     @ResponseBody
-    GenericResponse<Void> updateFileAssert(@PathVariable("id") String id,
+    GenericResponse<Void> updateFile(@PathVariable("id") String id,
                                                   @RequestParam(name = "alias", required = false) @Schema(description = "别名") String alias,
                                                   @RequestParam(name = "catalogId") @Schema(description = "目录Id") String catalogId,
-                                                  @RequestParam(name = "type", required = false) @Schema(description = "类型") DataFileType type,
                                                   @RequestParam(name = "description", required = false) @Schema(description = "描述") String description,
                                                   @RequestParam(name = "options", required = false) @Schema(description = "高级参数") String options,
-                                                  @RequestPart(name = "file", required = false) MultipartFile file);
+                                                  @RequestPart(name = "file", required = false) MultipartFile file) throws JsonProcessingException;
 
 
     @Operation(summary = "删除")
     @DeleteMapping("/data-files/{id}")
     @ResponseBody
-    GenericResponse<Void> delete(@PathVariable("type") String type, @PathVariable("id") String id);
+    GenericResponse<Void> delete(@PathVariable("id") String id);
 }

@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Data
 @Entity
-@Table(name = "admin_lake_item")
+@Table(name = "admin_data_file")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class DataFile extends AbstractAuditingEntity<String> implements Serializable {

@@ -1,6 +1,7 @@
 package cn.superhuang.data.scalpel.admin.app.datafile.web.resource;
 
 import cn.hutool.core.util.StrUtil;
+import cn.superhuang.data.scalpel.admin.app.datafile.model.DataFileUpdateDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +30,7 @@ public class DataFileResource extends BaseResource implements IDataFileResource 
     @Resource
     private DataFileRepository dataFileRepository;
     @Resource
+
     private DataFileService dataFileService;
     @Resource
     private ObjectMapper objectMapper;
@@ -50,9 +52,10 @@ public class DataFileResource extends BaseResource implements IDataFileResource 
         dataFileAddDTO.setType(type);
         dataFileAddDTO.setFile(file);
 
-        if(StrUtil.isNotBlank(options)){
-            dataFileAddDTO.setProps(objectMapper.readValue(options,new TypeReference<Map<String, String>>(){}));
-        }else{
+        if (StrUtil.isNotBlank(options)) {
+            dataFileAddDTO.setProps(objectMapper.readValue(options, new TypeReference<Map<String, String>>() {
+            }));
+        } else {
             dataFileAddDTO.setProps(Maps.newHashMap());
         }
         DataFile dataFile = dataFileService.add(dataFileAddDTO);
@@ -60,12 +63,25 @@ public class DataFileResource extends BaseResource implements IDataFileResource 
     }
 
     @Override
-    public GenericResponse<Void> updateFileAssert(String id, String alias, String catalogId, DataFileType type, String description, String options, MultipartFile file) {
-        return null;
+    public GenericResponse<Void> updateFile(String id, String alias, String catalogId, String description, String options, MultipartFile file) throws JsonProcessingException {
+        DataFileUpdateDTO dataFileUpdateDTO = new DataFileUpdateDTO();
+        dataFileUpdateDTO.setId(id);
+        dataFileUpdateDTO.setCatalogId(catalogId);
+        dataFileUpdateDTO.setAlias(alias);
+        dataFileUpdateDTO.setDescription(description);
+        if (StrUtil.isNotBlank(options)) {
+            dataFileUpdateDTO.setProps(objectMapper.readValue(options, new TypeReference<Map<String, String>>() {
+            }));
+        }
+
+        dataFileUpdateDTO.setFile(file);
+        dataFileService.update(dataFileUpdateDTO);
+        return GenericResponse.ok();
     }
 
     @Override
-    public GenericResponse<Void> delete(String type, String id) {
-        return null;
+    public GenericResponse<Void> delete(String id) {
+        dataFileService.delete(id);
+        return GenericResponse.ok();
     }
 }

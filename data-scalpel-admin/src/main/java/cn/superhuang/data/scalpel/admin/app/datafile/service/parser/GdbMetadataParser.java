@@ -18,12 +18,14 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.types.StructType;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class GdbMetadataParser implements DataFileMetadataParser {
     @Resource
     private MinioClient minioClient;
@@ -46,7 +48,7 @@ public class GdbMetadataParser implements DataFileMetadataParser {
     @Override
     public DataFileMetadata parse(DataFile dataFile) {
         String objectName = DatePattern.NORM_DATE_FORMAT.format(dataFile.getCreatedDate()) + "/" + dataFile.getId() + "." + FileNameUtil.extName(dataFile.getName());
-        String path = "s3a://" + minioConfig.getBucketName() + "/" + objectName;
+        String path = "s3a://" + minioConfig.getBucketName() + "/" + DatePattern.NORM_DATE_FORMAT.format(dataFile.getCreatedDate()) + "/" + dataFile.getId() + "." + dataFile.getType().getExtName();
 
         String[] tableNames = FileGDB.listTableNames(path, sparkService.getSparkSession().sparkContext().hadoopConfiguration());
 
@@ -58,9 +60,12 @@ public class GdbMetadataParser implements DataFileMetadataParser {
         DataFileMetadata metadata = new DataFileMetadata();
         metadata.setDataTables(new ArrayList<>());
         for (String tableName : tableNames) {
-            GDBTable gdbTable = GDBTable.apply(sparkService.getSparkSession().sparkContext().hadoopConfiguration(), path, tableName, null);
-            StructType schema = gdbTable.schema();
-
+            if (tableName.startsWith("GDB_")) {
+                continue;
+            }
+            //TODO 这里做个单元测试
+            FileGDB fileGDB = FileGDB.apply(path, tableName, sparkService.getSparkSession().sparkContext().hadoopConfiguration()).get();
+            StructType schema = fileGDB.schema();
             //TODO 补充空间信息
             List<DataTableColumn> columns = SchemaUtil.convertToDataTableColumn(schema);
             DataTable dataTable = new DataTable();
