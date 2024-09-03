@@ -7,5 +7,9 @@ public enum TaskInstanceExecutionStatus {
     QUEUING,
     RUNNING,
     SUCCESS,
-    FAILURE
+    FAILURE;
+
+    public static Boolean isRunningStatus(TaskInstanceExecutionStatus status) {
+        return status == TaskInstanceExecutionStatus.RUNNING || status == TaskInstanceExecutionStatus.QUEUING;
+    }
 }

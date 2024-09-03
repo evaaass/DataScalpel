@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @ConfigurationProperties(
-        prefix = "data-bank.dispatcher.runner.docker"
+        prefix = "data-scalpel.dispatcher.runner.docker"
 )
 @Configuration
 @Data

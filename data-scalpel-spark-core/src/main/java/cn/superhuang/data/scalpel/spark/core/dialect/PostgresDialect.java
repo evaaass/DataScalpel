@@ -29,6 +29,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.HashMap;
+import java.util.List;
 
 public class PostgresDialect extends SysJdbcDialect implements Serializable {
     @Serial
@@ -67,6 +68,44 @@ public class PostgresDialect extends SysJdbcDialect implements Serializable {
     public String getTableSizeQuery(String table, JdbcConfig config) {
         String tableNameWithSchema = getTableWithSchema(table, config);
         return StrUtil.format("select pg_relation_size('{}')", tableNameWithSchema);
+    }
+
+    private String getPkKey(String tableName) {
+        if (tableName.contains(".")) {
+            tableName = tableName.substring(tableName.lastIndexOf(".") + 1);
+        }
+        return tableName.replaceAll("\"", "") + "_pkey";
+    }
+
+    @Override
+    public String getAddTablePrimaryKeyQuery(String tableName, List<String> pkList) {
+        String pkKey = getPkKey(tableName);
+        return StrUtil.format("ALTER TABLE {} ADD CONSTRAINT \"{}\" PRIMARY KEY ({})", tableName, pkKey, String.join(",", pkList));
+    }
+
+    @Override
+    public String getDropTablePrimaryKeyQuery(String tableName, List<String> pkList) {
+        String pkKey = getPkKey(tableName);
+        return StrUtil.format("ALTER TABLE {} DROP CONSTRAINT \"{}\"", tableName, pkKey);
+    }
+
+    @Override
+    public String getUpdateTableCommentQuery(String tableName, String comment) {
+        return StrUtil.format("COMMENT ON TABLE {} IS '{}'", tableName, comment);
+    }
+
+    @Override
+    public String getUpdateColumnCommentQuery(String tableName, String column, String type, String comment, Boolean nullable) {
+        return StrUtil.format("COMMENT ON COLUMN {}.{} IS '{}'", tableName, column, comment);
+    }
+
+    @Override
+    public String getUpdateColumnNullableTQuery(String tableName, String column, String type, String comment, Boolean nullable) {
+        if (nullable) {
+            return StrUtil.format("ALTER TABLE {} ALTER COLUMN {} DROP NOT NULL", tableName, column);
+        } else {
+            return StrUtil.format("ALTER TABLE {} ALTER COLUMN {} SET NOT NULL", tableName, column);
+        }
     }
 
     @Override
@@ -212,7 +251,7 @@ public class PostgresDialect extends SysJdbcDialect implements Serializable {
 
     @Override
     public String[] alterTable(String tableName, Seq<TableChange> changes, int dbMajorVersion) {
-        return sparkDialect.alterTable(tableName, changes, dbMajorVersion);
+        return super.alterTable(tableName, changes, dbMajorVersion);
     }
 
     @Override

@@ -1,0 +1,10 @@
+
+{
+  "type": "POSTGRESQL",
+  "host": "home.superhuang.cn",
+  "port": 5432,
+  "database": "test",
+  "username": "postgres",
+  "password": "Gistack@123",
+  "params": "{}"
+}

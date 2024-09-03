@@ -4,6 +4,7 @@ import cn.superhuang.data.scalpel.admin.app.item.model.enumeration.EntityType;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -13,9 +14,9 @@ import java.io.Serializable;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class LakeItemUploadDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
-
+    @Serial
+    private static final long serialVersionUID = -7407163530211350512L;
     private String catalogId;
 
     private EntityType entityType;

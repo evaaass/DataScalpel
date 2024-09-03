@@ -6,6 +6,7 @@ import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -20,8 +21,8 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "admin_task_script")
 public class TaskScript extends AbstractAuditingEntity<String> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
+    @Serial
+    private static final long serialVersionUID = 8871173663678316554L;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")

@@ -3,9 +3,19 @@ package cn.superhuang.data.scalpel.model.datasource.config;
 import cn.hutool.core.lang.TypeReference;
 import cn.hutool.json.JSONUtil;
 import cn.superhuang.data.scalpel.model.enumeration.DatasourceType;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.HashMap;
 import java.util.Map;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = JdbcConfig.class, name = "JDBC"),
+        @JsonSubTypes.Type(value = S3Config.class, name = "S3"),
+        @JsonSubTypes.Type(value = ApiConfig.class, name = "API"),
+        @JsonSubTypes.Type(value = KafkaConfig.class, name = "KAFKA")
+})
 
 public abstract class DatasourceConfig {
     public static final String DS_COMMON_OPTIONS = "options";
@@ -62,6 +72,8 @@ public abstract class DatasourceConfig {
             datasourceConfig = new S3Config();
         } else if (type == DatasourceType.KAFKA) {
             datasourceConfig = new KafkaConfig();
+        } else if (type == DatasourceType.API) {
+            datasourceConfig = new ApiConfig();
         } else {
             throw new RuntimeException("不支持的数据类型：" + type);
         }

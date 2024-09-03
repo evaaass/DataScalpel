@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.geoshare</groupId>
+        <groupId>cn.superhuang</groupId>
         <artifactId>data-scalpel</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -131,14 +131,30 @@
 <!--        </dependency>-->
 
         <dependency>
-            <groupId>com.geoshare</groupId>
+            <groupId>cn.superhuang</groupId>
             <artifactId>data-scalpel-task-actuator</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>bundle</artifactId>
+                    <groupId>software.amazon.awssdk</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>rocksdbjni</artifactId>
+                    <groupId>org.rocksdb</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.ssssssss</groupId>
             <artifactId>magic-api-spring-boot-starter-spring33</artifactId>
             <version>2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.superhuang</groupId>
+            <artifactId>data-scalpel-lib-docker-cli</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -151,6 +167,9 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>

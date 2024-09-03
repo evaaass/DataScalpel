@@ -13,6 +13,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Types;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.apache.spark.sql.types.DataTypes.BooleanType;
@@ -65,6 +66,44 @@ public class Dm8Dialect extends SysJdbcDialect implements Serializable {
     @Override
     public String getTableSizeQuery(String table, JdbcConfig config) {
         return StrUtil.format("select TABLE_USED_SPACE('{}','{}') * page() from dual", config.getDatabase(), table);
+    }
+    private String getPkKey(String tableName) {
+        if (tableName.contains(".")) {
+            tableName = tableName.substring(tableName.lastIndexOf(".") + 1);
+        }
+        return tableName.replaceAll("\"", "") + "_pkey";
+    }
+
+    @Override
+    public String getAddTablePrimaryKeyQuery(String tableName, List<String> pkList) {
+        String pkKey = getPkKey(tableName);
+        return StrUtil.format(" alter table {} add constraint \"{}\" NOT CLUSTER primary key({})", tableName, pkKey, String.join(",", pkList));
+    }
+
+    @Override
+    public String getDropTablePrimaryKeyQuery(String tableName, List<String> pkList) {
+        String pkKey = getPkKey(tableName);
+        return StrUtil.format("alter table {} drop constraint \"{}\"", tableName, pkKey);
+    }
+
+    @Override
+    public String getUpdateTableCommentQuery(String tableName, String comment) {
+        return StrUtil.format("comment on table {} is '{}'", tableName, comment);
+    }
+
+    @Override
+    public String getUpdateColumnCommentQuery(String tableName, String column, String type, String comment, Boolean nullable) {
+        return StrUtil.format("comment on column {}.{} is '{}'", tableName, column, comment);
+    }
+
+    @Override
+    public String getUpdateColumnNullableTQuery(String tableName, String column, String type, String comment, Boolean nullable) {
+        if (nullable) {
+            return StrUtil.format("alter table {} alter column {} set null");
+        } else {
+            return StrUtil.format("alter table {} alter column {} set not null");
+        }
+
     }
 
     @Override

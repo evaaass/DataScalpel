@@ -1,6 +1,5 @@
 package cn.superhuang.data.scalpel.admin.model.web.vo;
 
-import cn.superhuang.data.scalpel.admin.model.enumeration.TaskCategory;
 import cn.superhuang.data.scalpel.admin.model.enumeration.TaskScheduleType;
 import cn.superhuang.data.scalpel.admin.model.enumeration.TaskStatus;
 import cn.superhuang.data.scalpel.model.enumeration.TaskInstanceExecutionStatus;
@@ -19,8 +18,7 @@ public class TaskListItemVO {
 
     @Schema(description = "任务状态：是否启用")
     private TaskStatus status;
-    @Schema(description = "任务分类")
-    private TaskCategory category;
+
     @Schema(description = "任务类型，目前只有CANVAS")
     private TaskType taskType;
     private Instant createTime;

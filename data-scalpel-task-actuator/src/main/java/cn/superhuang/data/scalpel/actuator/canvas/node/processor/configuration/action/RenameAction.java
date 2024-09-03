@@ -3,6 +3,8 @@ package cn.superhuang.data.scalpel.actuator.canvas.node.processor.configuration.
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class RenameAction {
     @Schema(description = "需要改名的表")
@@ -10,5 +12,7 @@ public class RenameAction {
     @Schema(description = "新名称")
     private String newTableName;
     @Schema(description = "新中文名称")
-    private String newTableCnName;
+    private String newTableAlias;
+    @Schema(description = "字段改名配置")
+    private List<RenameColumnMapping> columnMappings;
 }

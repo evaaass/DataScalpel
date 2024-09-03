@@ -13,7 +13,7 @@ public class ModelDTO {
     @Schema(description = "名称")
     private String name;
     @Schema(description = "中文名称")
-    private String cnName;
+    private String alias;
     @Schema(description = "描述")
     private String description;
     @Schema(description = "目录ID")

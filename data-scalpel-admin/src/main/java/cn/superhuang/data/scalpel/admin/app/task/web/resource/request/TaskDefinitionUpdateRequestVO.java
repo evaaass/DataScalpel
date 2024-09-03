@@ -8,5 +8,5 @@ import java.util.Date;
 
 @Data
 public class TaskDefinitionUpdateRequestVO {
-    private String content;
+    private String definition;
 }

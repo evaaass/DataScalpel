@@ -1,5 +1,8 @@
 package cn.superhuang.data.scalpel.model.datasource.config;
 
+
+import cn.superhuang.data.scalpel.model.enumeration.DatasourceType;
+
 public class ApiConfig extends DatasourceConfig {
     public static final String API_URL = "url";
     public static final String API_METHOD = "method";
@@ -11,6 +14,9 @@ public class ApiConfig extends DatasourceConfig {
     public static final String API_BODY = "body";
     public static final String API_SCRIPT = "script";
 
+    public ApiConfig(){
+        setType(DatasourceType.API);
+    }
 
     public String getUrl(){
         return getParams().get(API_URL);

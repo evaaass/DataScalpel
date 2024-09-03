@@ -9,4 +9,5 @@ public enum DatasourceType {
     S3,
     SFTP,
     FTP,
+    API;
 }

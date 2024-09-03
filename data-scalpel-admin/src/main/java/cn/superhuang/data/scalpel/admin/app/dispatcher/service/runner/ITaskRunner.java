@@ -1,6 +1,5 @@
 package cn.superhuang.data.scalpel.admin.app.dispatcher.service.runner;
 
-
 import cn.superhuang.data.scalpel.admin.app.dispatcher.model.TaskRunnerInstanceInfo;
 import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
 
@@ -15,7 +14,9 @@ public interface ITaskRunner {
      */
     String run(TaskConfiguration taskConfiguration) throws Exception;
 
-    void kill(String channel) throws Exception;
+    void kill(String channelId) throws Exception;
 
-    TaskRunnerInstanceInfo getInfo(String channel) throws Exception;
+    TaskRunnerInstanceInfo getInfo(String channelId) throws Exception;
+
+    String getLog(String channelId) throws Exception;
 }

@@ -16,10 +16,11 @@ import java.util.Map;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = CanvasTaskConfiguration.class, name = "CANVAS"),
+        @JsonSubTypes.Type(value = CanvasTaskConfiguration.class, name = "BATCH_CANVAS"),
 })
 @Data
 public abstract class TaskConfiguration {
+    private Boolean debug;
     private String taskId;
     private String taskName;
     private String taskInstanceId;

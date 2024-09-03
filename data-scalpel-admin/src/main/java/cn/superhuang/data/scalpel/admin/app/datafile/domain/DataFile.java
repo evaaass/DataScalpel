@@ -9,6 +9,7 @@ import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -22,8 +23,9 @@ import java.util.Map;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class DataFile extends AbstractAuditingEntity<String> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
+    @Serial
+    private static final long serialVersionUID = 5302667837762010702L;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")

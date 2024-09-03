@@ -34,10 +34,5 @@ public class Model extends AbstractAuditingEntity<String> implements Serializabl
     @Enumerated(EnumType.STRING)
     private ModelState state;
 
-
-    @Enumerated(EnumType.STRING)
-    private GeometryType geometryType;
-    private Integer wkId;
-    private Integer wk;
-    private String extent;
+    private Long recordCount;
 }

@@ -8,9 +8,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.UUID;
 
 /**
  * A LakeItem.
@@ -19,7 +21,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "admin_model_field")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ModelField extends AbstractAuditingEntity<String> implements Serializable {
+public class ModelField extends AbstractAuditingEntity<String> implements Serializable{
 
 
     @Id

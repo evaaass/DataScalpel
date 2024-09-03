@@ -41,6 +41,7 @@ public class UserService implements UserDetailsService {
 
     public void addUser(User user) {
         user.setPassword(SpringUtil.getBean(PasswordEncoder.class).encode(user.getPassword()));
+        user.setState(UserState.ENABLE);
         userRepository.save(user);
     }
 

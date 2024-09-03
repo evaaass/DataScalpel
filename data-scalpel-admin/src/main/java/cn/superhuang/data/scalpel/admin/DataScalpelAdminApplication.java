@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.cors.CorsConfiguration;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 @EnableScheduling
 @EnableConfigurationProperties
 @EnableTransactionManagement(proxyTargetClass = true)
+@EnableKafka
 //@EnableCaching
 public class DataScalpelAdminApplication {
 

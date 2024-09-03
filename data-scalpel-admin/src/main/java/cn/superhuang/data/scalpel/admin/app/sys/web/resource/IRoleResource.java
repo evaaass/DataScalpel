@@ -11,6 +11,8 @@ import cn.superhuang.data.scalpel.model.web.GenericResponse;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -22,28 +24,26 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URISyntaxException;
 
 @Validated
-@ApiSupport(order = 10)
-@Tag(name = "01.系统管理-角色管理")
+@Tag(name = "01.系统管理-角色管理", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "01", parseValue = true)})})
 @RequestMapping("/api/v1")
 public interface IRoleResource {
-    @ApiOperationSupport(order = 0)
-    @Operation(summary = "列表")
+    @Operation(summary = "查询", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "1", parseValue = true)})})
     @GetMapping("/roles")
     @ResponseBody
     public GenericResponse<Page<Role>> search(@ParameterObject GenericSearchRequestDTO searchRequest);
 
-    @Operation(summary = "创建")
+    @Operation(summary = "创建", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "2", parseValue = true)})})
     @PostMapping("/roles")
     public GenericResponse<Role> create(@Valid @RequestBody RoleCreateRequest createRequest) throws Exception;
 
-    @Operation(summary = "修改")
+    @Operation(summary = "修改", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "3", parseValue = true)})})
     @PutMapping("/roles/{id}")
     public GenericResponse<Void> update(
             @PathVariable(value = "id", required = true) @NotNull final String id,
             @RequestBody RoleUpdateRequest updateRequest
     ) throws URISyntaxException;
 
-    @Operation(summary = "删除")
+    @Operation(summary = "删除", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "4", parseValue = true)})})
     @DeleteMapping("/roles/{id}")
-    public GenericResponse<Void> delete(@PathVariable @NotNull String id);
+    public GenericResponse<Void> delete(@PathVariable(value = "id", required = true) @NotNull String id);
 }

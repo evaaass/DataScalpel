@@ -7,6 +7,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -19,8 +20,9 @@ import java.io.Serializable;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Catalog extends AbstractAuditingEntity<String> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
+    @Serial
+    private static final long serialVersionUID = -3646846792229514663L;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")

@@ -36,13 +36,11 @@ public class TaskResource extends BaseResource implements ITaskResource {
 	private TaskService taskService;
 
 	@Override
-	public GenericResponse<Page<TaskListItemVO>> search(GenericSearchRequestDTO searchRequest) {
+	public GenericResponse<Page<Task>> search(GenericSearchRequestDTO searchRequest) {
 		Specification<Task> spec = resolveSpecification(searchRequest.getSearch(), Task.class);
 		PageRequest pageRequest = resolvePageRequest(searchRequest.getLimit(), searchRequest.getSort());
 		Page<Task> page = taskRepository.findAll(spec, pageRequest);
-		List<TaskListItemVO> listVo = BeanUtil.copyToList(page.getContent(), TaskListItemVO.class);
-		Page<TaskListItemVO> result = new PageImpl<>(listVo, page.getPageable(), page.getTotalElements());
-		return GenericResponse.ok(result);
+		return GenericResponse.ok(page);
 	}
 
 	@Override
@@ -53,8 +51,8 @@ public class TaskResource extends BaseResource implements ITaskResource {
 	}
 
 	@Override
-	public GenericResponse<TaskDetailVO> getTask(String id) {
-		Optional<TaskDetailVO> taskDetailVO = taskRepository.findById(id).map(task -> BeanUtil.copyProperties(task, TaskDetailVO.class));
+	public GenericResponse<Task> getTask(String id) {
+		Optional<Task> taskDetailVO = taskRepository.findById(id);
 		return GenericResponse.wrapOrNotFound(taskDetailVO);
 	}
 
@@ -68,6 +66,7 @@ public class TaskResource extends BaseResource implements ITaskResource {
 
 	@Override
 	public GenericResponse<Void> updateTaskConfiguration(String id, TaskDefinitionUpdateRequestVO updateRequest) throws Exception {
+		taskService.updateTaskDefinition(id,updateRequest.getDefinition());
 		return GenericResponse.ok();
 	}
 

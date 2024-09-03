@@ -13,12 +13,16 @@ import cn.superhuang.data.scalpel.admin.app.model.repository.ModelRepository;
 import cn.superhuang.data.scalpel.model.datasource.config.DatasourceConfig;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.apache.spark.sql.connector.catalog.TableChange;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -31,7 +35,9 @@ public class ModelService {
     @Resource
     private DatasourceRepository datasourceRepository;
     @Resource
-    private JdbcTableService jdbcTableService;
+    private ModelDdlService modelDdlService;
+    @Resource
+    private EntityManager em;
 
 
     public Optional<Model> detail(String id) {
@@ -40,6 +46,7 @@ public class ModelService {
 
     @Transactional
     public Model create(final Model model, List<ModelField> fields) {
+        model.setRecordCount(0L);
         model.setState(ModelState.DRAFT);
         Boolean modelExist = modelRepository.existsModelByDatasourceIdAndName(model.getDatasourceId(), model.getName());
         if (modelExist) {
@@ -48,11 +55,13 @@ public class ModelService {
 
         modelRepository.save(model);
 
-        final String modelId = model.getId();
-        fields.forEach(field -> {
-            field.setModelId(modelId);
-        });
-        modelFieldRepository.saveAll(fields);
+        if(fields != null && !fields.isEmpty()) {
+            final String modelId = model.getId();
+            fields.forEach(field -> {
+                field.setModelId(modelId);
+            });
+            modelFieldRepository.saveAll(fields);
+        }
         return model;
     }
 
@@ -79,19 +88,16 @@ public class ModelService {
             if (model.getState() == ModelState.ONLINE) {
                 throw new RuntimeException("上线状态无法修改");
             }
+            List<ModelField> oldFields = modelFieldRepository.findAllByModelId(modelId);
+            oldFields.forEach(f -> em.detach(f));
             if (model.getState() == ModelState.DRAFT) {
-                modelFieldRepository.saveAll(newFields);
+                mergeFields(modelId, oldFields, newFields);
             } else if (model.getState() == ModelState.OFFLINE) {
-                List<ModelField> oldFields = modelFieldRepository.findAllByModelId(modelId);
-
-                //TODO 表中文注释变化
-                List<TableChange> tableChanges = jdbcTableService.getTableChanges(oldFields, newFields);
-                modelFieldRepository.saveAll(newFields);
-
+                mergeFields(modelId, oldFields, newFields);
                 datasourceRepository.findById(model.getDatasourceId()).ifPresentOrElse(datasource -> {
                     try {
                         JdbcConfig jdbcConfig = (JdbcConfig) DatasourceConfig.getConfig(datasource.getType(), datasource.getProps());
-                        jdbcTableService.updateTable(jdbcConfig, model.getName(), tableChanges);
+                        modelDdlService.updateTable(jdbcConfig, model, oldFields, newFields);
                     } catch (Exception e) {
                         throw new BaseException("创建JDBC表失败：" + e.getMessage(), e);
                     }
@@ -107,6 +113,30 @@ public class ModelService {
 
     }
 
+    private void mergeFields(String modelId, List<ModelField> oldFields, List<ModelField> newFields) {
+        Set<String> newFieldIdSet = newFields.stream().map(ModelField::getId).collect(Collectors.toSet());
+
+        //删除要删除的字段
+        oldFields.stream().filter(oldField -> !newFieldIdSet.contains(oldField.getId())).forEach(f -> modelFieldRepository.deleteById(f.getId()));
+        for (ModelField newField : newFields) {
+            if (newField.isNew()) {
+                //没有ID肯定是新增字段
+                newField.setModelId(modelId);
+                modelFieldRepository.save(newField);
+            } else {
+                //有ID，就直接更新吧
+                modelFieldRepository.findById(newField.getId()).ifPresent(
+                        po -> {
+                            BeanUtil.copyProperties(newField, po);
+                            modelFieldRepository.save(po);
+                        }
+                );
+            }
+        }
+        newFields.forEach(f -> f.setModelId(modelId));
+        modelFieldRepository.saveAll(newFields);
+    }
+
     @Transactional
     public void delete(String id) {
         modelRepository.findById(id).ifPresent(model -> {
@@ -115,19 +145,19 @@ public class ModelService {
             }
             modelFieldRepository.deleteAllByModelId(id);
             modelRepository.deleteById(id);
-            datasourceRepository.findById(model.getDatasourceId()).ifPresentOrElse(datasource -> {
-                try {
-                    JdbcConfig jdbcConfig = (JdbcConfig) DatasourceConfig.getConfig(datasource.getType(), datasource.getProps());
-                    jdbcTableService.dropTable(jdbcConfig, model.getName());
-                } catch (Exception e) {
-                    throw new BaseException("创建JDBC表失败：" + e.getMessage(), e);
-                }
-            }, () -> {
-                throw new BaseException("数据源%s不存在".formatted(model.getDatasourceId()));
-            });
+            if (model.getState() != ModelState.DRAFT) {
+                datasourceRepository.findById(model.getDatasourceId()).ifPresentOrElse(datasource -> {
+                    try {
+                        JdbcConfig jdbcConfig = (JdbcConfig) DatasourceConfig.getConfig(datasource.getType(), datasource.getProps());
+                        modelDdlService.dropTable(jdbcConfig, model);
+                    } catch (Exception e) {
+                        throw new BaseException("创建JDBC表失败：" + e.getMessage(), e);
+                    }
+                }, () -> {
+                    throw new BaseException("数据源%s不存在".formatted(model.getDatasourceId()));
+                });
+            }
         });
-
-
     }
 
     public void recreateTable(String id) {
@@ -136,8 +166,8 @@ public class ModelService {
             datasourceRepository.findById(model.getDatasourceId()).ifPresentOrElse(datasource -> {
                 try {
                     JdbcConfig jdbcConfig = (JdbcConfig) DatasourceConfig.getConfig(datasource.getType(), datasource.getProps());
-                    jdbcTableService.dropTable(jdbcConfig, model.getName());
-                    jdbcTableService.createTable(jdbcConfig, model.getName(), fields);
+                    modelDdlService.dropTable(jdbcConfig, model);
+                    modelDdlService.createTable(jdbcConfig, model, fields);
                 } catch (Exception e) {
                     throw new BaseException("创建JDBC表失败：" + e.getMessage(), e);
                 }
@@ -147,23 +177,11 @@ public class ModelService {
         });
     }
 
-    public void createTable(String id) {
-        modelRepository.findById(id).ifPresent(model -> {
-            if (model.getState().equals(ModelState.DRAFT)) {
-                throw new RuntimeException("模型不是草稿状态");
-            }
-            List<ModelField> fields = modelFieldRepository.findAllByModelId(model.getId());
-            createPhysicalTable(model, fields);
-        });
-    }
-
     private void createPhysicalTable(Model model, List<ModelField> fields) {
         datasourceRepository.findById(model.getDatasourceId()).ifPresentOrElse(datasource -> {
             try {
                 JdbcConfig jdbcConfig = (JdbcConfig) DatasourceConfig.getConfig(datasource.getType(), datasource.getProps());
-                jdbcTableService.createTable(jdbcConfig, model.getName(), fields);
-                model.setState(ModelState.OFFLINE);
-                modelRepository.save(model);
+                modelDdlService.createTable(jdbcConfig, model, fields);
             } catch (Exception e) {
                 throw new BaseException("创建JDBC表失败：" + e.getMessage(), e);
             }
@@ -175,25 +193,29 @@ public class ModelService {
 
     public void online(String id) {
         modelRepository.findById(id).ifPresent(model -> {
-            if (model.getState().equals(ModelState.OFFLINE)) {
-                throw new RuntimeException("模型不是下线状态");
+            if (model.getState() == ModelState.DRAFT) {
+                model.setState(ModelState.ONLINE);
+                modelRepository.save(model);
+                List<ModelField> fields = modelFieldRepository.findAllByModelId(model.getId());
+                createPhysicalTable(model, fields);
+            } else if (model.getState() == ModelState.OFFLINE) {
+                model.setState(ModelState.ONLINE);
+                modelRepository.save(model);
+            } else {
+                throw new RuntimeException("该状态%s不允许上线".formatted(model.getState()));
             }
-            model.setState(ModelState.ONLINE);
-            modelRepository.save(model);
         });
     }
 
     public void offline(String id) {
         modelRepository.findById(id).ifPresent(model -> {
-            if (model.getState().equals(ModelState.ONLINE)) {
-                throw new RuntimeException("模型不是下线状态");
+            if (!model.getState().equals(ModelState.ONLINE)) {
+                throw new RuntimeException("模型不是上线状态");
             }
             model.setState(ModelState.OFFLINE);
             modelRepository.save(model);
         });
     }
 
-    public List<ModelField> getModelFields(String id) {
-        return modelFieldRepository.findAllByModelId(id);
-    }
+
 }

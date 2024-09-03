@@ -1,5 +1,13 @@
 package cn.superhuang.data.scalpel.admin.app.task.service;
 
+import cn.superhuang.data.scalpel.admin.app.common.service.KafkaService;
+import cn.superhuang.data.scalpel.model.enumeration.LogLevel;
+import cn.superhuang.data.scalpel.model.enumeration.TaskCycleType;
+import cn.superhuang.data.scalpel.model.datasource.config.KafkaConfig;
+import cn.superhuang.data.scalpel.model.task.SparkConfiguration;
+import cn.superhuang.data.scalpel.model.task.definition.BatchCanvasTaskDefinition;
+import com.google.common.collect.Maps;
+
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.date.DateTime;
@@ -7,6 +15,8 @@ import cn.superhuang.data.scalpel.admin.app.task.repository.TaskScriptRepository
 import cn.superhuang.data.scalpel.admin.app.task.service.job.NativeSQLJob;
 import cn.superhuang.data.scalpel.admin.app.task.service.job.SparkJob;
 import cn.superhuang.data.scalpel.model.enumeration.TaskType;
+import cn.superhuang.data.scalpel.model.task.configuration.CanvasTaskConfiguration;
+import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cn.superhuang.data.scalpel.admin.BaseException;
 import cn.superhuang.data.scalpel.admin.app.datasource.repository.DatasourceRepository;
@@ -27,6 +37,7 @@ import cn.superhuang.data.scalpel.admin.model.dto.TaskDTO;
 import cn.superhuang.data.scalpel.model.task.TaskRunningStatus;
 import jakarta.annotation.Resource;
 import org.quartz.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +49,8 @@ import java.util.*;
 public class TaskService {
 
     @Resource
+    private KafkaService kafkaService;
+    @Resource
     private TaskRepository taskRepository;
     @Resource
     private ModelRepository modelRepository;
@@ -46,29 +59,20 @@ public class TaskService {
     @Resource
     private TaskInstanceRepository instanceRepository;
 
-    private TaskBootType taskBootType = TaskBootType.DOCKER;//K8S,YARN,JAR
-
-    @Resource
-    private List<BaseTaskBoot> taskBoots;
-
     @Resource
     private Scheduler scheduler;
     @Resource
     private ObjectMapper objectMapper;
+    @Resource
+    private TaskManagerService taskManager;
 
     public static final String QUARTZ_JOB_GROUP = "DataScalpel";
     public static final String QUARTZ_TRIGGER_GROUP = "DataScalpel";
 
-    private BaseTaskBoot getBoot() {
-        for (BaseTaskBoot taskBoot : taskBoots) {
-            if (taskBoot.canHandle(taskBootType)) {
-                return taskBoot;
-            }
-        }
-        throw new RuntimeException("不支持的任务BOOT类型：" + taskBootType);
-    }
-
     public Task save(TaskDTO taskDTO) {
+        if (taskDTO.getTaskType().getCategory().equals("STREAM")) {
+            throw new RuntimeException("暂不支持实时流任务");
+        }
         Task task = BeanUtil.copyProperties(taskDTO, Task.class);
         task.setStatus(TaskStatus.DISABLE);
         task.setSuccessCount(0l);
@@ -78,11 +82,11 @@ public class TaskService {
 
     public void update(TaskUpdateDTO taskUpdateDTO) {
         taskRepository.findById(taskUpdateDTO.getId()).ifPresent(existingTask -> {
+            if (existingTask.getStatus() == TaskStatus.ENABLE) {
+                throw new RuntimeException("启用状态的任务无法修改");
+            }
             BeanUtil.copyProperties(taskUpdateDTO, existingTask, CopyOptions.create().setIgnoreNullValue(true));
             taskRepository.save(existingTask);
-            if (existingTask.getStatus() == TaskStatus.ENABLE) {
-                scheduleTask(existingTask);
-            }
         });
     }
 
@@ -121,7 +125,7 @@ public class TaskService {
         taskRepository.findById(id).ifPresent(task -> {
             task.setStatus(TaskStatus.DISABLE);
             taskRepository.save(task);
-            scheduleTask(task);
+            unscheduleTask(task);
         });
     }
 
@@ -181,19 +185,17 @@ public class TaskService {
         }
     }
 
-    public void runTask(String id, Date scheduledFireTime) {
-        taskRepository.findById(id).ifPresentOrElse(task -> {
-            TaskInstance instance = new TaskInstance();
-            instance.setTaskId(task.getId());
-            instance.setStartTime(new Date());
-            instance.setScheduledTriggerTime(scheduledFireTime);
-            instance.setStatus(TaskInstanceExecutionStatus.QUEUING);
-            instance = instanceRepository.save(instance);
-            TaskSubmitResult taskSubmitResult = getBoot().submitTask(instance);
-            instance.setChannelId(taskSubmitResult.getTaskInstanceChannelId());
-        }, () -> {
-            throw new RuntimeException("任务不存在");
-        });
+    public void runTask(String id, Date scheduledFireTime) throws Exception {
+        taskManager.submitTask(id, scheduledFireTime);
+//        taskRepository.findById(id).ifPresentOrElse(task -> {
+//            try {
+//                taskManager.submitTask(task);
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        }, () -> {
+//            throw new RuntimeException("任务不存在");
+//        });
     }
 
 //    public TaskInstancePlan getTaskPlan(String taskId, String taskInstanceId) {

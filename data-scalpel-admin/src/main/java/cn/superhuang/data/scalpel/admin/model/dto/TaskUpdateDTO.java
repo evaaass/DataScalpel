@@ -15,7 +15,7 @@ public class TaskUpdateDTO {
 
     private TaskStatus status;
 
-    private String content;
+    private String definition;
 
     private String catalogId;
 
@@ -26,4 +26,5 @@ public class TaskUpdateDTO {
     @Schema(description = "调度起始时间：CRON时必填")
     private Date startTime;
     @Schema(description = "调度结束时间：CRON时必填")
-    private Date endTime;}
+    private Date endTime;
+}

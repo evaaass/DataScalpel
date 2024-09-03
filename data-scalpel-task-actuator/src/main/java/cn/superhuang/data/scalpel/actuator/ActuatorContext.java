@@ -1,6 +1,8 @@
 package cn.superhuang.data.scalpel.actuator;
 
 import cn.hutool.core.util.StrUtil;
+import cn.superhuang.data.scalpel.actuator.util.KafkaHelper;
+import cn.superhuang.data.scalpel.model.task.TaskLog;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cn.superhuang.data.scalpel.app.sys.model.SysLogCreateDTO;
@@ -15,17 +17,18 @@ import org.apache.spark.sql.SparkSession;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
+
 
 @Data
 public class ActuatorContext {
     private static ActuatorContext actuatorContext;
     private TaskConfiguration taskConfiguration;
-    private ObjectMapper objectMapper;
+    private KafkaHelper kafkaHelper;
     private SparkSession sparkSession;
     private TaskResultSummary taskResultSummary;
     private JavaSparkContext javaSparkContext;
-    private AdminClient adminClient;
 
     private ActuatorContext() {
     }
@@ -35,10 +38,7 @@ public class ActuatorContext {
             return actuatorContext;
         }
 
-        ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
-
-
-        AtomicReference<SparkConf> sparkConfRef = new AtomicReference();
+        AtomicReference<SparkConf> sparkConfRef = new AtomicReference<>();
         sparkConfRef.set(new SparkConf());
 
         taskConfiguration.getSparkConfiguration().getConfigs().forEach((key, value) -> {
@@ -54,33 +54,39 @@ public class ActuatorContext {
                 .config("spark.sql.codegen.wholeStage", "false")
                 .config("spark.sql.crossJoin.enabled", "true")
                 .config("spark.driver.maxResultSize", "4g")
-                .config("spark.ui.enabled", "false")
+                .config("spark.ui.enabled", "true")
                 .getOrCreate();
 
         JavaSparkContext javaSparkContext = JavaSparkContext.fromSparkContext(sparkSession.sparkContext());
 
         ActuatorContext context = new ActuatorContext();
         context.setTaskConfiguration(taskConfiguration);
-        context.setObjectMapper(objectMapper);
         context.setSparkSession(sparkSession);
         context.setJavaSparkContext(javaSparkContext);
         actuatorContext = context;
         return context;
     }
 
-    public void log(String message) {
-        try {
-            SysLogCreateDTO sysLogCreateDTO = new SysLogCreateDTO();
-            sysLogCreateDTO.setLogTargetType(LogTargetType.TASK_INSTANCE);
-            sysLogCreateDTO.setLogTargetId(taskConfiguration.getTaskInstanceId());
-            sysLogCreateDTO.setLevel(LogLevel.INFO);
-            sysLogCreateDTO.setMessage(message);
-            sysLogCreateDTO.setLogTime(LocalDateTime.now());
-            adminClient.sendLog(sysLogCreateDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+    public void log(LogLevel level, String message, String detail) {
+        TaskLog taskLog = new TaskLog();
+        taskLog.setTaskId(getTaskConfiguration().getTaskId());
+        taskLog.setTaskInstanceId(getTaskConfiguration().getTaskInstanceId());
+        taskLog.setTime(new Date().getTime());
+        taskLog.setLevel(level);
+        taskLog.setMessage(message);
+        taskLog.setDetail(detail);
+        kafkaHelper.sendLog(taskLog);
+    }
+
+    public void log(String message) {
+        TaskLog taskLog = new TaskLog();
+        taskLog.setTaskId(getTaskConfiguration().getTaskId());
+        taskLog.setTaskInstanceId(getTaskConfiguration().getTaskInstanceId());
+        taskLog.setTime(new Date().getTime());
+        taskLog.setLevel(LogLevel.INFO);
+        taskLog.setMessage(message);
+        kafkaHelper.sendLog(taskLog);
     }
 
     public void destory() {

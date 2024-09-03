@@ -1,5 +1,6 @@
 package cn.superhuang.data.scalpel.admin.service.dto;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -7,8 +8,9 @@ import java.io.Serializable;
  */
 public class PasswordChangeDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
+    @Serial
+    private static final long serialVersionUID = 5423750284842639459L;
     private String currentPassword;
     private String newPassword;
 

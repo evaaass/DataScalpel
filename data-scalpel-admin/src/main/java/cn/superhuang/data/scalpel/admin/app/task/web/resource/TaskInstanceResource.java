@@ -1,5 +1,7 @@
 package cn.superhuang.data.scalpel.admin.app.task.web.resource;
 
+import cn.hutool.core.io.IoUtil;
+import cn.superhuang.data.scalpel.admin.app.task.service.TaskManagerService;
 import cn.superhuang.data.scalpel.admin.app.task.service.TaskService;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 
@@ -9,11 +11,17 @@ import cn.superhuang.data.scalpel.admin.app.task.repository.TaskInstanceReposito
 import cn.superhuang.data.scalpel.admin.resource.impl.BaseResource;
 import cn.superhuang.data.scalpel.model.task.TaskLog;
 import jakarta.annotation.Resource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,7 +30,7 @@ public class TaskInstanceResource extends BaseResource implements ITaskInstanceR
     private TaskInstanceRepository repository;
 
     @Resource
-    private TaskService taskService;
+    private TaskManagerService taskManagerService;
 
     @Override
     public GenericResponse<Page<TaskInstance>> search(String taskId, GenericSearchRequestDTO searchRequest) {
@@ -40,22 +48,24 @@ public class TaskInstanceResource extends BaseResource implements ITaskInstanceR
     }
 
     @Override
-    public GenericResponse<Page<TaskLog>> searchLogs(String taskId, String id) {
-        return null;
+    public GenericResponse<List<TaskLog>> getLogs(String taskId, String id) throws Exception {
+        List<TaskLog> logs = taskManagerService.getTaskLog(taskId, id);
+        return GenericResponse.ok(logs);
     }
 
-//    @Override
-//    public GenericResponse<TaskInstancePlan> getInstancePlan(String taskId, String id) {
-//        return GenericResponse.ok(taskService.getTaskPlan(taskId, id));
-//    }
-//
-//    @Override
-//    public GenericResponse<Void> finishInstance(String taskId, String instanceId, TaskResult taskResult) throws Exception {
-//        TaskRunningStatus taskRunningStatus = new TaskRunningStatus();
-//        taskRunningStatus.setState(taskResult.getSuccess() == true ? TaskInstanceExecutionStatus.SUCCESS : TaskInstanceExecutionStatus.FAILURE);
-//        taskRunningStatus.setMessage(taskResult.getMessage());
-//        taskRunningStatus.setDetail(taskResult.getDetail());
-//        taskService.updateInstanceState(instanceId, taskRunningStatus);
-//        return GenericResponse.ok();
-//    }
+    @Override
+    public GenericResponse<String> getConsoleLogs(String taskId, String taskInstanceId) throws Exception {
+        InputStream inputStream = taskManagerService.getTaskConsoleLog(taskId, taskInstanceId);
+        return GenericResponse.ok(IoUtil.readUtf8(inputStream));
+    }
+
+    @Override
+    public ResponseEntity<InputStreamResource> downloadConsoleLogs(String taskId, String taskInstanceId) throws Exception {
+        InputStream inputStream = taskManagerService.getTaskConsoleLog(taskId, taskInstanceId);
+        InputStreamResource resource = new InputStreamResource(inputStream);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + taskInstanceId + ".log")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
 }

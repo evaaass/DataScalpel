@@ -4,6 +4,7 @@ import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
 import cn.superhuang.data.scalpel.model.enumeration.TaskInstanceExecutionStatus;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -19,8 +20,8 @@ import org.hibernate.annotations.GenericGenerator;
 @Data
 public class TaskInstance extends AbstractAuditingEntity<String>  implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
+    @Serial
+    private static final long serialVersionUID = -8458131805209545032L;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")

@@ -4,10 +4,10 @@ import cn.hutool.core.util.RuntimeUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.superhuang.data.scalpel.admin.app.common.service.KafkaService;
 import cn.superhuang.data.scalpel.admin.app.common.service.S3Service;
-import cn.superhuang.data.scalpel.admin.app.dispatcher.model.DockerContainerStatus;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.model.RunningTaskInfo;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.model.TaskTriggerResult;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.service.runner.ITaskRunner;
+import cn.superhuang.data.scalpel.lib.docker.cli.model.DockerContainerStatus;
 import cn.superhuang.data.scalpel.model.task.TaskResult;
 import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -41,7 +41,7 @@ public class DispatcherService {
 
     private final Map<String, RunningTaskInfo> runningTaskMap = new HashMap<>();
 
-    @KafkaListener(topics = {"dmp_task_trigger"})
+    @KafkaListener(topics = {"data_scalpel_task_trigger"})
     public void consumeTask(String taskContent) {
         try {
             //TODO 增加一个开关，停止接口
@@ -56,17 +56,15 @@ public class DispatcherService {
         }
     }
 
-    @KafkaListener(topics = {"dmp_task_dispatcher_result"})
+    @KafkaListener(topics = {"data_scalpel_task_dispatcher_result"})
     public void consumeTaskResult(String taskResultContent) {
         try {
             TaskResult taskResult = objectMapper.readValue(taskResultContent, TaskResult.class);
             if (runningTaskMap.containsKey(taskResult.getUniqueKey())) {
                 String channelId = runningTaskMap.get(taskResult.getTaskId() + "_" + taskResult.getTaskInstanceId()).getChannelId();
-                DockerContainerStatus dockerContainerStatus = getDockerContainerStatus(channelId);
-                if (dockerContainerStatus.getId() != null) {
-                    log.warn("收到任务结果消息，但是容器" + channelId + "没有正确停止,强制停止容器");
-                    killDockerContainer(channelId);
-                }
+                String consoleLog = taskRunner.getLog(channelId);
+                killDockerContainer(channelId);
+                s3Service.persistentTaskConsoleLog(taskResult.getTaskId(), taskResult.getTaskInstanceId(), consoleLog);
             }
             kafkaService.sendTaskResult(taskResult);
             System.out.println(taskResultContent);

@@ -18,4 +18,9 @@ public class SparkOnYarnRunner implements ITaskRunner{
     public TaskRunnerInstanceInfo getInfo(String channel) {
         return null;
     }
+
+    @Override
+    public String getLog(String channelId) throws Exception {
+        return "";
+    }
 }

@@ -7,4 +7,6 @@ import lombok.Data;
 public class JdbcInputItem {
     @Schema(description = "表名")
     private String item;
+    @Schema(description = "时间字段名")
+    private String timeFieldName;
 }

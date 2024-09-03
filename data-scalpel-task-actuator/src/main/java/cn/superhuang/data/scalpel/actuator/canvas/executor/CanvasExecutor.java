@@ -5,6 +5,7 @@ import cn.superhuang.data.scalpel.actuator.canvas.Canvas;
 import cn.superhuang.data.scalpel.actuator.canvas.CanvasData;
 import cn.superhuang.data.scalpel.actuator.canvas.CanvasTable;
 import cn.superhuang.data.scalpel.actuator.canvas.node.CanvasNode;
+import cn.superhuang.data.scalpel.actuator.util.JsonUtil;
 import cn.superhuang.data.scalpel.app.task.model.TaskResultSummary;
 import cn.superhuang.data.scalpel.model.task.configuration.CanvasTaskConfiguration;
 
@@ -19,17 +20,13 @@ public class CanvasExecutor extends TaskExecutor {
 
     public TaskResultSummary execute() throws Exception {
         CanvasTaskConfiguration canvasTaskConfiguration = (CanvasTaskConfiguration) getContext().getTaskConfiguration();
-        Canvas canvas = getContext().getObjectMapper().readValue(canvasTaskConfiguration.getCanvas(), Canvas.class);
+        Canvas canvas = JsonUtil.objectMapper.readValue(canvasTaskConfiguration.getCanvas(), Canvas.class);
         canvas.getNodes().forEach(node -> node.setContext(getContext()));
 
         List<CanvasNode> inputNodes = canvas.getInputNodes();
 
         for (CanvasNode inputNode : inputNodes) {
             executeNode(inputNode, canvas);
-//            List<CanvasNode> nextNodes = canvas.getNextNodes(inputNode);
-//            for (CanvasNode nextNode : nextNodes) {
-//                executeNode(nextNode, canvas);
-//            }
         }
 
         return getContext().getTaskResultSummary();

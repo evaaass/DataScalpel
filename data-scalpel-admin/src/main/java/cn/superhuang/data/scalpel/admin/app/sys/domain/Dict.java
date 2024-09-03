@@ -30,5 +30,5 @@ public class Dict extends AbstractAuditingEntity<String> implements Serializable
 
     @Convert(converter = MapConverter.class)
     @Column(length = 1000)
-    private Map<String, String> options;
+    private Map<String, Object> options;
 }

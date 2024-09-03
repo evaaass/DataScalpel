@@ -5,6 +5,8 @@ import cn.superhuang.data.scalpel.actuator.canvas.CanvasTable;
 import cn.superhuang.data.scalpel.actuator.canvas.node.CanvasNode;
 import cn.superhuang.data.scalpel.actuator.canvas.node.input.configuration.ModelInputConfiguration;
 import cn.superhuang.data.scalpel.actuator.canvas.node.input.configuration.ModelInputItem;
+import cn.superhuang.data.scalpel.actuator.util.DatasetLoadUtil;
+import cn.superhuang.data.scalpel.actuator.util.DatasetTimeRangeUtil;
 import cn.superhuang.data.scalpel.app.model.model.ModelDTO;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
 import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
@@ -25,27 +27,15 @@ public class ModelInput extends CanvasNode {
     public CanvasData execute(CanvasData inputData) {
         for (ModelInputItem item : configuration.getItems()) {
             ModelDTO model = getContext().getTaskConfiguration().getModelMap().get(item.getModelId());
-            JdbcConfig jdbcConfig = (JdbcConfig) getContext().getTaskConfiguration().getDatasourceMap().get(model.getDatasourceId());
+            Dataset<Row> dataset = DatasetLoadUtil.loadDataset(item.getModelId(), getContext());
 
-            SysJdbcDialect jdbcDialect = SysJdbcDialects.get(jdbcConfig.getDbType());
-
-            String tableNameWithSchema = jdbcDialect.getTableWithSchema(model.getName(), jdbcConfig);
-
-            Map<String, String> options = new HashMap<>();
-            options.put("driver", jdbcDialect.getDriver());
-            options.put("url", jdbcDialect.buildUrl(jdbcConfig));
-            options.put("dbtable", tableNameWithSchema);
-            options.put("user", jdbcConfig.getUsername());
-            options.put("password", jdbcConfig.getPassword());
-            //从jdbc去读数据
-
-            Dataset<Row> dataset = getContext().getSparkSession().read().format("jdbc").options(options).load();
-
+            //TODO 后面这个时间过滤要不要改成上推呢
+            dataset = DatasetTimeRangeUtil.filterByTimeRangeStrategy(dataset, item.getTimeFieldName(), getContext().getTaskConfiguration().getPlanTriggerTime(), getContext().getTaskConfiguration().getCycleType(), configuration.getStrategy());
 
             CanvasTable canvasTable = new CanvasTable();
             canvasTable.setDataset(dataset);
             canvasTable.setName(model.getName());
-            canvasTable.setCnName(model.getCnName());
+            canvasTable.setCnName(model.getAlias());
             inputData.getTableMap().put(canvasTable.getName(), canvasTable);
 
         }

@@ -3,6 +3,7 @@ package cn.superhuang.data.scalpel.admin.model.dto;
 import cn.superhuang.data.scalpel.admin.app.item.model.enumeration.EntityType;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -13,8 +14,9 @@ import java.time.Instant;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class LakeItemDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
+    @Serial
+    private static final long serialVersionUID = -5082638662419898309L;
     private String id;
 
     private String catalogId;

@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.superhuang.data.scalpel.admin.app.sys.domain.Role;
 import cn.superhuang.data.scalpel.admin.app.sys.domain.User;
 import cn.superhuang.data.scalpel.admin.app.sys.model.enumeration.UserState;
+import cn.superhuang.data.scalpel.admin.app.sys.repository.RoleRepository;
 import cn.superhuang.data.scalpel.admin.app.sys.repository.UserRepository;
 import cn.superhuang.data.scalpel.admin.app.sys.service.UserService;
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.UserChangePasswordRequest;
@@ -21,6 +22,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URISyntaxException;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserResource extends BaseResource implements IUserResource {
@@ -29,6 +32,8 @@ public class UserResource extends BaseResource implements IUserResource {
     private UserService userService;
     @Resource
     private UserRepository userRepository;
+    @Resource
+    private RoleRepository roleRepository;
 
     @Override
     public GenericResponse<Page<UserVO>> search(GenericSearchRequestDTO searchRequest) {
@@ -36,6 +41,9 @@ public class UserResource extends BaseResource implements IUserResource {
         PageRequest pageRequest = resolvePageRequest(searchRequest.getLimit(), searchRequest.getSort());
         Page<User> page = userRepository.findAll(spec, pageRequest);
         Page<UserVO> result = new PageImpl<>(BeanUtil.copyToList(page.getContent(), UserVO.class), page.getPageable(), page.getTotalElements());
+
+        Map<String, Role> roleMap = roleRepository.findAll().stream().collect(Collectors.toMap(Role::getId, r -> r));
+        result.getContent().stream().filter(u->u.getRoleId()!=null).forEach(u->u.setRoleName(roleMap.get(u.getRoleId()).getName()));
         return GenericResponse.ok(result);
     }
 
@@ -64,7 +72,8 @@ public class UserResource extends BaseResource implements IUserResource {
     public GenericResponse<Void> enable(String id) throws URISyntaxException {
         User user = new User();
         user.setId(id);
-        user.setState(UserState.DISABLE);
+        user.setState(UserState.ENABLE);
+        userService.updateUserBaseInfo(user);
         return GenericResponse.ok();
     }
 
@@ -73,6 +82,7 @@ public class UserResource extends BaseResource implements IUserResource {
         User user = new User();
         user.setId(id);
         user.setState(UserState.DISABLE);
+        userService.updateUserBaseInfo(user);
         return GenericResponse.ok();
     }
 

@@ -1,5 +1,5 @@
 package cn.superhuang.data.scalpel.admin.app.datasource.model.enumeration;
 
 public enum DatasourceCategory {
-    DATASOURCE,DATASTORE;
+    DATA_SOURCE,DATA_STORAGE;
 }

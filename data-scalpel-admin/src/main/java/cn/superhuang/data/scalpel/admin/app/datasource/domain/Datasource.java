@@ -27,7 +27,6 @@ import java.util.Map;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Datasource extends AbstractAuditingEntity<String> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -11,8 +11,18 @@
   },
   {
     "type": "DictType",
+    "name": "JDBC类型",
+    "value": "JdbcType"
+  },
+  {
+    "type": "DictType",
     "name": "系统配置",
     "value": "SysSetting"
+  },
+  {
+    "type": "DictType",
+    "name": "系统配置",
+    "value": "ColumnType"
   },
   {
     "type": "SysSetting",
@@ -53,11 +63,217 @@
     "type": "AuthType",
     "name": "数据源管理",
     "value": "AUTH_DATASOURCE_ADMIN"
-  }
-,
+  },
   {
     "type": "AuthType",
     "name": "数据存储管理",
     "value": "AUTH_DATA_STORAGE_ADMIN"
+  },
+  {
+    "type": "JdbcType",
+    "name": "MySQL",
+    "value": "MYSQL"
+  },
+  {
+    "type": "JdbcType",
+    "name": "OceanBase(MYSQL)",
+    "value": "OCEANBASE_MYSQL"
+  },
+  {
+    "type": "JdbcType",
+    "name": "PostgreSQL",
+    "value": "POSTGRESQL"
+  },
+  {
+    "type": "JdbcType",
+    "name": "Oracle",
+    "value": "ORACLE"
+  },
+  {
+    "type": "JdbcType",
+    "name": "SQLServer",
+    "value": "SQLSERVER"
+  },
+  {
+    "type": "JdbcType",
+    "name": "clickhouse",
+    "value": "CLICKHOUSE"
+  },
+  {
+    "type": "JdbcType",
+    "name": "达梦数据库",
+    "value": "DAMENG"
+  },
+  {
+    "type": "JdbcType",
+    "name": "GaussDB(DWS)",
+    "value": "GAUSS_DB_DWS"
+  },
+  {
+    "type": "JdbcType",
+    "name": "hive",
+    "value": "HIVE"
+  },
+  {
+    "type": "JdbcType",
+    "name": "HighGo",
+    "value": "HIGHGO"
+  },
+  {
+    "type": "JdbcType",
+    "name": "Kingbase_8_R3",
+    "value": "KING_BASE_8_R3"
+  },
+  {
+    "type": "JdbcType",
+    "name": "Kingbase_8_R6",
+    "value": "KING_BASE_8"
+  },
+  {
+    "type": "JdbcType",
+    "name": "openGauss",
+    "value": "OPENGAUSS"
+  },
+  {
+    "type": "JdbcType",
+    "name": "TDengine",
+    "value": "TD_ENGINE"
+  },
+  {
+    "type": "ColumnType",
+    "name": "二进制",
+    "value": "BINARY",
+    "options": {
+      "supportPrecision": false,
+      "supportScale": false
+    }
+  },
+  {
+    "type": "ColumnType",
+    "name": "字节型",
+    "value": "BYTE",
+    "options": {
+      "supportPrecision": false,
+      "supportScale": false
+    }
+  },
+  {
+    "type": "ColumnType",
+    "name": "短整型",
+    "value": "SHORT",
+    "options": {
+      "supportPrecision": false,
+      "supportScale": false
+    }
+  },
+  {
+    "type": "ColumnType",
+    "name": "整型",
+    "value": "INTEGER",
+    "options": {
+      "supportPrecision": false,
+      "supportScale": false
+    }
+  },
+  {
+    "type": "ColumnType",
+    "name": "长整型",
+    "value": "LONG",
+    "options": {
+      "supportPrecision": false,
+      "supportScale": false
+    }
+  },
+  {
+    "type": "ColumnType",
+    "name": "单精度浮点型",
+    "value": "FLOAT",
+    "options": {
+      "supportPrecision": false,
+      "supportScale": false
+    }
+  },
+  {
+    "type": "ColumnType",
+    "name": "双精度浮点型",
+    "value": "FLOAT",
+    "options": {
+      "supportPrecision": false,
+      "supportScale": false
+    }
+  },
+  {
+    "type": "ColumnType",
+    "name": "布尔型",
+    "value": "BOOLEAN",
+    "options": {
+      "supportPrecision": false,
+      "supportScale": false
+    }
+  },
+  {
+    "type": "ColumnType",
+    "name": "日期型",
+    "value": "DATE",
+    "options": {
+      "supportPrecision": false,
+      "supportScale": false
+    }
+  },
+  {
+    "type": "ColumnType",
+    "name": "日期时间型",
+    "value": "TIMESTAMP",
+    "options": {
+      "supportPrecision": false,
+      "supportScale": false
+    }
+  },
+  {
+    "type": "ColumnType",
+    "name": "空间类型",
+    "value": "GEOMETRY",
+    "options": {
+      "supportPrecision": false,
+      "supportScale": false
+    }
+  },
+  {
+    "type": "ColumnType",
+    "name": "decimal",
+    "value": "DECIMAL",
+    "options": {
+      "supportPrecision": true,
+      "supportScale": true,
+      "minPrecision": 0,
+      "maxPrecision": 38,
+      "minScale": 0,
+      "maxScale": 38,
+      "maxPrecisionAndScale": 38
+    }
+  },
+  {
+    "type": "ColumnType",
+    "name": "字符串",
+    "value": "STRING",
+    "options": {
+      "supportPrecision": true,
+      "supportScale": false,
+      "minPrecision": 0,
+      "maxPrecision": 2000,
+      "maxPrecisionAndScale": 2000
+    }
+  },
+  {
+    "type": "ColumnType",
+    "name": "定长字符串",
+    "value": "FIXEDSTRING",
+    "options": {
+      "supportPrecision": true,
+      "supportScale": false,
+      "minPrecision": 0,
+      "maxPrecision": 2000,
+      "maxPrecisionAndScale": 2000
+    }
   }
 ]

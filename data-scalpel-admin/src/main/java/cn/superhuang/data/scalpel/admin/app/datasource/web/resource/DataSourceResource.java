@@ -11,7 +11,6 @@ import cn.superhuang.data.scalpel.admin.app.datasource.web.resource.request.Data
 import cn.superhuang.data.scalpel.admin.app.datasource.dto.DatasourceAddDTO;
 import cn.superhuang.data.scalpel.admin.app.datasource.dto.DatasourceUpdateDTO;
 import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
-import cn.superhuang.data.scalpel.admin.model.web.vo.DatasourceListItemVO;
 import cn.superhuang.data.scalpel.admin.resource.impl.BaseResource;
 import cn.superhuang.data.scalpel.admin.app.datasource.web.resource.request.DatasourceListItemRequestVO;
 import cn.superhuang.data.scalpel.admin.app.datasource.web.resource.request.DatasourceUpdateRequestVO;
@@ -51,15 +50,11 @@ public class DataSourceResource extends BaseResource implements IDataSourceResou
 	@Resource
 	private DatasourceRepository datasourceRepository;
 
-	@Operation(summary = "创建数据源")
-	@PostMapping("/datasources")
 	public GenericResponse<Datasource> createDatasource(@RequestBody DatasourceCreateRequestVO createDatasourceRequest) throws Exception {
 		DatasourceAddDTO datasourceDTO = BeanUtil.copyProperties(createDatasourceRequest, DatasourceAddDTO.class);
 		return GenericResponse.ok(datasourceService.save(datasourceDTO));
 	}
 
-	@Operation(summary = "修改数据源")
-	@PutMapping("/datasources/{id}")
 	public GenericResponse<Void> updateDatasource(
 			@PathVariable(value = "id", required = false) final String id,
 			@RequestBody DatasourceUpdateRequestVO datasourceUpdateRequest
@@ -70,30 +65,20 @@ public class DataSourceResource extends BaseResource implements IDataSourceResou
 		return GenericResponse.ok();
 	}
 
-
-	@Operation(summary = "查询数据源")
-	@GetMapping("/datasources")
-	public GenericResponse<Page<DatasourceListItemVO>> search(@ParameterObject GenericSearchRequestDTO searchRequest) {
+	public GenericResponse<Page<Datasource>> search(@ParameterObject GenericSearchRequestDTO searchRequest) {
 		log.debug("REST request to get all Datasources");
 		Specification<Datasource> spec = resolveSpecification(searchRequest.getSearch(), Datasource.class);
 		PageRequest pageRequest = resolvePageRequest(searchRequest.getLimit(), searchRequest.getSort());
 		Page<Datasource> page = datasourceRepository.findAll(spec, pageRequest);
-		List<DatasourceListItemVO> listVo = BeanUtil.copyToList(page.getContent(), DatasourceListItemVO.class);
-		Page<DatasourceListItemVO> result = new PageImpl<>(listVo, page.getPageable(), page.getTotalElements());
-		return GenericResponse.ok(result);
+		return GenericResponse.ok(page);
 	}
 
-
-	@Operation(summary = "获取数据源详情")
-	@GetMapping("/datasources/{id}")
 	public GenericResponse<Datasource> getDatasource(@PathVariable String id) {
 		log.debug("REST request to get Datasource : {}", id);
 		Optional<Datasource> datasource = datasourceRepository.findById(id);
 		return GenericResponse.wrapOrNotFound(datasource);
 	}
 
-	@Operation(summary = "删除数据源")
-	@DeleteMapping("/datasources/{id}")
 	public GenericResponse<Void> deleteDatasource(@PathVariable String id) {
 		log.debug("REST request to delete Datasource : {}", id);
 		datasourceService.delete(id);

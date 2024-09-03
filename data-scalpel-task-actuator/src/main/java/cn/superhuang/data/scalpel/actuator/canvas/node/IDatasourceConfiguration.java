@@ -1,5 +1,7 @@
 package cn.superhuang.data.scalpel.actuator.canvas.node;
 
+import java.util.Set;
+
 public interface IDatasourceConfiguration {
-    public String getDatasourceId();
+    public Set<String> getDatasourceIds();
 }

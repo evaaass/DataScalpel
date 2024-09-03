@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
@@ -15,8 +16,9 @@ import java.util.Set;
 @Data
 public class AdminUserDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
+    @Serial
+    private static final long serialVersionUID = 3284424576848398809L;
     private String id;
 
     @NotBlank

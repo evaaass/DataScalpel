@@ -1,0 +1,7 @@
+{
+  "type": ".processor.RenameProcessor",
+  "form": [{
+    "type": "INPUT_TABLE_SELECT",
+    "name": "table",
+  }]
+}

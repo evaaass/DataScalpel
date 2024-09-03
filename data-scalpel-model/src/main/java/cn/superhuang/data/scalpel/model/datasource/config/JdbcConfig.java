@@ -1,7 +1,9 @@
 package cn.superhuang.data.scalpel.model.datasource.config;
 
+import cn.superhuang.data.scalpel.model.enumeration.DatasourceType;
 import cn.superhuang.data.scalpel.model.enumeration.DbType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -10,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
+@JsonIgnoreProperties({"schema","password","port","host","database","username","dbtype","uniqueId","options"})
 public class JdbcConfig extends DatasourceConfig {
     public static final String JDBC_OPTIONS_KEY_SCHEMA = "SYS_SCHEMA";
     public static final String JDBC_OPTIONS_KEY_ORACLE_CONNECTION_TYPE = "SYS_CONNECTION_TYPE";
@@ -29,6 +32,10 @@ public class JdbcConfig extends DatasourceConfig {
     public static final String JDBC_PORT = "port";
     public static final String JDBC_USERNAME = "username";
     public static final String JDBC_PASSWORD = "password";
+
+    public JdbcConfig(){
+        setType(DatasourceType.JDBC);
+    }
 
     public DbType getDbType() {
         return DbType.valueOf(getParams().get(JDBC_DB_TYPE));

@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -20,8 +22,9 @@ import java.util.Objects;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Authority implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
+    @Serial
+    private static final long serialVersionUID = 5995742823950596588L;
     @NotNull
     @Size(max = 50)
     @Id

@@ -1,7 +1,6 @@
 package cn.superhuang.data.scalpel.admin.app.task.domain;
 
 import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
-import cn.superhuang.data.scalpel.admin.model.enumeration.TaskCategory;
 import cn.superhuang.data.scalpel.admin.model.enumeration.TaskScheduleType;
 import cn.superhuang.data.scalpel.admin.model.enumeration.TaskStatus;
 import cn.superhuang.data.scalpel.model.enumeration.TaskInstanceExecutionStatus;
@@ -12,6 +11,7 @@ import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -25,26 +25,23 @@ import java.util.Date;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Task extends AbstractAuditingEntity<String> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
+    @Serial
+    private static final long serialVersionUID = -3724081601026690153L;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private String id;
+
+    @Column(name = "catalog_id")
+    private String catalogId;
 
     @Column(name = "name")
     private String name;
 
     @Enumerated(EnumType.STRING)
     @Column
-    private TaskCategory category;
-
-    @Enumerated(EnumType.STRING)
-    @Column
     private TaskType taskType;
-
-    @Column(name = "catalog_id")
-    private String catalogId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.geoshare</groupId>
+        <groupId>cn.superhuang</groupId>
         <artifactId>data-scalpel</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -20,7 +20,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.geoshare</groupId>
+            <groupId>cn.superhuang</groupId>
             <artifactId>data-scalpel-spark-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
@@ -42,7 +42,10 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql-kafka-0-10_2.13</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -63,7 +66,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.geoshare.datamanager.actuator.ActuatorApplication</mainClass>
+                            <mainClass>cn.superhuang.data.scalpel.actuator.ActuatorApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

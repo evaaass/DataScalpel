@@ -7,4 +7,6 @@ import lombok.Data;
 public class ModelInputItem {
     @Schema(description = "表名")
     private String modelId;
+    @Schema(description = "时间字段名")
+    private String timeFieldName;
 }

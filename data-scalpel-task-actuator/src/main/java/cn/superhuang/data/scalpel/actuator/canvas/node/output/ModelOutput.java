@@ -9,6 +9,7 @@ import cn.superhuang.data.scalpel.actuator.canvas.node.output.configuration.Mode
 import cn.superhuang.data.scalpel.actuator.canvas.node.output.configuration.ModelOutputMapping;
 import cn.superhuang.data.scalpel.app.model.model.ModelDTO;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
+import cn.superhuang.data.scalpel.model.enumeration.DataSaveMode;
 import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
 import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialects;
 import cn.superhuang.data.scalpel.spark.core.util.SparkUtil;
@@ -35,21 +36,25 @@ public class ModelOutput extends CanvasNode {
 
             SysJdbcDialect jdbcDialect = SysJdbcDialects.get(jdbcConfig.getDbType());
 
-
             CanvasTable table = inputData.getTableMap().get(outputMapping.getSourceTable());
 
             Dataset<Row> dataset = mappingFields(table.getDataset(), outputMapping.getFieldMappings());
 
-            Map<String, String> options = jdbcDialect.getSparkJdbcOptions(jdbcDialect.getTableWithSchema(model.getName(), jdbcConfig), jdbcConfig);
-            options.put("truncate", "true");
+            Map<String, String> options = jdbcDialect.getSparkExtraOptions();
+            options.put("driver", jdbcDialect.getDriver());
+            options.put("url", jdbcDialect.buildUrl(jdbcConfig));
+            options.put("dbtable", jdbcDialect.getTableWithSchema(model.getName(), jdbcConfig));
+            options.put("user", jdbcConfig.getUsername());
+            options.put("password", jdbcConfig.getPassword());
 
+            if (outputMapping.getSaveStrategy().getSaveMode() == DataSaveMode.OVERWRITE) {
+                options.put("truncate", "true");
+            }
             dataset.write().format("jdbc").mode(SaveMode.valueOf(outputMapping.getSaveStrategy().getSaveMode().getSparkValue()))
                     .options(options)
                     .save();
-
             table.setDataset(dataset);
         }
-
         return inputData;
     }
 

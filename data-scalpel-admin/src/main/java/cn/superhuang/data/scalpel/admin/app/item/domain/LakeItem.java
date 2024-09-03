@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -21,8 +22,8 @@ import org.hibernate.annotations.GenericGenerator;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class LakeItem implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
+    @Serial
+    private static final long serialVersionUID = 794703006152754350L;
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid.hex")

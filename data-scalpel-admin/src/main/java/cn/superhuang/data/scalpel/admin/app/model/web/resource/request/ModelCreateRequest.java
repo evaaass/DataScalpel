@@ -11,22 +11,16 @@ import java.util.List;
 public class ModelCreateRequest {
     @Schema(description = "名称")
     private String name;
-    @Schema(description = "中文名称")
-    private String cnName;
+    @Schema(description = "别名")
+    private String alias;
     @Schema(description = "描述")
     private String description;
     @Schema(description = "目录ID")
     private String catalogId;
-    @Schema(description = "标准规范ID")
-    private String standardSpecificationId;
     @Schema(description = "字段信息")
     private List<ModelFieldDTO> fields;
     @Schema(description = "数据存储ID")
     private String datasourceId;
-    @Schema(description = "要素类型")
-    private GeometryType geometryType;
-    @Schema(description = "坐标系ID")
-    private Integer wkId;
 
 
 }

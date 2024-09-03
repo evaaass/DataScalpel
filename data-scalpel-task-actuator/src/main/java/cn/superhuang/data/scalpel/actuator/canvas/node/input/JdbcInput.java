@@ -5,6 +5,8 @@ import cn.superhuang.data.scalpel.actuator.canvas.CanvasTable;
 import cn.superhuang.data.scalpel.actuator.canvas.node.CanvasNode;
 import cn.superhuang.data.scalpel.actuator.canvas.node.input.configuration.JdbcInputConfiguration;
 import cn.superhuang.data.scalpel.actuator.canvas.node.input.configuration.JdbcInputItem;
+import cn.superhuang.data.scalpel.actuator.util.DatasetLoadUtil;
+import cn.superhuang.data.scalpel.actuator.util.DatasetTimeRangeUtil;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
 import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
 import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialects;
@@ -27,24 +29,16 @@ public class JdbcInput extends CanvasNode {
         JdbcConfig jdbcConfig = (JdbcConfig) getContext().getTaskConfiguration().getDatasourceMap().get(configuration.getDatasourceId());
         for (JdbcInputItem item : configuration.getItems()) {
 
-            SysJdbcDialect jdbcDialect = SysJdbcDialects.get(jdbcConfig.getDbType());
 
-            String tableNameWithSchema = jdbcDialect.getTableWithSchema(item.getItem(), jdbcConfig);
-
-            Map<String, String> options = new HashMap<>();
-            options.put("driver", jdbcDialect.getDriver());
-            options.put("url", jdbcDialect.buildUrl(jdbcConfig));
-            options.put("dbtable", tableNameWithSchema);
-            options.put("user", jdbcConfig.getUsername());
-            options.put("password", jdbcConfig.getPassword());
             //从jdbc去读数据
-            Dataset<Row> dataset = getContext().getSparkSession().read().format("jdbc").options(options).load();
-
+            Dataset<Row> dataset = DatasetLoadUtil.loadDataset(configuration.getDatasourceId(),item.getItem(), getContext());
+            //TODO 后面这个时间过滤要不要改成上推呢
+            dataset = DatasetTimeRangeUtil.filterByTimeRangeStrategy(dataset, item.getTimeFieldName(), getContext().getTaskConfiguration().getPlanTriggerTime(), getContext().getTaskConfiguration().getCycleType(), configuration.getStrategy());
 
             CanvasTable canvasTable = new CanvasTable();
             canvasTable.setDataset(dataset);
             canvasTable.setName(item.getItem());
-            inputData.getTableMap().put(canvasTable.getName(),canvasTable);
+            inputData.getTableMap().put(canvasTable.getName(), canvasTable);
 
         }
         return inputData;

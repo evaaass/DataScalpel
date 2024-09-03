@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class ModelResource extends BaseResource implements IModelResource {
@@ -41,13 +42,11 @@ public class ModelResource extends BaseResource implements IModelResource {
     private ModeDataService modeDataService;
 
     @Override
-    public GenericResponse<Page<ModelListItemVO>> search(GenericSearchRequestDTO searchRequest) {
+    public GenericResponse<Page<Model>> search(GenericSearchRequestDTO searchRequest) {
         Specification<Model> spec = resolveSpecification(searchRequest.getSearch(), Model.class);
         PageRequest pageRequest = resolvePageRequest(searchRequest.getLimit(), searchRequest.getSort());
         Page<Model> page = repository.findAll(spec, pageRequest);
-        List<ModelListItemVO> listVo = BeanUtil.copyToList(page.getContent(), ModelListItemVO.class);
-        Page<ModelListItemVO> result = new PageImpl<>(listVo, page.getPageable(), page.getTotalElements());
-        return GenericResponse.ok(result);
+        return GenericResponse.ok(page);
     }
 
     @Override
@@ -63,11 +62,11 @@ public class ModelResource extends BaseResource implements IModelResource {
     }
 
     @Override
-    public GenericResponse<ModelDetailVO> create(ModelCreateRequest createRequest) throws Exception {
+    public GenericResponse<Model> create(ModelCreateRequest createRequest) throws Exception {
         Model model = BeanUtil.copyProperties(createRequest, Model.class);
-        model = modelService.create(model, null);
-        ModelDetailVO vo = BeanUtil.copyProperties(model, ModelDetailVO.class);
-        return GenericResponse.ok(vo);
+        List<ModelField> fields = BeanUtil.copyToList(createRequest.getFields(), ModelField.class);
+        model = modelService.create(model, fields);
+        return GenericResponse.ok(model);
     }
 
     @Override
@@ -85,22 +84,19 @@ public class ModelResource extends BaseResource implements IModelResource {
     }
 
     @Override
-    public GenericResponse<List<ModelFieldDTO>> getFields(String id) throws Exception {
+    public GenericResponse<List<ModelField>> getFields(String id) throws Exception {
         List<ModelField> fields = fieldRepository.findAllByModelId(id);
-        List<ModelFieldDTO> result = BeanUtil.copyToList(fields, ModelFieldDTO.class);
-        return GenericResponse.ok(result);
+        return GenericResponse.ok(fields);
     }
 
     @Override
     public GenericResponse<Void> updateFields(String id, ModelFieldUpdateRequest updateRequest) throws Exception {
+        List<ModelField> fields = BeanUtil.copyToList(updateRequest.getFields(), ModelField.class);
+
+        modelService.updateModelFields(id,fields);
         return GenericResponse.ok();
     }
 
-    @Override
-    public GenericResponse<Void> createTable(String id) throws Exception {
-        modelService.createTable(id);
-        return GenericResponse.ok();
-    }
 
     @Override
     public GenericResponse<Void> forceRecreateTable(String id) throws Exception {
