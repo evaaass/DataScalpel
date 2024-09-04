@@ -45,7 +45,7 @@ public class GenericSearchUtil {
         // 创建 PageRequest 对象
         PageRequest pageRequest = PageRequest.of(offset, size);
         if (orders != null && orders.length > 0) {
-            pageRequest.withSort(Sort.by(orders));
+            pageRequest = pageRequest.withSort(Sort.by(orders));
         }
         return pageRequest;
     }
