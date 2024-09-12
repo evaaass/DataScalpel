@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -28,6 +29,9 @@ public class JdbcSubQueryInputConfiguration extends NodeConfiguration implements
 
     @Schema(description = "SQL语句")
     private String sql;
+
+    @Schema(description = "高级参数")
+    private Map<String, String> options;
 
     @Override
     public Set<String> getDatasourceIds() {

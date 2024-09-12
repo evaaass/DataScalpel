@@ -22,7 +22,7 @@ public class CanvasTable extends DataTable implements Serializable {
         CanvasTable table = new CanvasTable();
         table.setDataset(dataset);
         table.setName(getName());
-        table.setCnName(getCnName());
+        table.setAlias(getAlias());
         table.setColumns(getColumns());
         table.setMetadata(new HashMap<>(getMetadata()));
         return table;

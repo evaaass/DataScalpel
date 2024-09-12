@@ -16,4 +16,7 @@ public class BaseOutputMapping implements Serializable {
     private String sourceTable;
     @Schema(title = "推送目标，如果是模型这里就是modelId")
     private String targetItem;
+
+    @Schema(description = "高级参数")
+    private Map<String, String> options;
 }

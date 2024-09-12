@@ -37,7 +37,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
-@Tag(name = "数据源管理")
 @RestController
 @RequestMapping("/api/v1")
 public class DataSourceResource extends BaseResource implements IDataSourceResource {

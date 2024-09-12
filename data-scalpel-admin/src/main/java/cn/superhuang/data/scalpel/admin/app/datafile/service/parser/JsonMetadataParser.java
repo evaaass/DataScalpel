@@ -5,7 +5,7 @@ import cn.hutool.core.io.file.FileNameUtil;
 import cn.superhuang.data.scalpel.admin.app.datafile.domain.DataFile;
 import cn.superhuang.data.scalpel.admin.app.datafile.model.DataFileMetadata;
 import cn.superhuang.data.scalpel.admin.app.datafile.model.enumeration.DataFileType;
-import cn.superhuang.data.scalpel.admin.app.spark.service.SparkService;
+import cn.superhuang.data.scalpel.admin.app.task.service.SparkService;
 import cn.superhuang.data.scalpel.admin.config.MinioConfig;
 import cn.superhuang.data.scalpel.admin.util.SchemaUtil;
 import cn.superhuang.data.scalpel.model.DataTable;
@@ -56,7 +56,7 @@ public class JsonMetadataParser implements DataFileMetadataParser {
         List<DataTableColumn> columns = SchemaUtil.convertToDataTableColumn(ds.schema());
         DataTable dataTable = new DataTable();
         dataTable.setName(dataFile.getName().replaceAll("\\.", "_"));
-        dataTable.setCnName(dataFile.getAlias());
+        dataTable.setAlias(dataFile.getAlias());
         dataTable.setColumns(columns);
 
         DataFileMetadata metadata = new DataFileMetadata();

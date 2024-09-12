@@ -1,43 +1,29 @@
 package cn.superhuang.data.scalpel.admin.app.task.service;
 
 import cn.superhuang.data.scalpel.admin.app.common.service.KafkaService;
-import cn.superhuang.data.scalpel.model.enumeration.LogLevel;
-import cn.superhuang.data.scalpel.model.enumeration.TaskCycleType;
-import cn.superhuang.data.scalpel.model.datasource.config.KafkaConfig;
-import cn.superhuang.data.scalpel.model.task.SparkConfiguration;
-import cn.superhuang.data.scalpel.model.task.definition.BatchCanvasTaskDefinition;
-import com.google.common.collect.Maps;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.date.DateTime;
-import cn.superhuang.data.scalpel.admin.app.task.repository.TaskScriptRepository;
 import cn.superhuang.data.scalpel.admin.app.task.service.job.NativeSQLJob;
 import cn.superhuang.data.scalpel.admin.app.task.service.job.SparkJob;
 import cn.superhuang.data.scalpel.model.enumeration.TaskType;
-import cn.superhuang.data.scalpel.model.task.configuration.CanvasTaskConfiguration;
-import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cn.superhuang.data.scalpel.admin.BaseException;
 import cn.superhuang.data.scalpel.admin.app.datasource.repository.DatasourceRepository;
 import cn.superhuang.data.scalpel.admin.app.model.repository.ModelRepository;
-import cn.superhuang.data.scalpel.admin.app.task.domain.TaskInstance;
-import cn.superhuang.data.scalpel.admin.app.task.model.TaskSubmitResult;
-import cn.superhuang.data.scalpel.admin.model.enumeration.TaskBootType;
-import cn.superhuang.data.scalpel.admin.model.enumeration.TaskScheduleType;
-import cn.superhuang.data.scalpel.admin.app.service.impl.boot.BaseTaskBoot;
-import cn.superhuang.data.scalpel.admin.app.service.impl.boot.TaskRunningStateChangeEvent;
+import cn.superhuang.data.scalpel.admin.app.task.model.enumeration.TaskScheduleType;
+import cn.superhuang.data.scalpel.admin.event.TaskRunningStateChangeEvent;
 import cn.superhuang.data.scalpel.model.enumeration.TaskInstanceExecutionStatus;
-import cn.superhuang.data.scalpel.admin.model.dto.TaskUpdateDTO;
+import cn.superhuang.data.scalpel.admin.app.task.model.TaskUpdateDTO;
 import cn.superhuang.data.scalpel.admin.app.task.repository.TaskInstanceRepository;
 import cn.superhuang.data.scalpel.admin.app.task.repository.TaskRepository;
 import cn.superhuang.data.scalpel.admin.app.task.domain.Task;
-import cn.superhuang.data.scalpel.admin.model.enumeration.TaskStatus;
-import cn.superhuang.data.scalpel.admin.model.dto.TaskDTO;
+import cn.superhuang.data.scalpel.admin.app.task.model.enumeration.TaskStatus;
+import cn.superhuang.data.scalpel.admin.app.task.model.TaskDTO;
 import cn.superhuang.data.scalpel.model.task.TaskRunningStatus;
 import jakarta.annotation.Resource;
 import org.quartz.*;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,6 +60,9 @@ public class TaskService {
             throw new RuntimeException("暂不支持实时流任务");
         }
         Task task = BeanUtil.copyProperties(taskDTO, Task.class);
+
+        task.validate();
+
         task.setStatus(TaskStatus.DISABLE);
         task.setSuccessCount(0l);
         task.setFailureCount(0l);
@@ -86,6 +75,7 @@ public class TaskService {
                 throw new RuntimeException("启用状态的任务无法修改");
             }
             BeanUtil.copyProperties(taskUpdateDTO, existingTask, CopyOptions.create().setIgnoreNullValue(true));
+            existingTask.validate();
             taskRepository.save(existingTask);
         });
     }

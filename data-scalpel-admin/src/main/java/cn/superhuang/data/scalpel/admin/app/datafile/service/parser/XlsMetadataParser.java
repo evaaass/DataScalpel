@@ -7,7 +7,7 @@ import cn.hutool.poi.excel.ExcelUtil;
 import cn.superhuang.data.scalpel.admin.app.datafile.domain.DataFile;
 import cn.superhuang.data.scalpel.admin.app.datafile.model.DataFileMetadata;
 import cn.superhuang.data.scalpel.admin.app.datafile.model.enumeration.DataFileType;
-import cn.superhuang.data.scalpel.admin.app.spark.service.SparkService;
+import cn.superhuang.data.scalpel.admin.app.task.service.SparkService;
 import cn.superhuang.data.scalpel.admin.config.MinioConfig;
 import cn.superhuang.data.scalpel.admin.util.SchemaUtil;
 import cn.superhuang.data.scalpel.model.DataTable;
@@ -21,7 +21,6 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +67,7 @@ public class XlsMetadataParser implements DataFileMetadataParser {
             List<DataTableColumn> columns = SchemaUtil.convertToDataTableColumn(ds.schema());
             DataTable dataTable = new DataTable();
             dataTable.setName(sheetName);
-            dataTable.setCnName(sheetName);
+            dataTable.setAlias(sheetName);
             dataTable.setColumns(columns);
             metadata.getDataTables().add(dataTable);
         }

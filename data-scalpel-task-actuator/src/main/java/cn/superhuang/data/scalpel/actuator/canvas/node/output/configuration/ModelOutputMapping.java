@@ -7,6 +7,7 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class ModelOutputMapping extends BaseOutputMapping implements Serializable {
@@ -17,5 +18,6 @@ public class ModelOutputMapping extends BaseOutputMapping implements Serializabl
     private List<FieldMapping> fieldMappings;
     @Schema(description = "保存策略")
     private DataSaveStrategy saveStrategy;
+
 
 }

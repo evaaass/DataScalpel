@@ -1,11 +1,8 @@
 package cn.superhuang.data.scalpel.admin.app.model.web.resource.response;
 
-import cn.superhuang.data.scalpel.admin.model.enumeration.ModelState;
+import cn.superhuang.data.scalpel.admin.app.model.model.enumeration.ModelState;
 import cn.superhuang.data.scalpel.app.model.model.ModelFieldDTO;
-import cn.superhuang.data.scalpel.model.enumeration.GeometryType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.util.Date;

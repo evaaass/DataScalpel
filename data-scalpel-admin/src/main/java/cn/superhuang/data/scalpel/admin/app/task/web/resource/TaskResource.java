@@ -1,31 +1,30 @@
 package cn.superhuang.data.scalpel.admin.app.task.web.resource;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.superhuang.data.scalpel.actuator.canvas.Canvas;
 import cn.superhuang.data.scalpel.admin.app.task.domain.Task;
+import cn.superhuang.data.scalpel.admin.app.task.model.CanvasPreRunSummary;
 import cn.superhuang.data.scalpel.admin.app.task.repository.TaskRepository;
+import cn.superhuang.data.scalpel.admin.app.task.service.CanvasPreRunService;
 import cn.superhuang.data.scalpel.admin.app.task.service.TaskService;
-import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskContentValidateRequestVO;
+import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.CanvasPreRunRequest;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskCreateRequestVO;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskDefinitionUpdateRequestVO;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskUpdateRequestVO;
-import cn.superhuang.data.scalpel.admin.model.dto.TaskDTO;
-import cn.superhuang.data.scalpel.admin.model.dto.TaskUpdateDTO;
-import cn.superhuang.data.scalpel.admin.model.dto.ValidateResultDTO;
+import cn.superhuang.data.scalpel.admin.app.task.model.TaskDTO;
+import cn.superhuang.data.scalpel.admin.app.task.model.TaskUpdateDTO;
 import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
-import cn.superhuang.data.scalpel.admin.model.web.vo.TaskDetailVO;
-import cn.superhuang.data.scalpel.admin.model.web.vo.TaskListItemVO;
 import cn.superhuang.data.scalpel.admin.resource.impl.BaseResource;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -34,6 +33,10 @@ public class TaskResource extends BaseResource implements ITaskResource {
 	private TaskRepository taskRepository;
 	@Resource
 	private TaskService taskService;
+	@Resource
+	private CanvasPreRunService preRunService;
+	@Resource
+	private ObjectMapper objectMapper;
 
 	@Override
 	public GenericResponse<Page<Task>> search(GenericSearchRequestDTO searchRequest) {
@@ -93,5 +96,11 @@ public class TaskResource extends BaseResource implements ITaskResource {
 	public GenericResponse<Void> runOnceTask(String id) throws Exception {
 		taskService.runTask(id, new Date());
 		return GenericResponse.ok();
+	}
+
+	@Override
+	public GenericResponse<Collection<CanvasPreRunSummary>> canvasPreRun(CanvasPreRunRequest preRunRequest) throws Exception {
+		Collection<CanvasPreRunSummary> result = preRunService.preRun(objectMapper.readValue(preRunRequest.getCanvas(), Canvas.class), preRunRequest.getInputSummaries());
+		return GenericResponse.ok(result);
 	}
 }

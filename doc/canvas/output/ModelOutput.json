@@ -3,9 +3,10 @@
   "category": "OUTPUT",
   "type": ".output.ModelOutput",
   "configuration": {
+    "saveMode": "OVERWRITE",   //APPEND,OVERWRITE
     "mappings": [
       {
-        "sourceTable": "RES202311201352590001|成都市_行政区",
+        "sourceTable": "sys_user",
         "targetItem": "f4c8594610844dbeb326a976363cfe77",
         "fieldMappings": [
           {
@@ -16,8 +17,7 @@
             "sourceFieldName": "ad_name",
             "targetFieldName": "name"
           }
-        ],
-        "saveMode": "OVERWRITE"
+        ]
       }
     ]
   }

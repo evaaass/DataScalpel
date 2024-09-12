@@ -35,7 +35,7 @@ public class ModelInput extends CanvasNode {
             CanvasTable canvasTable = new CanvasTable();
             canvasTable.setDataset(dataset);
             canvasTable.setName(model.getName());
-            canvasTable.setCnName(model.getAlias());
+            canvasTable.setAlias(model.getAlias());
             inputData.getTableMap().put(canvasTable.getName(), canvasTable);
 
         }

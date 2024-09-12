@@ -18,7 +18,7 @@ public class SchemaUtil {
             DataTableColumn field = new DataTableColumn();
             field.setName(structField.name());
             //TODO 换成中文，考虑从metadata维护
-            field.setCnName(structField.name());
+            field.setAlias(structField.name());
             field.setType(getColumnType(structField.dataType(), null));
             if (structField.metadata().contains("precision")) {
                 field.setPrecision((int) structField.metadata().getLong("precision"));

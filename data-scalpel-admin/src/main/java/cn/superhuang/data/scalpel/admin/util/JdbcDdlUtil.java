@@ -155,7 +155,7 @@ public class JdbcDdlUtil {
         } else if (field.getType() == ColumnType.FIXEDSTRING) {
             dataType = DataType.fromDDL(StrUtil.format("char({})", field.getPrecision()));
         } else if (field.getType() == ColumnType.STRING && field.getPrecision() != null && (field.getPrecision() > 0
-                || field.getPrecision() < 1000)) {
+                && field.getPrecision() < 1000)) {
             dataType = DataType.fromDDL(StrUtil.format("varchar({})", field.getPrecision()));
         } else if (field.getType() == ColumnType.STRING) {
             dataType = DataType.fromDDL("string");

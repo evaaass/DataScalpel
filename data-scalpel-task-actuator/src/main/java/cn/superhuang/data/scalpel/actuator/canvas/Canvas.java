@@ -2,7 +2,9 @@ package cn.superhuang.data.scalpel.actuator.canvas;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cn.superhuang.data.scalpel.actuator.canvas.node.CanvasNode;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -19,6 +21,8 @@ import static cn.superhuang.data.scalpel.model.enumeration.CanvasNodeCategory.*;
  * @Version: 1.0
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Canvas implements Serializable {
     @Serial
     private static final long serialVersionUID = 6651009075808717307L;

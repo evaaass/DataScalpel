@@ -26,10 +26,7 @@ public class JdbcInput extends CanvasNode {
 
     @Override
     public CanvasData execute(CanvasData inputData) {
-        JdbcConfig jdbcConfig = (JdbcConfig) getContext().getTaskConfiguration().getDatasourceMap().get(configuration.getDatasourceId());
         for (JdbcInputItem item : configuration.getItems()) {
-
-
             //从jdbc去读数据
             Dataset<Row> dataset = DatasetLoadUtil.loadDataset(configuration.getDatasourceId(),item.getItem(), getContext());
             //TODO 后面这个时间过滤要不要改成上推呢

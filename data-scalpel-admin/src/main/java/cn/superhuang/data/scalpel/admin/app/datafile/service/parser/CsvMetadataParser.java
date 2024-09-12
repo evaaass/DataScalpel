@@ -1,25 +1,19 @@
 package cn.superhuang.data.scalpel.admin.app.datafile.service.parser;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.io.file.FileNameUtil;
 import cn.superhuang.data.scalpel.admin.app.datafile.domain.DataFile;
 import cn.superhuang.data.scalpel.admin.app.datafile.model.DataFileMetadata;
 import cn.superhuang.data.scalpel.admin.app.datafile.model.enumeration.DataFileType;
-import cn.superhuang.data.scalpel.admin.app.spark.service.SparkService;
+import cn.superhuang.data.scalpel.admin.app.task.service.SparkService;
 import cn.superhuang.data.scalpel.admin.config.MinioConfig;
 import cn.superhuang.data.scalpel.admin.util.SchemaUtil;
 import cn.superhuang.data.scalpel.model.DataTable;
 import cn.superhuang.data.scalpel.model.DataTableColumn;
 import io.minio.MinioClient;
 import jakarta.annotation.Resource;
-import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SQLContext;
-import org.apache.spark.sql.SparkSession;
-import org.apache.spark.sql.types.StructType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -61,7 +55,7 @@ public class CsvMetadataParser implements DataFileMetadataParser {
         List<DataTableColumn> columns = SchemaUtil.convertToDataTableColumn(ds.schema());
         DataTable dataTable = new DataTable();
         dataTable.setName(dataFile.getName().replaceAll("\\.", "_"));
-        dataTable.setCnName(dataFile.getAlias());
+        dataTable.setAlias(dataFile.getAlias());
         dataTable.setColumns(columns);
 
         DataFileMetadata metadata = new DataFileMetadata();

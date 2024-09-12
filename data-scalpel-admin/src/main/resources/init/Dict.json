@@ -11,6 +11,11 @@
   },
   {
     "type": "DictType",
+    "name": "权限类型",
+    "value": "CatalogType"
+  },
+  {
+    "type": "DictType",
     "name": "JDBC类型",
     "value": "JdbcType"
   },
@@ -275,5 +280,30 @@
       "maxPrecision": 2000,
       "maxPrecisionAndScale": 2000
     }
+  },
+  {
+    "type": "CatalogType",
+    "name": "数据源",
+    "value": "DATA_SOURCE"
+  },
+  {
+    "type": "CatalogType",
+    "name": "数据存储",
+    "value": "DATA_STORAGE"
+  },
+  {
+    "type": "CatalogType",
+    "name": "模型",
+    "value": "MODEL"
+  },
+  {
+    "type": "CatalogType",
+    "name": "数据开发",
+    "value": "DATA_DEV"
+  },
+  {
+    "type": "CatalogType",
+    "name": "数据服务",
+    "value": "SERVICE"
   }
 ]

@@ -1,14 +1,12 @@
 package cn.superhuang.data.scalpel.admin.app.task.web.resource;
 
 import cn.superhuang.data.scalpel.admin.app.task.domain.Task;
-import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskContentValidateRequestVO;
+import cn.superhuang.data.scalpel.admin.app.task.model.CanvasPreRunSummary;
+import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.CanvasPreRunRequest;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskCreateRequestVO;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskDefinitionUpdateRequestVO;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskUpdateRequestVO;
-import cn.superhuang.data.scalpel.admin.model.dto.ValidateResultDTO;
 import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
-import cn.superhuang.data.scalpel.admin.model.web.vo.TaskDetailVO;
-import cn.superhuang.data.scalpel.admin.model.web.vo.TaskListItemVO;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
@@ -17,6 +15,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @Tag(name = "40.任务管理", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "40", parseValue = true)})})
 @RequestMapping("/api/v1")
@@ -56,4 +56,9 @@ public interface ITaskResource {
     @Operation(summary = "立即运行", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "9", parseValue = true)})})
     @PostMapping("/tasks/{id}/actions/run-once")
     public GenericResponse<Void> runOnceTask(@PathVariable("id") String id) throws Exception;
+
+    @Operation(summary = "画布任务预运行", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "30", parseValue = true)})})
+    @PostMapping("/tasks/actions/canvas-pre-run")
+    GenericResponse<Collection<CanvasPreRunSummary>> canvasPreRun(@RequestBody CanvasPreRunRequest preRunRequest) throws Exception;
+
 }

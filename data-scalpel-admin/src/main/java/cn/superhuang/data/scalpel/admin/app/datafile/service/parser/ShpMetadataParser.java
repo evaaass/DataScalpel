@@ -1,18 +1,16 @@
 package cn.superhuang.data.scalpel.admin.app.datafile.service.parser;
 
 import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.io.file.FileNameUtil;
 import cn.superhuang.data.scalpel.admin.app.datafile.domain.DataFile;
 import cn.superhuang.data.scalpel.admin.app.datafile.model.DataFileMetadata;
 import cn.superhuang.data.scalpel.admin.app.datafile.model.enumeration.DataFileType;
-import cn.superhuang.data.scalpel.admin.app.spark.service.SparkService;
+import cn.superhuang.data.scalpel.admin.app.task.service.SparkService;
 import cn.superhuang.data.scalpel.admin.config.MinioConfig;
 import cn.superhuang.data.scalpel.admin.util.SchemaUtil;
 import cn.superhuang.data.scalpel.model.DataTable;
 import cn.superhuang.data.scalpel.model.DataTableColumn;
 import io.minio.ListObjectsArgs;
 import io.minio.MinioClient;
-import io.minio.RemoveObjectArgs;
 import io.minio.Result;
 import io.minio.messages.Item;
 import jakarta.annotation.Resource;
@@ -76,7 +74,7 @@ public class ShpMetadataParser implements DataFileMetadataParser {
             List<DataTableColumn> columns = SchemaUtil.convertToDataTableColumn(ds.schema());
             DataTable dataTable = new DataTable();
             dataTable.setName(dataFile.getName().replaceAll("\\.", "_"));
-            dataTable.setCnName(dataFile.getAlias());
+            dataTable.setAlias(dataFile.getAlias());
             dataTable.setColumns(columns);
             //TODO 这里放空间元数据
             metadata.getDataTables().add(dataTable);

@@ -17,7 +17,7 @@ public class DataTable implements Serializable {
     @Schema(description = "名称")
     private String name;
     @Schema(description = "中文名称")
-    private String cnName;
+    private String alias;
     @Schema(description = "字段信息")
     private List<DataTableColumn> columns;
     @Schema(description = "元数据信息")

@@ -59,8 +59,8 @@ public class DatasetTimeRangeUtil {
                 }
                 break;
             case RANGE:
-                startTime = new Date(timeStrategy.getStartTime());
-                endTime = new Date(timeStrategy.getEndTime());
+                startTime = timeStrategy.getStartTime();
+                endTime = timeStrategy.getEndTime();
                 break;
             default:
                 break;

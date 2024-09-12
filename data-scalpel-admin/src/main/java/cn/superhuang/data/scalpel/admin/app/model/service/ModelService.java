@@ -7,7 +7,7 @@ import cn.superhuang.data.scalpel.admin.app.datasource.repository.DatasourceRepo
 import cn.superhuang.data.scalpel.admin.app.model.domain.Model;
 import cn.superhuang.data.scalpel.admin.app.model.domain.ModelField;
 import cn.superhuang.data.scalpel.admin.app.model.model.ModelUpdateDTO;
-import cn.superhuang.data.scalpel.admin.model.enumeration.ModelState;
+import cn.superhuang.data.scalpel.admin.app.model.model.enumeration.ModelState;
 import cn.superhuang.data.scalpel.admin.app.model.repository.ModelFieldRepository;
 import cn.superhuang.data.scalpel.admin.app.model.repository.ModelRepository;
 import cn.superhuang.data.scalpel.model.datasource.config.DatasourceConfig;
@@ -15,10 +15,8 @@ import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
 import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import org.apache.spark.sql.connector.catalog.TableChange;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;

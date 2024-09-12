@@ -1,8 +1,12 @@
 package cn.superhuang.data.scalpel.admin.app.task.domain;
 
+import cn.hutool.core.util.StrUtil;
+import cn.superhuang.data.scalpel.admin.config.RequestParamsErrorException;
 import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
-import cn.superhuang.data.scalpel.admin.model.enumeration.TaskScheduleType;
-import cn.superhuang.data.scalpel.admin.model.enumeration.TaskStatus;
+import cn.superhuang.data.scalpel.admin.app.task.model.enumeration.TaskScheduleType;
+import cn.superhuang.data.scalpel.admin.app.task.model.enumeration.TaskStatus;
+import cn.superhuang.data.scalpel.admin.util.CronUtil;
+import cn.superhuang.data.scalpel.model.enumeration.TaskCycleType;
 import cn.superhuang.data.scalpel.model.enumeration.TaskInstanceExecutionStatus;
 import cn.superhuang.data.scalpel.model.enumeration.TaskType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -65,6 +69,13 @@ public class Task extends AbstractAuditingEntity<String> implements Serializable
     @Column(name = "schedule_type")
     private TaskScheduleType scheduleType;
 
+    @Schema(description = "间隔时间（分钟）：scheduleType为INTERVAL时必填")
+    private Integer interval;
+
+    @Schema(description = "周期类型：scheduleType为CRON时必填")
+    @Enumerated(EnumType.STRING)
+    private TaskCycleType cycleType;
+
     @Schema(description = "CRON表达式：scheduleType为CRON时必填")
     @Column(name = "cron")
     private String cron;
@@ -76,4 +87,29 @@ public class Task extends AbstractAuditingEntity<String> implements Serializable
     @Schema(description = "调度结束时间：CRON时必填")
     @Column(name = "end_time")
     private Date endTime;
+
+
+    public void validate() {
+        if (scheduleType == null) {
+            throw new RequestParamsErrorException("调度类型不能为空");
+        }
+        if (startTime == null && (scheduleType.equals(TaskScheduleType.CRON) || scheduleType.equals(TaskScheduleType.TIMER) || scheduleType.equals(TaskScheduleType.INTERVAL))) {
+            throw new RequestParamsErrorException("调度类型为%s时，开始时间不能为空".formatted(scheduleType));
+        }
+        if (endTime == null && (scheduleType.equals(TaskScheduleType.CRON) || scheduleType.equals(TaskScheduleType.INTERVAL))) {
+            throw new RequestParamsErrorException("调度类型为%s时，结束时间不能为空".formatted(scheduleType));
+        }
+        if (interval == null && scheduleType == TaskScheduleType.INTERVAL) {
+            throw new RequestParamsErrorException("调度类型为%s时，间隔时间不能为空".formatted(scheduleType));
+        }
+        if (scheduleType.equals(TaskScheduleType.CRON)) {
+            if (StrUtil.isEmpty(cron)) {
+                throw new RequestParamsErrorException("cron表达式不能为空");
+            }
+            if (cycleType == null) {
+                throw new RequestParamsErrorException("周期类型不能为空");
+            }
+            CronUtil.validateCycleCron(cycleType, cron);
+        }
+    }
 }

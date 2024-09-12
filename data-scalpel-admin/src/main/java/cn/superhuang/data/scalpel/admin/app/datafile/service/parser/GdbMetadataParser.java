@@ -5,18 +5,14 @@ import cn.hutool.core.io.file.FileNameUtil;
 import cn.superhuang.data.scalpel.admin.app.datafile.domain.DataFile;
 import cn.superhuang.data.scalpel.admin.app.datafile.model.DataFileMetadata;
 import cn.superhuang.data.scalpel.admin.app.datafile.model.enumeration.DataFileType;
-import cn.superhuang.data.scalpel.admin.app.spark.service.SparkService;
+import cn.superhuang.data.scalpel.admin.app.task.service.SparkService;
 import cn.superhuang.data.scalpel.admin.config.MinioConfig;
 import cn.superhuang.data.scalpel.admin.util.SchemaUtil;
 import cn.superhuang.data.scalpel.model.DataTable;
 import cn.superhuang.data.scalpel.model.DataTableColumn;
 import com.esri.gdb.FileGDB;
-import com.esri.gdb.GDBTable;
 import io.minio.MinioClient;
 import jakarta.annotation.Resource;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
 import org.apache.spark.sql.types.StructType;
 import org.springframework.stereotype.Service;
 
@@ -70,7 +66,7 @@ public class GdbMetadataParser implements DataFileMetadataParser {
             List<DataTableColumn> columns = SchemaUtil.convertToDataTableColumn(schema);
             DataTable dataTable = new DataTable();
             dataTable.setName(tableName);
-            dataTable.setCnName(tableName);
+            dataTable.setAlias(tableName);
             dataTable.setColumns(columns);
             metadata.getDataTables().add(dataTable);
         }

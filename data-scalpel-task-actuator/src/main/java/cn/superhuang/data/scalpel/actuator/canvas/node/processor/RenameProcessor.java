@@ -25,7 +25,7 @@ public class RenameProcessor extends CanvasNode {
         for (RenameAction action : configuration.getActions()) {
             CanvasTable table = inputData.getTableMap().get(action.getTable());
             table.setName(action.getNewTableName());
-            table.setCnName(action.getNewTableAlias());
+            table.setAlias(action.getNewTableAlias());
         }
         return inputData;
     }
