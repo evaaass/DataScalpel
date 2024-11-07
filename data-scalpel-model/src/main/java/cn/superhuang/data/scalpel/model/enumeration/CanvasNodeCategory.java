@@ -9,4 +9,6 @@ package cn.superhuang.data.scalpel.model.enumeration;
  */
 public enum CanvasNodeCategory {
     INPUT,OUTPUT,PROCESSOR
+
+    ,STARTER
 }

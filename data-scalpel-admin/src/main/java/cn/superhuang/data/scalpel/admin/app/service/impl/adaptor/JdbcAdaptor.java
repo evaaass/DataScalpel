@@ -133,7 +133,7 @@ public class JdbcAdaptor extends BaseDsAdaptor {
                     DataTableColumn dataTableColumn = new DataTableColumn();
                     dataTableColumn.setOriginType(column.getTypeName());
                     dataTableColumn.setName(field.name());
-                    dataTableColumn.setCnName(StringUtil.getNameFromRemark(column.getComment()));
+                    dataTableColumn.setAlias(StringUtil.getNameFromRemark(column.getComment()));
                     dataTableColumn.setRemark(column.getComment());
                     dataTableColumn.setType(SchemaUtil.getColumnType(field.dataType(), column.getTypeName().replaceAll(" UNSIGNED", "")));
                     if (field.metadata().contains("precision")) {
@@ -147,7 +147,7 @@ public class JdbcAdaptor extends BaseDsAdaptor {
 
                 DataTable dataTable = new DataTable();
                 dataTable.setName(table.getTableName());
-                dataTable.setCnName(table.getComment());
+                dataTable.setAlias(table.getComment());
                 dataTable.setColumns(columns);
                 dataTable.setMetadata(new HashMap<>());
 

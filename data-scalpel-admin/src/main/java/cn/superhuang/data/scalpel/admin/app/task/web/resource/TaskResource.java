@@ -2,6 +2,7 @@ package cn.superhuang.data.scalpel.admin.app.task.web.resource;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.superhuang.data.scalpel.actuator.canvas.Canvas;
+import cn.superhuang.data.scalpel.actuator.util.CanvasUtil;
 import cn.superhuang.data.scalpel.admin.app.task.domain.Task;
 import cn.superhuang.data.scalpel.admin.app.task.model.CanvasPreRunSummary;
 import cn.superhuang.data.scalpel.admin.app.task.repository.TaskRepository;
@@ -29,78 +30,79 @@ import java.util.Optional;
 
 @RestController
 public class TaskResource extends BaseResource implements ITaskResource {
-	@Resource
-	private TaskRepository taskRepository;
-	@Resource
-	private TaskService taskService;
-	@Resource
-	private CanvasPreRunService preRunService;
-	@Resource
-	private ObjectMapper objectMapper;
+    @Resource
+    private TaskRepository taskRepository;
+    @Resource
+    private TaskService taskService;
+    @Resource
+    private CanvasPreRunService preRunService;
+    @Resource
+    private ObjectMapper objectMapper;
 
-	@Override
-	public GenericResponse<Page<Task>> search(GenericSearchRequestDTO searchRequest) {
-		Specification<Task> spec = resolveSpecification(searchRequest.getSearch(), Task.class);
-		PageRequest pageRequest = resolvePageRequest(searchRequest.getLimit(), searchRequest.getSort());
-		Page<Task> page = taskRepository.findAll(spec, pageRequest);
-		return GenericResponse.ok(page);
-	}
+    @Override
+    public GenericResponse<Page<Task>> search(GenericSearchRequestDTO searchRequest) {
+        Specification<Task> spec = resolveSpecification(searchRequest.getSearch(), Task.class);
+        PageRequest pageRequest = resolvePageRequest(searchRequest.getLimit(), searchRequest.getSort());
+        Page<Task> page = taskRepository.findAll(spec, pageRequest);
+        return GenericResponse.ok(page);
+    }
 
-	@Override
-	public GenericResponse<Void> createTask(TaskCreateRequestVO createRequest) throws Exception {
-		TaskDTO taskDTO = BeanUtil.copyProperties(createRequest, TaskDTO.class);
-		taskService.save(taskDTO);
-		return GenericResponse.ok();
-	}
+    @Override
+    public GenericResponse<Void> createTask(TaskCreateRequestVO createRequest) throws Exception {
+        TaskDTO taskDTO = BeanUtil.copyProperties(createRequest, TaskDTO.class);
+        taskService.save(taskDTO);
+        return GenericResponse.ok();
+    }
 
-	@Override
-	public GenericResponse<Task> getTask(String id) {
-		Optional<Task> taskDetailVO = taskRepository.findById(id);
-		return GenericResponse.wrapOrNotFound(taskDetailVO);
-	}
+    @Override
+    public GenericResponse<Task> getTask(String id) {
+        Optional<Task> taskDetailVO = taskRepository.findById(id);
+        return GenericResponse.wrapOrNotFound(taskDetailVO);
+    }
 
-	@Override
-	public GenericResponse<Void> updateTask(String id, TaskUpdateRequestVO updateRequest) throws Exception {
-		TaskUpdateDTO taskUpdateDTO = BeanUtil.copyProperties(updateRequest, TaskUpdateDTO.class);
-		taskUpdateDTO.setId(id);
-		taskService.update(taskUpdateDTO);
-		return GenericResponse.ok();
-	}
+    @Override
+    public GenericResponse<Void> updateTask(String id, TaskUpdateRequestVO updateRequest) throws Exception {
+        TaskUpdateDTO taskUpdateDTO = BeanUtil.copyProperties(updateRequest, TaskUpdateDTO.class);
+        taskUpdateDTO.setId(id);
+        taskService.update(taskUpdateDTO);
+        return GenericResponse.ok();
+    }
 
-	@Override
-	public GenericResponse<Void> updateTaskConfiguration(String id, TaskDefinitionUpdateRequestVO updateRequest) throws Exception {
-		taskService.updateTaskDefinition(id,updateRequest.getDefinition());
-		return GenericResponse.ok();
-	}
+    @Override
+    public GenericResponse<Void> updateTaskConfiguration(String id, TaskDefinitionUpdateRequestVO updateRequest) throws Exception {
+        taskService.updateTaskDefinition(id, updateRequest.getDefinition());
+        return GenericResponse.ok();
+    }
 
-	@Override
-	public GenericResponse<Void> deleteTask(String id) throws Exception {
-		taskService.delete(id);
-		return GenericResponse.ok();
-	}
+    @Override
+    public GenericResponse<Void> deleteTask(String id) throws Exception {
+        taskService.delete(id);
+        return GenericResponse.ok();
+    }
 
-	@Override
-	public GenericResponse<Void> enableTask(String id) throws Exception {
-		taskService.enableTask(id);
-		return GenericResponse.ok();
-	}
+    @Override
+    public GenericResponse<Void> enableTask(String id) throws Exception {
+        taskService.enableTask(id);
+        return GenericResponse.ok();
+    }
 
-	@Override
-	public GenericResponse<Void> disableTask(String id) throws Exception {
-		taskService.disableTask(id);
-		return GenericResponse.ok();
-	}
+    @Override
+    public GenericResponse<Void> disableTask(String id) throws Exception {
+        taskService.disableTask(id);
+        return GenericResponse.ok();
+    }
 
 
-	@Override
-	public GenericResponse<Void> runOnceTask(String id) throws Exception {
-		taskService.runTask(id, new Date());
-		return GenericResponse.ok();
-	}
+    @Override
+    public GenericResponse<Void> runOnceTask(String id) throws Exception {
+        taskService.runTask(id, new Date());
+        return GenericResponse.ok();
+    }
 
-	@Override
-	public GenericResponse<Collection<CanvasPreRunSummary>> canvasPreRun(CanvasPreRunRequest preRunRequest) throws Exception {
-		Collection<CanvasPreRunSummary> result = preRunService.preRun(objectMapper.readValue(preRunRequest.getCanvas(), Canvas.class), preRunRequest.getInputSummaries());
-		return GenericResponse.ok(result);
-	}
+    @Override
+    public GenericResponse<Collection<CanvasPreRunSummary>> canvasPreRun(CanvasPreRunRequest preRunRequest) throws Exception {
+        Canvas canvas = CanvasUtil.fromDwxCanvasContent(preRunRequest.getCanvas());
+        Collection<CanvasPreRunSummary> result = preRunService.preRun(canvas, preRunRequest.getInputSummaries());
+        return GenericResponse.ok(result);
+    }
 }

@@ -61,7 +61,7 @@ public class Task extends AbstractAuditingEntity<String> implements Serializable
     @Column(name = "failure_count")
     private Long failureCount;
 
-    @Column(name = "任务定义")
+    @Column(name = "definition",columnDefinition = "TEXT")
     private String definition;
 
     @Schema(description = "调度类型：TIMER为运行一次，CRON为周期运行,NONE为暂不调度")

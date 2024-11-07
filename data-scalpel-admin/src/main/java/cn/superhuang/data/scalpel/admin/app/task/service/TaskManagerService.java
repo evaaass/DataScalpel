@@ -59,14 +59,12 @@ public class TaskManagerService implements InitializingBean {
     private TaskInstanceRepository instanceRepository;
     @Resource
     private ObjectMapper objectMapper;
-    @Resource
-    private KafkaService kafkaService;
+
     @Resource
     private S3Service s3Service;
     @Resource
     private ApplicationEventPublisher applicationEventPublisher;
-    @Resource
-    private List<TaskSubmitInterceptor> interceptors;
+
 
     private KafkaConsumer<String, String> batchConsumer;
     @Autowired
@@ -92,33 +90,7 @@ public class TaskManagerService implements InitializingBean {
                 BatchCanvasTaskDefinition taskDefinition = objectMapper.readValue(task.getDefinition(), BatchCanvasTaskDefinition.class);
 
                 //TODO 这个放到配置文件了里面去
-                SparkConfiguration sparkConfiguration = new SparkConfiguration();
-                sparkConfiguration.setMaster("local");
-                sparkConfiguration.setLogLevel(LogLevel.INFO);
-                sparkConfiguration.setConfigs(new HashMap<>());
 
-                KafkaConfig kafkaConfig = new KafkaConfig();
-                kafkaConfig.setBootstrapServers(bootstrapServers);
-
-                CanvasTaskConfiguration canvasTaskConfiguration = new CanvasTaskConfiguration();
-                canvasTaskConfiguration.setCanvas(taskDefinition.getCanvas());
-                canvasTaskConfiguration.setTaskId(task.getId());
-                canvasTaskConfiguration.setTaskName(task.getName());
-                canvasTaskConfiguration.setTaskInstanceId(instance.getId());
-                canvasTaskConfiguration.setSparkConfiguration(sparkConfiguration);
-                canvasTaskConfiguration.setType(TaskType.BATCH_CANVAS);
-                canvasTaskConfiguration.setKafkaConfig(kafkaConfig);
-                canvasTaskConfiguration.setCycleType(null);
-                canvasTaskConfiguration.setPlanTriggerTime(null);
-                canvasTaskConfiguration.setParams(Maps.newHashMap());
-                canvasTaskConfiguration.setModelMap(Maps.newHashMap());
-                canvasTaskConfiguration.setDatasourceMap(Maps.newHashMap());
-
-                for (TaskSubmitInterceptor interceptor : interceptors) {
-                    interceptor.beforeSubmit(canvasTaskConfiguration);
-                }
-
-                kafkaService.sendTaskTrigger(canvasTaskConfiguration);
             } catch (Exception e) {
                 throw new RuntimeException("提交任务失败：" + e.getMessage(), e);
             }

@@ -24,11 +24,11 @@
             <artifactId>data-scalpel-spark-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.amazon.deequ</groupId>-->
-<!--            <artifactId>deequ</artifactId>-->
-<!--            <version>2.0.6-spark-3.4</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.amazon.deequ</groupId>-->
+        <!--            <artifactId>deequ</artifactId>-->
+        <!--            <version>2.0.6-spark-3.4</version>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -46,6 +46,28 @@
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-sql-kafka-0-10_2.13</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-main</artifactId>
+            <version>29.6</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.geotools/gt-shapefile -->
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-shapefile</artifactId>
+            <version>29.6</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.geotools/gt-geojson -->
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-geojson</artifactId>
+            <version>29.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.meteothink</groupId>
+            <artifactId>wContour</artifactId>
+            <version>1.7.1</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -53,6 +75,19 @@
 
         </dependencies>
     </dependencyManagement>
+    <repositories>
+        <repository>
+            <id>osgeo</id>
+            <name>OSGeo Release Repository</name>
+            <url>https://repo.osgeo.org/repository/release/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
     <build>
         <plugins>
 

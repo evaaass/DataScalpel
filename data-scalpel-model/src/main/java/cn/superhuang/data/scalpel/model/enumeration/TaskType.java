@@ -12,7 +12,9 @@ public enum TaskType {
     BATCH_NATIVE_SQL("BATCH"),
 
     STREAM_CANVAS("STREAM"),
-    STREAM_SPARK_SQL("STREAM");
+    STREAM_SPARK_SQL("STREAM"),
+
+    WORKFLOW("WORKFLOW");
 
     private String category;
 
