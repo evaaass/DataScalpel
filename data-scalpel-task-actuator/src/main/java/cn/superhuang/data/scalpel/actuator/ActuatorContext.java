@@ -74,8 +74,8 @@ public class ActuatorContext {
         taskLog.setTaskInstanceId(getTaskConfiguration().getTaskInstanceId());
         taskLog.setTime(new Date().getTime());
         taskLog.setLevel(level);
-        taskLog.setMessage(message);
-        taskLog.setDetail(detail);
+        taskLog.setMessage(StrUtil.sub(message, 0, 2000));
+        taskLog.setDetail(StrUtil.sub(detail, 0, 50000));
         kafkaHelper.sendLog(taskLog);
     }
 
@@ -85,7 +85,7 @@ public class ActuatorContext {
         taskLog.setTaskInstanceId(getTaskConfiguration().getTaskInstanceId());
         taskLog.setTime(new Date().getTime());
         taskLog.setLevel(LogLevel.INFO);
-        taskLog.setMessage(message);
+        taskLog.setMessage(StrUtil.sub(message, 0, 2000));
         kafkaHelper.sendLog(taskLog);
     }
 

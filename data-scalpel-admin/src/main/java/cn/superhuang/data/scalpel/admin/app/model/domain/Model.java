@@ -22,6 +22,8 @@ public class Model extends AbstractAuditingEntity<String> implements Serializabl
     @Column(name = "catalog_id")
     private String catalogId;
     private String datasourceId;
+
+    private String physicalTable;
     @Column(name = "name")
     private String name;
     @Column

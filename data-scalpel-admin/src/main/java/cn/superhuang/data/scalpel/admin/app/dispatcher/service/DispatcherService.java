@@ -7,7 +7,9 @@ import cn.superhuang.data.scalpel.admin.app.common.service.S3Service;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.model.RunningTaskInfo;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.model.TaskTriggerResult;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.service.runner.ITaskRunner;
+import cn.superhuang.data.scalpel.app.constant.KafkaTopic;
 import cn.superhuang.data.scalpel.lib.docker.cli.model.DockerContainerStatus;
+import cn.superhuang.data.scalpel.model.task.TaskKill;
 import cn.superhuang.data.scalpel.model.task.TaskResult;
 import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -36,8 +38,8 @@ public class DispatcherService {
     private S3Service s3Service;
     @Resource
     private KafkaService kafkaService;
-    @Value("${data-scalpel.task.timeout}")
-    private Integer taskTimeout;
+//    @Value("${data-scalpel.task.timeout}")
+//    private Integer taskTimeout;
 
     private final Map<String, RunningTaskInfo> runningTaskMap = new HashMap<>();
 
@@ -63,7 +65,7 @@ public class DispatcherService {
             if (runningTaskMap.containsKey(taskResult.getUniqueKey())) {
                 String channelId = runningTaskMap.get(taskResult.getTaskId() + "_" + taskResult.getTaskInstanceId()).getChannelId();
                 String consoleLog = taskRunner.getLog(channelId);
-                killDockerContainer(channelId);
+                taskRunner.kill(channelId);
                 s3Service.persistentTaskConsoleLog(taskResult.getTaskId(), taskResult.getTaskInstanceId(), consoleLog);
             }
             kafkaService.sendTaskResult(taskResult);
@@ -73,24 +75,33 @@ public class DispatcherService {
         }
     }
 
-    @Scheduled(fixedDelay = 30 * 1000)
-    public void monitorRunningTaskState() {
-        for (RunningTaskInfo runningTaskInfo : runningTaskMap.values()) {
-            if (runningTaskInfo.isTimeout(taskTimeout * 60 * 1000)) {
-                log.error("任务" + runningTaskInfo.getTaskConfiguration().getUniqueKey() + "运行超时，强制kill容器");
-                killDockerContainer(runningTaskInfo.getChannelId());
-                kafkaService.sendTaskResult(TaskResult.errorResult("任务超时", null));
-            }
+    @KafkaListener(topics = {KafkaTopic.TOPIC_TASK_KILL})
+    public void consumeTaskKill(String taskKillContent) {
+        try {
+            TaskKill taskKill = objectMapper.readValue(taskKillContent, TaskKill.class);
+            taskRunner.kill(taskKill.getChannelId());
+        } catch (Exception e) {
+            log.error("处理任务结果失败:" + e.getMessage(), e);
         }
     }
+//    @Scheduled(fixedDelay = 30 * 1000)
+//    public void monitorRunningTaskState() {
+//        for (RunningTaskInfo runningTaskInfo : runningTaskMap.values()) {
+//            if (runningTaskInfo.isTimeout(taskTimeout * 60 * 1000)) {
+//                log.error("任务" + runningTaskInfo.getTaskConfiguration().getUniqueKey() + "运行超时，强制kill容器");
+//                killDockerContainer(runningTaskInfo.getChannelId());
+//                kafkaService.sendTaskResult(TaskResult.errorResult("任务超时", null));
+//            }
+//        }
+//    }
 
-    public DockerContainerStatus getDockerContainerStatus(String channelId) throws JsonProcessingException {
-        String containerState = RuntimeUtil.execForStr("docker", "ps", "-a", "--format", "json", "--filter", StrUtil.format("id={}", channelId));
-        return objectMapper.readValue(containerState, DockerContainerStatus.class);
-    }
-
-    public void killDockerContainer(String channelId) {
-        String res = RuntimeUtil.execForStr("docker", "rm", "-f", channelId);
-        System.out.println(res);
-    }
+//    public DockerContainerStatus getDockerContainerStatus(String channelId) throws JsonProcessingException {
+//        String containerState = RuntimeUtil.execForStr("docker", "ps", "-a", "--format", "json", "--filter", StrUtil.format("id={}", channelId));
+//        return objectMapper.readValue(containerState, DockerContainerStatus.class);
+//    }
+//
+//    public void killDockerContainer(String channelId) {
+//        String res = RuntimeUtil.execForStr("docker", "rm", "-f", channelId);
+//        System.out.println(res);
+//    }
 }

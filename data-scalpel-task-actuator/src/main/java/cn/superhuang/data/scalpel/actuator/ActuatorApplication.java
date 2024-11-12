@@ -48,7 +48,7 @@ public class ActuatorApplication {
             actuatorContext.log("我要开始了");
 
             CanvasExecutor canvasExecutor = new CanvasExecutor(actuatorContext);
-            TaskResultSummary taskResultSummary = null;//canvasExecutor.execute();
+            TaskResultSummary taskResultSummary = canvasExecutor.execute();
             taskResult.setSummary(taskResultSummary);
             actuatorContext.log("我要又结束了");
 

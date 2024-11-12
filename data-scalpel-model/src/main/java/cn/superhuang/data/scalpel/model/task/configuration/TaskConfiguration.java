@@ -41,7 +41,7 @@ public abstract class TaskConfiguration {
      */
     private Long planTriggerTime;
 
-    private Map<String, String> params;
+    private Map<String, String> options;
 
     //    //TODO
 //    private List inputItems;
@@ -55,5 +55,9 @@ public abstract class TaskConfiguration {
     @JsonIgnore
     public String getUniqueKey() {
         return taskId + "_" + taskInstanceId;
+    }
+
+    public void getTimeout(){
+
     }
 }

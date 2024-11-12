@@ -26,7 +26,7 @@ import java.util.Objects;
 
 
 @Data
-@JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = false)
+@JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.PROPERTY, property = "type", visible = true)
 @JsonIgnoreProperties(value = {"context", "canvasData"})
 public abstract class CanvasNode implements Serializable {
     @Serial
@@ -37,9 +37,9 @@ public abstract class CanvasNode implements Serializable {
 
     @Schema(description = "节点分类")
     private CanvasNodeCategory category;
-
-    @Schema(description = "节点具体类型")
-    private String type;
+//
+//    @Schema(description = "节点具体类型")
+//    private String type;
 
     @Schema(description = "前端用来记录在画布上位置的")
     private Integer x;

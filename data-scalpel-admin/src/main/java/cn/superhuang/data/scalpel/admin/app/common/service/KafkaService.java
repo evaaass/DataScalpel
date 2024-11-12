@@ -2,6 +2,7 @@ package cn.superhuang.data.scalpel.admin.app.common.service;
 
 import cn.superhuang.data.scalpel.app.constant.KafkaTopic;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.model.TaskTriggerResult;
+import cn.superhuang.data.scalpel.model.task.TaskKill;
 import cn.superhuang.data.scalpel.model.task.TaskResult;
 import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,6 +34,10 @@ public class KafkaService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public Boolean sendTaskKill(TaskKill taskKill) {
+        return send(KafkaTopic.TOPIC_TASK_TRIGGER, taskKill);
     }
 
     public Boolean sendTaskTrigger(TaskConfiguration taskConfiguration) {

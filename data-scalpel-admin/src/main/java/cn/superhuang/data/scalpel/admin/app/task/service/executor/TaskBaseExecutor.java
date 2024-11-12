@@ -12,4 +12,6 @@ public abstract class TaskBaseExecutor {
     public abstract Boolean support(TaskType type);
 
     public abstract void execute(Task task, TaskInstance taskInstance) throws Exception;
+
+    public abstract void kill(String channelId) ;
 }

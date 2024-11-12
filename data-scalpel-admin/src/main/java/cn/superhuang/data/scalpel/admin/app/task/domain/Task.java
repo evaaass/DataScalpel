@@ -5,6 +5,7 @@ import cn.superhuang.data.scalpel.admin.config.RequestParamsErrorException;
 import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
 import cn.superhuang.data.scalpel.admin.app.task.model.enumeration.TaskScheduleType;
 import cn.superhuang.data.scalpel.admin.app.task.model.enumeration.TaskStatus;
+import cn.superhuang.data.scalpel.admin.repository.converter.MapConverter;
 import cn.superhuang.data.scalpel.admin.util.CronUtil;
 import cn.superhuang.data.scalpel.model.enumeration.TaskCycleType;
 import cn.superhuang.data.scalpel.model.enumeration.TaskInstanceExecutionStatus;
@@ -18,6 +19,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * A Task.
@@ -61,7 +63,7 @@ public class Task extends AbstractAuditingEntity<String> implements Serializable
     @Column(name = "failure_count")
     private Long failureCount;
 
-    @Column(name = "definition",columnDefinition = "TEXT")
+    @Column(name = "definition", columnDefinition = "TEXT")
     private String definition;
 
     @Schema(description = "调度类型：TIMER为运行一次，CRON为周期运行,NONE为暂不调度")
@@ -87,6 +89,10 @@ public class Task extends AbstractAuditingEntity<String> implements Serializable
     @Schema(description = "调度结束时间：CRON时必填")
     @Column(name = "end_time")
     private Date endTime;
+
+    @Convert(converter = MapConverter.class)
+    @Column(length = 2000)
+    private Map<String, String> options;
 
 
     public void validate() {

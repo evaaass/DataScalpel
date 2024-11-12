@@ -4,7 +4,10 @@ import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
 import cn.superhuang.data.scalpel.model.enumeration.LogLevel;
 import cn.superhuang.data.scalpel.model.enumeration.TaskInstanceExecutionStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -16,6 +19,9 @@ import java.util.Date;
 @Entity
 @Table(name = "admin_task_instance_log")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class TaskInstanceLog  implements Serializable {
 
     @Serial
@@ -41,5 +47,6 @@ public class TaskInstanceLog  implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String detail;
 
+    private Date createTime;
 
 }

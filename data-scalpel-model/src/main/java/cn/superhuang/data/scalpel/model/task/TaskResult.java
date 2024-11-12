@@ -1,11 +1,17 @@
 package cn.superhuang.data.scalpel.model.task;
 
 import cn.superhuang.data.scalpel.app.task.model.TaskResultSummary;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class TaskResult {
     private Boolean success;
     private String message;

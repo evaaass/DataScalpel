@@ -1,26 +1,26 @@
 package cn.superhuang.data.scalpel.admin.app.task.service.executor;
 
 
+import cn.hutool.core.util.StrUtil;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.model.TaskTriggerResult;
 import cn.superhuang.data.scalpel.admin.app.task.domain.Task;
 import cn.superhuang.data.scalpel.admin.app.task.domain.TaskInstance;
+import cn.superhuang.data.scalpel.admin.app.task.service.event.TaskInstanceCompleteEvent;
 import cn.superhuang.data.scalpel.admin.app.task.service.event.TaskInstanceTriggerCompleteEvent;
 import cn.superhuang.data.scalpel.admin.app.task.service.workflow.WorkflowTaskNodeExecutor;
 import cn.superhuang.data.scalpel.model.enumeration.TaskType;
+import cn.superhuang.data.scalpel.model.task.TaskResult;
 import cn.superhuang.data.scalpel.model.task.definition.TaskBaseDefinition;
 import cn.superhuang.data.scalpel.model.task.definition.workflow.WorkflowLine;
 import cn.superhuang.data.scalpel.model.task.definition.workflow.WorkflowNode;
 import cn.superhuang.data.scalpel.model.task.definition.workflow.WorkflowTaskDefinition;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
@@ -33,8 +33,11 @@ public class WorkflowTaskExecutor extends TaskBaseExecutor {
     private ObjectMapper objectMapper;
     @Resource
     private ApplicationEventPublisher applicationEventPublisher;
+    private final ConcurrentHashMap<String, Future<?>> runningTaskMap = new ConcurrentHashMap<>();
 
-    private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(2, 1000, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+    private final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(2, 1000, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+    private final ScheduledExecutorService taskTimeoutMonitorExecutor = Executors.newScheduledThreadPool(1);
+
 
     @Override
     public Boolean support(TaskType type) {
@@ -43,17 +46,37 @@ public class WorkflowTaskExecutor extends TaskBaseExecutor {
 
     @Override
     public void execute(Task task, TaskInstance taskInstance) throws Exception {
-        String channelId = null;
-        applicationEventPublisher.publishEvent(new TaskInstanceTriggerCompleteEvent(this, TaskTriggerResult.builder().taskId(task.getId()).taskInstanceId(taskInstance.getId()).success(true).channelId(channelId).build()));
+
+        String channelId = StrUtil.uuid();
         TaskBaseDefinition taskBaseDefinition = objectMapper.readValue(task.getDefinition(), TaskBaseDefinition.class);
         WorkflowTaskDefinition definition = (WorkflowTaskDefinition) taskBaseDefinition;
-        Future future = threadPoolExecutor.submit(() -> {
+        Future<?> future = threadPoolExecutor.submit(() -> {
+            Date startTime = new Date();
+            Set<WorkflowNode> startNodes = getStartNodes(definition);
+            Map<String, WorkflowNode> nodeMap = definition.getNodes().stream().collect(Collectors.toMap(WorkflowNode::getId, t -> t));
+            recursionRun(startNodes, nodeMap, definition.getLines());
+            applicationEventPublisher.publishEvent(new TaskInstanceCompleteEvent(this, TaskResult.builder().taskId(task.getId()).taskInstanceId(taskInstance.getId()).success(true).startTime(startTime).endTime(new Date()).build()));
         });
-        //从task中获取任务超时时间
-        Object taskRes = future.get(120, TimeUnit.MINUTES);
-        Set<WorkflowNode> startNodes = getStartNodes(definition);
-        Map<String, WorkflowNode> nodeMap = definition.getNodes().stream().collect(Collectors.toMap(WorkflowNode::getId, t -> t));
-        recursionRun(startNodes, nodeMap, definition.getLines());
+        runningTaskMap.put(channelId, future);
+        applicationEventPublisher.publishEvent(new TaskInstanceTriggerCompleteEvent(this, TaskTriggerResult.builder().taskId(task.getId()).taskInstanceId(taskInstance.getId()).success(true).channelId(channelId).build()));
+
+        int taskTimeout = Integer.parseInt(task.getOptions().get("SYS_TIMEOUT"));
+        taskTimeoutMonitorExecutor.schedule(() -> {
+            if (future.isDone()) {
+                return;
+            }
+            future.cancel(true);
+            //TODO 是不是应该加个逻辑，强行结束正在运行的任务
+            applicationEventPublisher.publishEvent(new TaskInstanceCompleteEvent(this, TaskResult.builder().taskId(task.getId()).taskInstanceId(taskInstance.getId()).success(false).message("任务运行时间超过%s，强制中断".formatted(taskTimeout)).build()));
+        }, taskTimeout, TimeUnit.MINUTES);
+    }
+
+    @Override
+    public void kill(String channelId)  {
+        if (!runningTaskMap.containsKey(channelId)) {
+            return;
+        }
+        runningTaskMap.get(channelId).cancel(true);
     }
 
     public void recursionRun(Collection<WorkflowNode> nodes, Map<String, WorkflowNode> nodeMap, List<WorkflowLine> lines) {

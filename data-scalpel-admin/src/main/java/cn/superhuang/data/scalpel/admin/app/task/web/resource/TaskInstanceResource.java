@@ -1,6 +1,7 @@
 package cn.superhuang.data.scalpel.admin.app.task.web.resource;
 
 import cn.hutool.core.io.IoUtil;
+import cn.superhuang.data.scalpel.admin.app.task.service.TaskInstanceLogService;
 import cn.superhuang.data.scalpel.admin.app.task.service.TaskManagerService;
 import cn.superhuang.data.scalpel.admin.app.task.service.TaskService;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
@@ -32,6 +33,9 @@ public class TaskInstanceResource extends BaseResource implements ITaskInstanceR
     @Resource
     private TaskManagerService taskManagerService;
 
+    @Resource
+    private TaskInstanceLogService  taskInstanceLogService;
+
     @Override
     public GenericResponse<Page<TaskInstance>> search(String taskId, GenericSearchRequestDTO searchRequest) {
         Specification<TaskInstance> spec = resolveSpecification(searchRequest.getSearch(), TaskInstance.class);
@@ -49,19 +53,19 @@ public class TaskInstanceResource extends BaseResource implements ITaskInstanceR
 
     @Override
     public GenericResponse<List<TaskLog>> getLogs(String taskId, String id) throws Exception {
-        List<TaskLog> logs = taskManagerService.getTaskLog(taskId, id);
+        List<TaskLog> logs = taskInstanceLogService.getTaskLog(taskId, id);
         return GenericResponse.ok(logs);
     }
 
     @Override
     public GenericResponse<String> getConsoleLogs(String taskId, String taskInstanceId) throws Exception {
-        InputStream inputStream = taskManagerService.getTaskConsoleLog(taskId, taskInstanceId);
+        InputStream inputStream = taskInstanceLogService.getTaskConsoleLog(taskId, taskInstanceId);
         return GenericResponse.ok(IoUtil.readUtf8(inputStream));
     }
 
     @Override
     public ResponseEntity<InputStreamResource> downloadConsoleLogs(String taskId, String taskInstanceId) throws Exception {
-        InputStream inputStream = taskManagerService.getTaskConsoleLog(taskId, taskInstanceId);
+        InputStream inputStream = taskInstanceLogService.getTaskConsoleLog(taskId, taskInstanceId);
         InputStreamResource resource = new InputStreamResource(inputStream);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + taskInstanceId + ".log")
