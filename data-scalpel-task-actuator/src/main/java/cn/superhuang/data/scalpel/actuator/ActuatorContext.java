@@ -72,7 +72,7 @@ public class ActuatorContext {
         TaskLog taskLog = new TaskLog();
         taskLog.setTaskId(getTaskConfiguration().getTaskId());
         taskLog.setTaskInstanceId(getTaskConfiguration().getTaskInstanceId());
-        taskLog.setTime(new Date().getTime());
+        taskLog.setCreateTime(new Date().getTime());
         taskLog.setLevel(level);
         taskLog.setMessage(StrUtil.sub(message, 0, 2000));
         taskLog.setDetail(StrUtil.sub(detail, 0, 50000));
