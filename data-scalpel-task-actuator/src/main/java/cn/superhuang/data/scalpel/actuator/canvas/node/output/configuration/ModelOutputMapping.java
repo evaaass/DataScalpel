@@ -16,8 +16,7 @@ public class ModelOutputMapping extends BaseOutputMapping implements Serializabl
 
     @Schema(description = "字段映射；如果为NULL，则自动使用dataset，不允许size为0")
     private List<FieldMapping> fieldMappings;
-    @Schema(description = "保存策略")
-    private DataSaveStrategy saveStrategy;
+
 
 
 }

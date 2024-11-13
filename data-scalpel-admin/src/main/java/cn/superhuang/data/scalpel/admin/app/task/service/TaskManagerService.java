@@ -153,7 +153,7 @@ public class TaskManagerService {
     public void consumeTaskResult(String taskResultContent) {
         try {
             TaskResult taskResult = objectMapper.readValue(taskResultContent, TaskResult.class);
-            applicationEventPublisher.publishEvent(new TaskInstanceCompleteEvent(this, taskResult));
+            applicationEventPublisher.publishEvent(new TaskInstanceCompleteEvent(this, taskResult, null));
         } catch (Exception e) {
             log.error("处理任务结果失败:" + e.getMessage(), e);
         }

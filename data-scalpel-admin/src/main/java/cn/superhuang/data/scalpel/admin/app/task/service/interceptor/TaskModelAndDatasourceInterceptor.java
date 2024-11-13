@@ -32,7 +32,7 @@ public class TaskModelAndDatasourceInterceptor implements TaskSubmitInterceptor 
 
     @Override
     public void beforeSubmit(TaskConfiguration taskConfiguration) throws JsonProcessingException {
-        if (taskConfiguration instanceof SparkTaskConfiguration) {
+        if (!(taskConfiguration instanceof SparkTaskConfiguration)) {
             return;
         }
         SparkTaskConfiguration sparkTaskConfiguration = (SparkTaskConfiguration) taskConfiguration;

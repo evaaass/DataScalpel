@@ -3,11 +3,13 @@ package cn.superhuang.data.scalpel.admin.app.dispatcher.service.runner;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.model.RunningTaskInfo;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.model.TaskRunnerInstanceInfo;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.model.enums.TaskRunnerInstanceState;
+import cn.superhuang.data.scalpel.admin.app.task.service.event.TaskInstanceCompleteEvent;
 import cn.superhuang.data.scalpel.admin.config.DockerRunnerProperties;
 import cn.superhuang.data.scalpel.admin.config.MinioConfig;
 import cn.superhuang.data.scalpel.lib.docker.cli.DockerClient;
 import cn.superhuang.data.scalpel.lib.docker.cli.model.DockerContainerStatus;
 import cn.superhuang.data.scalpel.model.datasource.config.S3Config;
+import cn.superhuang.data.scalpel.model.task.TaskResult;
 import cn.superhuang.data.scalpel.model.task.configuration.SparkTaskConfiguration;
 import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +17,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -112,6 +115,22 @@ public class SparkOnDockerRunner implements SparkTaskRunner, InitializingBean {
             log.info("队列移除结果：{}", removeResult);
             dockerClient.startContainer(queueItem.getChannelId());
             changeCapacity(-queueItem.getTaskConfiguration().getCpu(), -queueItem.getTaskConfiguration().getMemory());
+        }
+    }
+
+    @EventListener
+    public void handlerTaskInstanceCompletedEvent(TaskInstanceCompleteEvent taskInstanceCompleteEvent) {
+        try {
+            TaskResult taskResult = taskInstanceCompleteEvent.getTaskResult();
+            String key = taskResult.getTaskId() + "_" + taskResult.getTaskInstanceId();
+            SparkTaskConfiguration sparkTaskConfiguration = taskInstanceCompleteEvent.getSparkTaskConfiguration();
+            //TODO 好好的理一理时间和topic
+            if (sparkTaskConfiguration == null) {
+                return;
+            }
+            changeCapacity(sparkTaskConfiguration.getCpu(), sparkTaskConfiguration.getMemory());
+        } catch (Exception e) {
+            log.error("归档日志到S3失败：" + e.getMessage(), e);
         }
     }
 

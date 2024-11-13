@@ -47,10 +47,10 @@ public class ModelOutput extends CanvasNode {
             options.put("user", jdbcConfig.getUsername());
             options.put("password", jdbcConfig.getPassword());
 
-            if (outputMapping.getSaveStrategy().getSaveMode() == DataSaveMode.OVERWRITE) {
+            if (configuration.getSaveStrategy().getSaveMode() == DataSaveMode.OVERWRITE) {
                 options.put("truncate", "true");
             }
-            dataset.write().format("jdbc").mode(SaveMode.valueOf(outputMapping.getSaveStrategy().getSaveMode().getSparkValue()))
+            dataset.write().format("jdbc").mode(SaveMode.valueOf(configuration.getSaveStrategy().getSaveMode().getSparkValue()))
                     .options(options)
                     .save();
             table.setDataset(dataset);

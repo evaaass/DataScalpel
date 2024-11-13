@@ -7,6 +7,7 @@ import cn.superhuang.data.scalpel.admin.app.common.service.S3Service;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.model.RunningTaskInfo;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.model.TaskTriggerResult;
 import cn.superhuang.data.scalpel.admin.app.dispatcher.service.runner.SparkTaskRunner;
+import cn.superhuang.data.scalpel.admin.app.task.service.event.TaskInstanceCompleteEvent;
 import cn.superhuang.data.scalpel.app.constant.KafkaTopic;
 import cn.superhuang.data.scalpel.lib.docker.cli.model.DockerContainerStatus;
 import cn.superhuang.data.scalpel.model.task.TaskKill;
@@ -18,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,8 @@ public class SparkDispatcherService {
     private KafkaService kafkaService;
     @Value("${data-scalpel.task.timeout}")
     private Integer defaultTaskTimeout;
+    @Resource
+    private ApplicationEventPublisher applicationEventPublisher;
 
     private final Map<String, RunningTaskInfo> runningTaskMap = new HashMap<>();
 
@@ -63,8 +67,12 @@ public class SparkDispatcherService {
     public void consumeTaskResult(String taskResultContent) {
         try {
             TaskResult taskResult = objectMapper.readValue(taskResultContent, TaskResult.class);
+
             if (runningTaskMap.containsKey(taskResult.getUniqueKey())) {
                 RunningTaskInfo runningTaskInfo = runningTaskMap.get(taskResult.getTaskId() + "_" + taskResult.getTaskInstanceId());
+
+                applicationEventPublisher.publishEvent(new TaskInstanceCompleteEvent(this, taskResult, runningTaskInfo.getTaskConfiguration()));
+
                 String channelId = runningTaskInfo.getChannelId();
                 String consoleLog = taskRunner.getLog(channelId);
                 runningTaskMap.remove(taskResult.getUniqueKey());

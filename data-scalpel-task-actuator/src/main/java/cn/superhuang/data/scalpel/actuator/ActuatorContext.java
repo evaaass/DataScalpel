@@ -4,20 +4,13 @@ import cn.hutool.core.util.StrUtil;
 import cn.superhuang.data.scalpel.actuator.util.KafkaHelper;
 import cn.superhuang.data.scalpel.model.task.TaskLog;
 import cn.superhuang.data.scalpel.model.task.configuration.SparkTaskConfiguration;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import cn.superhuang.data.scalpel.app.sys.model.SysLogCreateDTO;
-import cn.superhuang.data.scalpel.app.sys.model.emun.LogTargetType;
 import cn.superhuang.data.scalpel.app.task.model.TaskResultSummary;
 import cn.superhuang.data.scalpel.model.enumeration.LogLevel;
-import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
 import lombok.Data;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SparkSession;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -25,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @Data
 public class ActuatorContext {
     private static ActuatorContext actuatorContext;
-    private TaskConfiguration taskConfiguration;
+    private SparkTaskConfiguration taskConfiguration;
     private KafkaHelper kafkaHelper;
     private SparkSession sparkSession;
     private TaskResultSummary taskResultSummary;
