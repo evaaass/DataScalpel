@@ -3,6 +3,7 @@ package cn.superhuang.data.scalpel.actuator;
 import cn.hutool.core.util.StrUtil;
 import cn.superhuang.data.scalpel.actuator.util.KafkaHelper;
 import cn.superhuang.data.scalpel.model.task.TaskLog;
+import cn.superhuang.data.scalpel.model.task.configuration.SparkTaskConfiguration;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cn.superhuang.data.scalpel.app.sys.model.SysLogCreateDTO;
@@ -33,7 +34,7 @@ public class ActuatorContext {
     private ActuatorContext() {
     }
 
-    public synchronized static ActuatorContext getOrCreate(TaskConfiguration taskConfiguration) {
+    public synchronized static ActuatorContext getOrCreate(SparkTaskConfiguration taskConfiguration) {
         if (actuatorContext != null) {
             return actuatorContext;
         }
@@ -83,7 +84,7 @@ public class ActuatorContext {
         TaskLog taskLog = new TaskLog();
         taskLog.setTaskId(getTaskConfiguration().getTaskId());
         taskLog.setTaskInstanceId(getTaskConfiguration().getTaskInstanceId());
-        taskLog.setTime(new Date().getTime());
+        taskLog.setCreateTime(new Date().getTime());
         taskLog.setLevel(LogLevel.INFO);
         taskLog.setMessage(StrUtil.sub(message, 0, 2000));
         kafkaHelper.sendLog(taskLog);

@@ -3,7 +3,12 @@
   "category": "OUTPUT",
   "type": ".output.ModelOutput",
   "configuration": {
-    "saveMode": "OVERWRITE",   //APPEND,OVERWRITE
+    "saveStrategy": {
+      "saveMode":"OVERWRITE",//APPEND,OVERWRITE
+      "options": {
+        "key": "value"
+      }
+    },
     "mappings": [
       {
         "sourceTable": "sys_user",

@@ -10,6 +10,7 @@ import cn.superhuang.data.scalpel.app.model.model.ModelDTO;
 import cn.superhuang.data.scalpel.model.datasource.config.DatasourceConfig;
 import cn.superhuang.data.scalpel.model.enumeration.TaskType;
 import cn.superhuang.data.scalpel.model.task.configuration.CanvasTaskConfiguration;
+import cn.superhuang.data.scalpel.model.task.configuration.SparkTaskConfiguration;
 import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,10 +32,14 @@ public class TaskModelAndDatasourceInterceptor implements TaskSubmitInterceptor 
 
     @Override
     public void beforeSubmit(TaskConfiguration taskConfiguration) throws JsonProcessingException {
-        Set<String> modelIds = new HashSet<>(getModelIdsFromTask(taskConfiguration));
+        if (taskConfiguration instanceof SparkTaskConfiguration) {
+            return;
+        }
+        SparkTaskConfiguration sparkTaskConfiguration = (SparkTaskConfiguration) taskConfiguration;
+        Set<String> modelIds = new HashSet<>(getModelIdsFromTask(sparkTaskConfiguration));
         List<Model> models = modelRepository.findAllByIdIn(modelIds);
         Set<String> datasourceIds = models.stream().map(Model::getDatasourceId).collect(Collectors.toSet());
-        datasourceIds.addAll(getDatasourceIdsFromTask(taskConfiguration));
+        datasourceIds.addAll(getDatasourceIdsFromTask(sparkTaskConfiguration));
 
         List<Datasource> datasourceList = datasourceRepository.findAllByIdIn(new HashSet<>(datasourceIds));
 
@@ -52,13 +57,13 @@ public class TaskModelAndDatasourceInterceptor implements TaskSubmitInterceptor 
         for (Datasource datasource : datasourceList) {
             datasourceMap.put(datasource.getId().toString(), DatasourceConfig.getConfig(datasource.getType(), datasource.getProps()));
         }
-        taskConfiguration.setModelMap(modelMap);
-        taskConfiguration.setDatasourceMap(datasourceMap);
+        sparkTaskConfiguration.setModelMap(modelMap);
+        sparkTaskConfiguration.setDatasourceMap(datasourceMap);
     }
 
     public Set<String> getModelIdsFromTask(TaskConfiguration taskConfiguration) throws JsonProcessingException {
         Set<String> modelIds = new HashSet<>();
-        if (taskConfiguration.getType() == TaskType.BATCH_CANVAS) {
+        if (taskConfiguration instanceof CanvasTaskConfiguration) {
             CanvasTaskConfiguration canvasTaskConfiguration = (CanvasTaskConfiguration) taskConfiguration;
             Canvas canvas = objectMapper.readValue(canvasTaskConfiguration.getCanvas(), Canvas.class);
             modelIds.addAll(CanvasUtil.getModelIds(canvas));
@@ -68,7 +73,7 @@ public class TaskModelAndDatasourceInterceptor implements TaskSubmitInterceptor 
 
     public Set<String> getDatasourceIdsFromTask(TaskConfiguration taskConfiguration) throws JsonProcessingException {
         Set<String> datasourceIds = new HashSet<>();
-        if (taskConfiguration.getType() == TaskType.BATCH_CANVAS) {
+        if (taskConfiguration instanceof CanvasTaskConfiguration) {
             CanvasTaskConfiguration canvasTaskConfiguration = (CanvasTaskConfiguration) taskConfiguration;
             Canvas canvas = objectMapper.readValue(canvasTaskConfiguration.getCanvas(), Canvas.class);
             datasourceIds.addAll(CanvasUtil.getDatasourceIds(canvas));

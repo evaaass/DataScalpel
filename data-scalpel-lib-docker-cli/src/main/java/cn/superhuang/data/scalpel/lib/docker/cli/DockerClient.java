@@ -38,6 +38,12 @@ public class DockerClient {
         return executeCommand(commands);
     }
 
+    public void startContainer(String containerId) {
+        String[] commands = {"docker", "start", containerId};
+        String res = executeCommand(commands);
+        System.out.println(res);
+    }
+
     public String executeCommand(String... commands) {
         return RuntimeUtil.execForStr(commands).trim();
     }

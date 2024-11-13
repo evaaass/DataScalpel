@@ -15,9 +15,7 @@ import cn.superhuang.data.scalpel.model.task.SparkConfiguration;
 import cn.superhuang.data.scalpel.model.task.TaskKill;
 import cn.superhuang.data.scalpel.model.task.configuration.CanvasTaskConfiguration;
 import cn.superhuang.data.scalpel.model.task.definition.BatchCanvasTaskDefinition;
-import cn.superhuang.data.scalpel.model.task.definition.SparkTaskDefinition;
 import cn.superhuang.data.scalpel.model.task.definition.TaskBaseDefinition;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import jakarta.annotation.Resource;
@@ -26,7 +24,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +67,6 @@ public class SparkTaskExecutor extends TaskBaseExecutor {
         canvasTaskConfiguration.setTaskName(task.getName());
         canvasTaskConfiguration.setTaskInstanceId(instance.getId());
         canvasTaskConfiguration.setSparkConfiguration(sparkConfiguration);
-        canvasTaskConfiguration.setType(TaskType.BATCH_CANVAS);
         canvasTaskConfiguration.setKafkaConfig(kafkaConfig);
         canvasTaskConfiguration.setCycleType(null);
         canvasTaskConfiguration.setPlanTriggerTime(null);

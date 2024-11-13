@@ -1,8 +1,10 @@
 package cn.superhuang.data.scalpel.admin.app.task.service.interceptor;
 
+import cn.superhuang.data.scalpel.app.constant.TaskOptions;
 import cn.superhuang.data.scalpel.model.datasource.config.KafkaConfig;
 import cn.superhuang.data.scalpel.model.enumeration.LogLevel;
 import cn.superhuang.data.scalpel.model.task.SparkConfiguration;
+import cn.superhuang.data.scalpel.model.task.configuration.SparkTaskConfiguration;
 import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Maps;
@@ -16,18 +18,22 @@ public class TaskBaseInfoInterceptor implements TaskSubmitInterceptor {
 
     @Override
     public void beforeSubmit(TaskConfiguration taskConfiguration) throws JsonProcessingException {
-        return ;
-//        KafkaConfig kafkaConfig = new KafkaConfig();
-//        kafkaConfig.setBootstrapServers(kafkaBootstrapServers);
-//
-//        SparkConfiguration sparkConfiguration = new SparkConfiguration();
-//        sparkConfiguration.setMaster("local");
-//        sparkConfiguration.setLogLevel(LogLevel.INFO);
-//        sparkConfiguration.setCpu(1);
-//        sparkConfiguration.setMemory(2);
-//        sparkConfiguration.setConfigs(Maps.newHashMap());
-//
-//        taskConfiguration.setKafkaConfig(kafkaConfig);
-//        taskConfiguration.setSparkConfiguration(sparkConfiguration);
+        if (!(taskConfiguration instanceof SparkTaskConfiguration)) {
+            return;
+        }
+        SparkTaskConfiguration sparkTaskConfiguration = (SparkTaskConfiguration) taskConfiguration;
+        KafkaConfig kafkaConfig = new KafkaConfig();
+        kafkaConfig.setBootstrapServers(kafkaBootstrapServers);
+
+        SparkConfiguration sparkConfiguration = new SparkConfiguration();
+        sparkConfiguration.setMaster("local");
+        sparkConfiguration.setLogLevel(LogLevel.INFO);
+        sparkConfiguration.setConfigs(Maps.newHashMap());
+
+        //TODO 从前端传过来
+        sparkTaskConfiguration.getOptions().put(TaskOptions.TASK_CPU, "1");
+        sparkTaskConfiguration.getOptions().put(TaskOptions.TASK_MEMORY, "2");
+        sparkTaskConfiguration.setKafkaConfig(kafkaConfig);
+        sparkTaskConfiguration.setSparkConfiguration(sparkConfiguration);
     }
 }

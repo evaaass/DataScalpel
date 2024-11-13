@@ -154,6 +154,8 @@ data-scalpel:
   dispatcher:
     runner:
       docker:
+        capacity-cpu: 4
+        capacity-memory: 8
         commands:
           - "--security-opt"
           - "seccomp=unconfined"

@@ -1,11 +1,12 @@
 package cn.superhuang.data.scalpel.admin.app.dispatcher.service.runner;
 
 import cn.superhuang.data.scalpel.admin.app.dispatcher.model.TaskRunnerInstanceInfo;
+import cn.superhuang.data.scalpel.model.task.configuration.SparkTaskConfiguration;
 import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
 
-public class SparkOnYarnRunner implements ITaskRunner{
+public class SparkOnYarnRunner implements SparkTaskRunner {
     @Override
-    public String run(TaskConfiguration taskConfiguration) {
+    public String run(SparkTaskConfiguration taskConfiguration) {
         return "";
     }
 

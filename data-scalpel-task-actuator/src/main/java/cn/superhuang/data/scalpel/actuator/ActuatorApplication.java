@@ -5,6 +5,7 @@ import cn.superhuang.data.scalpel.actuator.util.JsonUtil;
 import cn.superhuang.data.scalpel.actuator.util.KafkaHelper;
 import cn.superhuang.data.scalpel.actuator.util.S3Helpler;
 import cn.superhuang.data.scalpel.model.datasource.config.S3Config;
+import cn.superhuang.data.scalpel.model.task.configuration.SparkTaskConfiguration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import cn.superhuang.data.scalpel.actuator.canvas.executor.CanvasExecutor;
 import cn.superhuang.data.scalpel.app.task.model.TaskResultSummary;
@@ -14,7 +15,7 @@ import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
 import java.util.Date;
 
 public class ActuatorApplication {
-//taskId taskInstanceId {\"type\":\"S3\",\"params\":{\"accessId\":\"minioadmin\",\"bucket\":\"data-scalpel\",\"endpoint\":\"http://home.superhuang.cn:9000\",\"secretKey\":\"Gistack@123\"}} true
+    //taskId taskInstanceId {\"type\":\"S3\",\"params\":{\"accessId\":\"minioadmin\",\"bucket\":\"data-scalpel\",\"endpoint\":\"http://home.superhuang.cn:9000\",\"secretKey\":\"Gistack@123\"}} true
     public static void main(String[] args) throws JsonProcessingException {
         String taskId = args[0];
         String taskInstanceId = args[1];
@@ -34,12 +35,12 @@ public class ActuatorApplication {
             S3Helpler s3Helpler = new S3Helpler(JsonUtil.objectMapper.readValue(s3ConfigStr, S3Config.class));
             s3Helpler.connect();
 
-            TaskConfiguration taskConfiguration = s3Helpler.getTaskConfiguration(taskId, taskInstanceId);
+            SparkTaskConfiguration taskConfiguration = (SparkTaskConfiguration) s3Helpler.getTaskConfiguration(taskId, taskInstanceId);
             taskConfiguration.setDebug(debug);
-            if(debug){
+            if (debug) {
                 taskConfiguration.getSparkConfiguration().setMaster("local");
                 kafkaHelper = new KafkaHelper();
-            }else {
+            } else {
                 kafkaHelper = new KafkaHelper(taskConfiguration.getKafkaConfig().getBootstrapServers());
             }
             ActuatorContext actuatorContext = ActuatorContext.getOrCreate(taskConfiguration);

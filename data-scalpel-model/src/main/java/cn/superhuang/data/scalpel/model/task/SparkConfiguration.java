@@ -11,9 +11,5 @@ public class SparkConfiguration {
 
     private LogLevel logLevel;
 
-    private Integer cpu;
-
-    private Integer memory;
-
     private Map<String, String> configs;
 }

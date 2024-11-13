@@ -34,7 +34,7 @@ public class TaskInstanceLog  implements Serializable {
     @Column
     private String taskId;
 
-    @Column(unique = true)
+    @Column
     private String taskInstanceId;
 
     @Enumerated(EnumType.STRING)

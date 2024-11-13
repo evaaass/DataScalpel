@@ -161,6 +161,10 @@ public class TaskManagerService {
 
 
     private void handleTaskInstanceCompleted(TaskResult taskResult) {
+        //TODO 临时的，以后去掉
+        if (taskResult.getTaskId() == null) {
+            return;
+        }
         taskRepository.findById(taskResult.getTaskId()).ifPresent(task -> {
             if (taskResult.getSuccess() == true) {
                 task.setSuccessCount(task.getSuccessCount() + 1);

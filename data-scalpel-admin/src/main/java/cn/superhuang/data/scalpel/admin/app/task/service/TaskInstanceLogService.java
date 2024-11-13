@@ -75,7 +75,9 @@ public class TaskInstanceLogService implements InitializingBean {
             }
             // 手动提交偏移量
             batchConsumer.commitSync();
-
+            if (logs.isEmpty()) {
+                return;
+            }
             taskInstanceLogRepository.saveAll(logs);
         } catch (Exception e) {
             e.printStackTrace();

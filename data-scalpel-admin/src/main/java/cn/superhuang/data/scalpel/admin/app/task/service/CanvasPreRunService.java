@@ -17,6 +17,7 @@ import cn.superhuang.data.scalpel.model.enumeration.CanvasNodeCategory;
 import cn.superhuang.data.scalpel.model.enumeration.LogLevel;
 import cn.superhuang.data.scalpel.model.task.SparkConfiguration;
 import cn.superhuang.data.scalpel.model.task.configuration.CanvasTaskConfiguration;
+import cn.superhuang.data.scalpel.model.task.configuration.SparkTaskConfiguration;
 import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -180,7 +181,7 @@ public class CanvasPreRunService implements InitializingBean {
         sparkConfiguration.setLogLevel(LogLevel.INFO);
         sparkConfiguration.setConfigs(new HashMap<>());
 
-        TaskConfiguration taskConfiguration = new CanvasTaskConfiguration();
+        SparkTaskConfiguration taskConfiguration = new CanvasTaskConfiguration();
         taskConfiguration.setSparkConfiguration(sparkConfiguration);
 
         this.actuatorContext = ActuatorContext.getOrCreate(taskConfiguration);
