@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @Slf4j
@@ -44,7 +45,8 @@ public class SparkOnDockerRunner implements SparkTaskRunner, InitializingBean {
     private Integer availableCpu;
     private Integer availableMemory;
 
-    private final LinkedBlockingQueue<RunningTaskInfo> queue = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<RunningTaskInfo> queueTasks = new LinkedBlockingQueue<>();
+    private final ConcurrentHashMap<String, RunningTaskInfo> runningTaskMap = new ConcurrentHashMap<>();
 
     private DockerClient dockerClient = new DockerClient();
 
@@ -70,14 +72,19 @@ public class SparkOnDockerRunner implements SparkTaskRunner, InitializingBean {
         if (res.length() != 64) {
             throw new RuntimeException("调度容器失败" + res);
         }
-        queue.offer(new RunningTaskInfo(res, taskConfiguration));
+        queueTasks.offer(new RunningTaskInfo(res, taskConfiguration));
 
         return res;
     }
 
     @Override
-    public void kill(String channel) {
-        dockerClient.killContainer(channel);
+    public void kill(String channelId) {
+        dockerClient.killContainer(channelId);
+        runningTaskMap.values().stream().filter(task -> task.getChannelId().equals(channelId)).findAny().ifPresent(runningTask -> {
+            String key = runningTask.getTaskConfiguration().getTaskId() + "_" + runningTask.getTaskConfiguration().getTaskInstanceId();
+            runningTaskMap.remove(key);
+            refreshCapacity();
+        });
     }
 
     @Override
@@ -103,18 +110,20 @@ public class SparkOnDockerRunner implements SparkTaskRunner, InitializingBean {
 
     @Scheduled(fixedDelay = 1000)
     public void checkQueue() {
-        if (!queue.isEmpty()) {
-            log.info("队列长度：{}", queue.size());
+        if (!queueTasks.isEmpty()) {
+            log.info("队列长度：{}", queueTasks.size());
         }
-        RunningTaskInfo queueItem = queue.peek();
-        if (queueItem == null) {
+        RunningTaskInfo runningTask = queueTasks.peek();
+        if (runningTask == null) {
             return;
         }
-        if (availableCpu > queueItem.getTaskConfiguration().getCpu() && availableMemory > queueItem.getTaskConfiguration().getMemory()) {
-            Boolean removeResult = queue.remove(queueItem);
+        if (availableCpu > runningTask.getTaskConfiguration().getCpu() && availableMemory > runningTask.getTaskConfiguration().getMemory()) {
+            Boolean removeResult = queueTasks.remove(runningTask);
             log.info("队列移除结果：{}", removeResult);
-            dockerClient.startContainer(queueItem.getChannelId());
-            changeCapacity(-queueItem.getTaskConfiguration().getCpu(), -queueItem.getTaskConfiguration().getMemory());
+            dockerClient.startContainer(runningTask.getChannelId());
+            String key = runningTask.getTaskConfiguration().getTaskId() + "_" + runningTask.getTaskConfiguration().getTaskInstanceId();
+            runningTaskMap.put(key, runningTask);
+            refreshCapacity();
         }
     }
 
@@ -128,15 +137,22 @@ public class SparkOnDockerRunner implements SparkTaskRunner, InitializingBean {
             if (sparkTaskConfiguration == null) {
                 return;
             }
-            changeCapacity(sparkTaskConfiguration.getCpu(), sparkTaskConfiguration.getMemory());
+            runningTaskMap.remove(key);
+            refreshCapacity();
         } catch (Exception e) {
             log.error("归档日志到S3失败：" + e.getMessage(), e);
         }
     }
 
-    private synchronized void changeCapacity(Integer cpu, Integer memory) {
-        availableCpu = availableCpu + cpu;
-        availableMemory = availableMemory + memory;
+    private synchronized void refreshCapacity() {
+        Integer usedCpu = 0;
+        Integer usedMemory = 0;
+        for (RunningTaskInfo runningTask : runningTaskMap.values()) {
+            usedCpu = usedCpu + runningTask.getTaskConfiguration().getCpu();
+            usedMemory = usedMemory + runningTask.getTaskConfiguration().getMemory();
+        }
+        availableCpu = capacityMemory - usedCpu;
+        availableMemory = capacityMemory - usedMemory;
     }
 
     @Override
