@@ -1,28 +1,29 @@
 package cn.superhuang.data.scalpel.actuator.util;
 
-import cn.hutool.core.io.FileUtil;
+
 import cn.hutool.core.io.IoUtil;
 import cn.superhuang.data.scalpel.model.datasource.config.S3Config;
 import cn.superhuang.data.scalpel.model.task.configuration.TaskConfiguration;
-import com.amazonaws.ClientConfiguration;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.util.IOUtils;
+import org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider;
+import org.apache.hadoop.shaded.org.apache.kerby.kerberos.kerb.client.preauth.pkinit.ClientConfiguration;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectResponse;
+import software.amazon.awssdk.services.s3.model.S3Object;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class S3Helpler {
     private S3Config s3Config;
-    private AmazonS3 amazonS3;
+    private S3Client s3Client;
     private Boolean isConnected = false;
 
     public S3Helpler(S3Config s3Config) {
@@ -30,21 +31,27 @@ public class S3Helpler {
     }
 
     public void connect() {
-        ClientConfiguration clientConfiguration = new ClientConfiguration();
-        AwsClientBuilder.EndpointConfiguration endpointConfiguration = new AwsClientBuilder.EndpointConfiguration(s3Config.getEndpoint(), "");
-        AWSCredentials awsCredentials = new BasicAWSCredentials(s3Config.getAccessId(), s3Config.getSecretKey());
-        AWSCredentialsProvider awsCredentialsProvider = new AWSStaticCredentialsProvider(awsCredentials);
-        this.amazonS3 = AmazonS3Client.builder().withEndpointConfiguration(endpointConfiguration).withClientConfiguration(clientConfiguration).withCredentials(awsCredentialsProvider).disableChunkedEncoding().withPathStyleAccessEnabled(true).build();
-        isConnected = false;
+        s3Client = S3Client.builder()
+                .region(Region.AWS_GLOBAL)
+                .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(s3Config.getAccessId(), s3Config.getSecretKey())))  // 使用 AWS 配置文件中的凭证
+                .build();
+        isConnected = true;
     }
 
     public InputStream getObject(String key) {
-        S3Object s3Object = amazonS3.getObject(s3Config.getBucket(), key);
-        return s3Object.getObjectContent();
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(s3Config.getBucket()).key(key).build();
+        return s3Client.getObject(getObjectRequest);
     }
 
     public void putObject(String key, InputStream inputStream) {
-        amazonS3.putObject(s3Config.getBucket(), key, inputStream, new ObjectMetadata());
+        RequestBody requestBody = RequestBody.fromInputStream(inputStream, 0l);
+        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket(s3Config.getBucket())
+                .key(key)
+                .build();
+
+        PutObjectResponse putObjectResponse = s3Client.putObject(putObjectRequest, requestBody);
+        System.out.println(putObjectResponse);
     }
 
     public TaskConfiguration getTaskConfiguration(String taskId, String taskInstanceId) throws IOException {
