@@ -34,14 +34,12 @@ public class CreatePreRunTestData {
         jdbcInput.setConfiguration(jdbcInputConfiguration);
         jdbcInput.setId("input01");
         jdbcInput.setCategory(CanvasNodeCategory.INPUT);
-        jdbcInput.setType(".input.JdbcInput");
 
         UUIDConfiguration uuidConfiguration = new UUIDConfiguration(Collections.singletonList(new UUIDAction("sys_user", "super_uuid")));
         UUIDProcessor uuidProcessor = new UUIDProcessor();
         uuidProcessor.setConfiguration(uuidConfiguration);
         uuidProcessor.setId("uuid01");
         uuidProcessor.setCategory(CanvasNodeCategory.PROCESSOR);
-        uuidProcessor.setType(".processor.UUIDProcessor");
 
 
         Canvas canvas = new Canvas(new ArrayList<>(),new ArrayList<>());

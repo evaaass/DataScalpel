@@ -2,9 +2,7 @@ package cn.superhuang.data.scalpel.admin.app.sys.web.resource;
 
 import cn.superhuang.data.scalpel.admin.app.sys.domain.SysLog;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
-import cn.superhuang.data.scalpel.app.sys.web.request.SysLogCreateRequest;
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;

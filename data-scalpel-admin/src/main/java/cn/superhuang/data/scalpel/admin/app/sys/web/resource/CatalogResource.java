@@ -3,7 +3,7 @@ package cn.superhuang.data.scalpel.admin.app.sys.web.resource;
 import cn.hutool.core.bean.BeanUtil;
 import cn.superhuang.data.scalpel.admin.app.sys.model.CatalogTreeNode;
 import cn.superhuang.data.scalpel.admin.app.sys.service.CatalogService;
-import cn.superhuang.data.scalpel.admin.resource.impl.BaseResource;
+import cn.superhuang.data.scalpel.impl.BaseResource;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 import cn.superhuang.data.scalpel.admin.app.sys.repository.CatalogRepository;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.CatalogCreateRequestVO;

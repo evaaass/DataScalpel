@@ -3,7 +3,7 @@ package cn.superhuang.data.scalpel.admin.app.service.domain;
 import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceMethod;
 import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceState;
 import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceType;
-import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
+import cn.superhuang.data.scalpel.domain.AbstractAuditingEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Cache;

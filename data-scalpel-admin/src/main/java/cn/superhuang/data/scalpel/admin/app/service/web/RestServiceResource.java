@@ -9,7 +9,7 @@ import cn.superhuang.data.scalpel.admin.app.service.service.RestServiceManagerSe
 import cn.superhuang.data.scalpel.admin.app.service.web.request.RestServiceCreateRequest;
 import cn.superhuang.data.scalpel.admin.app.service.web.request.RestServiceTestRequest;
 import cn.superhuang.data.scalpel.admin.app.service.web.request.RestServiceUpdateRequest;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;

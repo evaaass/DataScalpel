@@ -1,6 +1,6 @@
 package cn.superhuang.data.scalpel.admin.web.resource;
 
-import cn.superhuang.data.scalpel.admin.BaseException;
+import cn.superhuang.data.scalpel.exception.BaseException;
 import cn.superhuang.data.scalpel.admin.app.datasource.domain.DatasourceDefinition;
 import cn.superhuang.data.scalpel.admin.app.datasource.repository.DatasourceDefinitionRepository;
 import cn.superhuang.data.scalpel.admin.app.datasource.web.resource.IDataSourceDefinitionResource;

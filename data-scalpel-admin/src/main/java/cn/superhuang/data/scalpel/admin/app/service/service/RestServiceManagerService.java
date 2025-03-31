@@ -2,22 +2,17 @@ package cn.superhuang.data.scalpel.admin.app.service.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.superhuang.data.scalpel.admin.app.datasource.domain.Datasource;
 import cn.superhuang.data.scalpel.admin.app.service.domain.RestService;
 import cn.superhuang.data.scalpel.admin.app.service.model.RestServiceDetail;
 import cn.superhuang.data.scalpel.admin.app.service.model.RestServiceTestResult;
 import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceState;
 import cn.superhuang.data.scalpel.admin.app.service.repository.RestServiceRepository;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
-import cn.superhuang.data.scalpel.admin.util.GenericSearchUtil;
-import com.univocity.parsers.annotations.Copy;
+import cn.superhuang.data.scalpel.util.GenericSearchUtil;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class RestServiceManagerService {

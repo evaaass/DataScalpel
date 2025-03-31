@@ -10,17 +10,14 @@ import cn.superhuang.data.scalpel.admin.app.model.repository.ModelRepository;
 import cn.superhuang.data.scalpel.admin.app.model.service.ModeDataService;
 import cn.superhuang.data.scalpel.admin.app.model.service.ModelService;
 import cn.superhuang.data.scalpel.admin.app.model.web.resource.request.ModelUpdateRequest;
-import cn.superhuang.data.scalpel.admin.resource.impl.BaseResource;
+import cn.superhuang.data.scalpel.impl.BaseResource;
 import cn.superhuang.data.scalpel.admin.app.model.web.resource.request.ModelCreateRequest;
 import cn.superhuang.data.scalpel.admin.app.model.web.resource.request.ModelFieldUpdateRequest;
 import cn.superhuang.data.scalpel.admin.app.model.web.resource.response.ModelDetailVO;
-import cn.superhuang.data.scalpel.admin.app.model.web.resource.response.ModelListItemVO;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
-import cn.superhuang.data.scalpel.app.model.model.ModelFieldDTO;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 public class ModelResource extends BaseResource implements IModelResource {

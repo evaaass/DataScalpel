@@ -1,11 +1,10 @@
 package cn.superhuang.data.scalpel.admin.app.task.domain;
 
 import cn.hutool.core.util.StrUtil;
-import cn.superhuang.data.scalpel.admin.config.RequestParamsErrorException;
-import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
+import cn.superhuang.data.scalpel.domain.AbstractAuditingEntity;
 import cn.superhuang.data.scalpel.admin.app.task.model.enumeration.TaskScheduleType;
 import cn.superhuang.data.scalpel.admin.app.task.model.enumeration.TaskStatus;
-import cn.superhuang.data.scalpel.admin.repository.converter.MapConverter;
+import cn.superhuang.data.scalpel.converter.MapConverter;
 import cn.superhuang.data.scalpel.admin.util.CronUtil;
 import cn.superhuang.data.scalpel.model.enumeration.TaskCycleType;
 import cn.superhuang.data.scalpel.model.enumeration.TaskInstanceExecutionStatus;

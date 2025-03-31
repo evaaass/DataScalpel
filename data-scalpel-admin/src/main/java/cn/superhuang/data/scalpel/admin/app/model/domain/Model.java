@@ -1,6 +1,6 @@
 package cn.superhuang.data.scalpel.admin.app.model.domain;
 
-import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
+import cn.superhuang.data.scalpel.domain.AbstractAuditingEntity;
 import cn.superhuang.data.scalpel.admin.app.model.model.enumeration.ModelState;
 import jakarta.persistence.*;
 import lombok.Data;

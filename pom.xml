@@ -21,6 +21,8 @@
         <module>data-scalpel-lib-docker-cli</module>
         <module>data-scalpel-task-actuator</module>
         <module>data-scalpel-model</module>
+        <module>data-scalpel-api-server</module>
+        <module>data-scalpel-web-core</module>
         <!--        <module>data-scalpel-admin-spark</module>-->
     </modules>
     <properties>

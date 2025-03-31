@@ -18,10 +18,13 @@ import java.util.Map;
 
 public class Gdb2Mysql {
     public static void main(String[] args) {
-//        String[] tables=FileGDB.listTableNames("/Users/huangchao/Downloads/SLGC_huajie.gdb",new Configuration());
-//        for (String table : tables) {
-//            System.out.println(table);
-//        }
+        String[] tables=FileGDB.listTableNames("/Users/huangchao/Downloads/SLGC_huajie_new_1.gdb",new Configuration());
+        for (String table : tables) {
+            System.out.println(table);
+        }
+        if(1==1){
+            return;
+        }
 
         SysJdbcDialect jdbcDialect = SysJdbcDialects.get(DbType.MYSQL);
         SysJdbcDialects.initSparkDialects();
@@ -43,7 +46,6 @@ public class Gdb2Mysql {
                 .config("spark.ui.enabled", "false")
                 .getOrCreate();
 
-
         Map<String, String> options = new HashMap<>();
         options.put("driver", jdbcDialect.getDriver());
         options.put("url", jdbcDialect.buildUrl(jdbcConfig));
@@ -52,28 +54,27 @@ public class Gdb2Mysql {
         options.put("password", jdbcConfig.getPassword());
 
         Dataset<Row> ds01 = spark01.read().format("com.esri.gdb")
-                .option("path", "/Users/huangchao/Downloads/SLGC_huajie.gdb")
+                .option("path", "/Users/huangchao/Downloads/SLGC_huajie_new_1.gdb")
+                .option("name", "SLGC_BHFWX").
+                load().drop("SHAPE");
+
+        for (String fieldName : ds01.schema().fieldNames()) {
+            StructField field = ds01.schema().apply(fieldName);
+            System.out.println(fieldName + "|" + field.metadata().json());
+        }
+        options.put("dbtable", "SLGC_BHFWX");
+        ds01.write().format("jdbc").mode(SaveMode.Overwrite).options(options).save();
+
+        Dataset<Row> ds02 = spark01.read().format("com.esri.gdb")
+                .option("path", "/Users/huangchao/Downloads/SLGC_huajie_new_1.gdb")
                 .option("name", "SLGC_GLFWX").
                 load().drop("SHAPE");
-        ds01.printSchema();
-        ds01.where("OBJECTID in (15298,15033)").show();
-
-//        for (String fieldName : ds01.schema().fieldNames()) {
-//            StructField field = ds01.schema().apply(fieldName);
-//            System.out.println(fieldName + "|" + field.metadata().json());
-//        }
-//        ds01.write().format("jdbc").mode(SaveMode.Overwrite).options(options).save();
-//
-//        Dataset<Row> ds02 = spark01.read().format("com.esri.gdb")
-//                .option("path", "/Users/huangchao/Downloads/SLGC_huajie.gdb")
-//                .option("name", "SLGC_GLFWX").
-//                load().drop("SHAPE");
-//        ds02.printSchema();
-//        for (String fieldName : ds02.schema().fieldNames()) {
-//            StructField field = ds01.schema().apply(fieldName);
-//            System.out.println(fieldName + "|" + field.metadata().json());
-//        }
-//        options.put("dbtable", "SLGC_GLFWX");
-//        ds02.write().format("jdbc").mode(SaveMode.Overwrite).options(options).save();
+        ds02.printSchema();
+        for (String fieldName : ds02.schema().fieldNames()) {
+            StructField field = ds02.schema().apply(fieldName);
+            System.out.println(fieldName + "|" + field.metadata().json());
+        }
+        options.put("dbtable", "SLGC_GLFWX");
+        ds02.write().format("jdbc").mode(SaveMode.Overwrite).options(options).save();
     }
 }

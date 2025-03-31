@@ -1,18 +1,13 @@
 package cn.superhuang.data.scalpel.admin.app.model.domain;
 
-import cn.hutool.core.math.MathUtil;
-import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
+import cn.superhuang.data.scalpel.domain.AbstractAuditingEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cn.superhuang.data.scalpel.model.enumeration.ColumnType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.UUID;
 
 /**
  * A LakeItem.

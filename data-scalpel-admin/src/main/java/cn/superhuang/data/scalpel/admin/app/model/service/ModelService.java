@@ -2,7 +2,7 @@ package cn.superhuang.data.scalpel.admin.app.model.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.superhuang.data.scalpel.admin.BaseException;
+import cn.superhuang.data.scalpel.exception.BaseException;
 import cn.superhuang.data.scalpel.admin.app.datasource.repository.DatasourceRepository;
 import cn.superhuang.data.scalpel.admin.app.model.domain.Model;
 import cn.superhuang.data.scalpel.admin.app.model.domain.ModelField;

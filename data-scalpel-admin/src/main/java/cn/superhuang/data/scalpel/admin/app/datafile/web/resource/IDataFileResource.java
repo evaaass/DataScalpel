@@ -2,7 +2,7 @@ package cn.superhuang.data.scalpel.admin.app.datafile.web.resource;
 
 import cn.superhuang.data.scalpel.admin.app.datafile.domain.DataFile;
 import cn.superhuang.data.scalpel.admin.app.datafile.model.enumeration.DataFileType;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;

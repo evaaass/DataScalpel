@@ -1,17 +1,13 @@
 package cn.superhuang.data.scalpel.admin.app.sys.domain;
 
 import cn.superhuang.data.scalpel.admin.app.sys.model.enumeration.UserState;
-import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
+import cn.superhuang.data.scalpel.domain.AbstractAuditingEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
 
 @Data
 @Entity

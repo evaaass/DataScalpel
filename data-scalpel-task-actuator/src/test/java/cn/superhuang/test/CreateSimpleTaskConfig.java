@@ -45,9 +45,9 @@ public class CreateSimpleTaskConfig {
         taskConfiguration.setTaskName("taskName");
         taskConfiguration.setTaskInstanceId("taskInstanceId");
         taskConfiguration.setSparkConfiguration(sparkConfiguration);
-        taskConfiguration.setType(TaskType.BATCH_CANVAS);
+//        taskConfiguration.setType(TaskType.BATCH_CANVAS);
         taskConfiguration.setKafkaConfig(kafkaConfig);
-        taskConfiguration.setParams(new HashMap<>());
+        taskConfiguration.setOptions(new HashMap<>());
         taskConfiguration.setModelMap(new HashMap<>());
         taskConfiguration.setDatasourceMap(new HashMap<>());
 

@@ -1,14 +1,14 @@
 package cn.superhuang.data.scalpel.admin.app.model.service;
 
 import cn.hutool.core.util.StrUtil;
-import cn.superhuang.data.scalpel.admin.BaseException;
+import cn.superhuang.data.scalpel.exception.BaseException;
 import cn.superhuang.data.scalpel.admin.app.datasource.repository.DatasourceRepository;
 import cn.superhuang.data.scalpel.admin.app.model.domain.ModelField;
 import cn.superhuang.data.scalpel.admin.app.model.repository.ModelFieldRepository;
 import cn.superhuang.data.scalpel.admin.app.model.repository.ModelRepository;
-import cn.superhuang.data.scalpel.admin.dsl.dsl.DslParser;
-import cn.superhuang.data.scalpel.admin.dsl.dsl.DslSpecification;
-import cn.superhuang.data.scalpel.admin.dsl.dsl.DslSpecificationsBuilder;
+import cn.superhuang.data.scalpel.dsl.dsl.DslParser;
+import cn.superhuang.data.scalpel.dsl.dsl.DslSpecification;
+import cn.superhuang.data.scalpel.dsl.dsl.DslSpecificationsBuilder;
 import cn.superhuang.data.scalpel.model.datasource.config.DatasourceConfig;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
 import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;

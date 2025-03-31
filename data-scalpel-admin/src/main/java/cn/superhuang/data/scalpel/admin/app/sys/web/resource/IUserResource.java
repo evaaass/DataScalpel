@@ -1,12 +1,9 @@
 package cn.superhuang.data.scalpel.admin.app.sys.web.resource;
 
-import cn.superhuang.data.scalpel.admin.app.sys.domain.Dict;
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.*;
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.vo.UserVO;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;

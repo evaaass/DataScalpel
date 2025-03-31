@@ -6,11 +6,8 @@ import cn.superhuang.data.scalpel.admin.app.model.web.resource.request.ModelCrea
 import cn.superhuang.data.scalpel.admin.app.model.web.resource.request.ModelFieldUpdateRequest;
 import cn.superhuang.data.scalpel.admin.app.model.web.resource.request.ModelUpdateRequest;
 import cn.superhuang.data.scalpel.admin.app.model.web.resource.response.ModelDetailVO;
-import cn.superhuang.data.scalpel.admin.app.model.web.resource.response.ModelListItemVO;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
-import cn.superhuang.data.scalpel.app.model.model.ModelFieldDTO;
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;

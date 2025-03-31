@@ -1,10 +1,9 @@
 package cn.superhuang.data.scalpel.admin.app.sys.domain;
 
-import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
-import cn.superhuang.data.scalpel.admin.repository.converter.MapConverter;
+import cn.superhuang.data.scalpel.domain.AbstractAuditingEntity;
+import cn.superhuang.data.scalpel.converter.MapConverter;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serializable;
 import java.util.Map;

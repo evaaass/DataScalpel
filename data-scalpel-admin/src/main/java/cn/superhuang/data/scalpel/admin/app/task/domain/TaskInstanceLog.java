@@ -1,8 +1,6 @@
 package cn.superhuang.data.scalpel.admin.app.task.domain;
 
-import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
 import cn.superhuang.data.scalpel.model.enumeration.LogLevel;
-import cn.superhuang.data.scalpel.model.enumeration.TaskInstanceExecutionStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

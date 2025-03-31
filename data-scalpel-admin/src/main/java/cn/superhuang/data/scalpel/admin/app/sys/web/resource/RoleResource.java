@@ -2,14 +2,13 @@ package cn.superhuang.data.scalpel.admin.app.sys.web.resource;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.superhuang.data.scalpel.admin.app.sys.domain.Dict;
 import cn.superhuang.data.scalpel.admin.app.sys.domain.Role;
 import cn.superhuang.data.scalpel.admin.app.sys.repository.RoleRepository;
 import cn.superhuang.data.scalpel.admin.app.sys.service.RoleService;
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.RoleCreateRequest;
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.RoleUpdateRequest;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
-import cn.superhuang.data.scalpel.admin.resource.impl.BaseResource;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
+import cn.superhuang.data.scalpel.impl.BaseResource;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;

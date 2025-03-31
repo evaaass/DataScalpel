@@ -1,13 +1,11 @@
 package cn.superhuang.data.scalpel.admin.app.sys.web.resource;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.superhuang.data.scalpel.admin.app.sys.domain.SysLog;
 import cn.superhuang.data.scalpel.admin.app.sys.repository.SysLogRepository;
 import cn.superhuang.data.scalpel.admin.app.sys.service.SysLogService;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
-import cn.superhuang.data.scalpel.admin.resource.impl.BaseResource;
-import cn.superhuang.data.scalpel.app.sys.web.request.SysLogCreateRequest;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
+import cn.superhuang.data.scalpel.impl.BaseResource;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

@@ -3,13 +3,12 @@ package cn.superhuang.data.scalpel.admin.app.task.web.resource;
 import cn.hutool.core.io.IoUtil;
 import cn.superhuang.data.scalpel.admin.app.task.service.TaskInstanceLogService;
 import cn.superhuang.data.scalpel.admin.app.task.service.TaskManagerService;
-import cn.superhuang.data.scalpel.admin.app.task.service.TaskService;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 
 import cn.superhuang.data.scalpel.admin.app.task.domain.TaskInstance;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
 import cn.superhuang.data.scalpel.admin.app.task.repository.TaskInstanceRepository;
-import cn.superhuang.data.scalpel.admin.resource.impl.BaseResource;
+import cn.superhuang.data.scalpel.impl.BaseResource;
 import cn.superhuang.data.scalpel.model.task.TaskLog;
 import jakarta.annotation.Resource;
 import org.springframework.core.io.InputStreamResource;

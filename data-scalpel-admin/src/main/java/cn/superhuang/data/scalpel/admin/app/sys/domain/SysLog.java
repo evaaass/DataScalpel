@@ -1,16 +1,14 @@
 package cn.superhuang.data.scalpel.admin.app.sys.domain;
 
-import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
+import cn.superhuang.data.scalpel.domain.AbstractAuditingEntity;
 import cn.superhuang.data.scalpel.app.sys.model.emun.LogTargetType;
 import cn.superhuang.data.scalpel.model.enumeration.LogLevel;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @Entity

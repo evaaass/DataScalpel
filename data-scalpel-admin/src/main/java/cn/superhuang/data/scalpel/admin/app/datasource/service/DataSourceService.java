@@ -3,7 +3,7 @@ package cn.superhuang.data.scalpel.admin.app.datasource.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.superhuang.data.scalpel.admin.BaseException;
+import cn.superhuang.data.scalpel.exception.BaseException;
 import cn.superhuang.data.scalpel.admin.app.datasource.dto.*;
 import cn.superhuang.data.scalpel.admin.app.service.impl.adaptor.BaseDsAdaptor;
 import cn.superhuang.data.scalpel.admin.app.datasource.dto.DatasourceAddDTO;

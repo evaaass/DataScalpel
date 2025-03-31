@@ -11,8 +11,8 @@ import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.UserChangeP
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.UserCreateRequest;
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.UserUpdateRequest;
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.vo.UserVO;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
-import cn.superhuang.data.scalpel.admin.resource.impl.BaseResource;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
+import cn.superhuang.data.scalpel.impl.BaseResource;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;

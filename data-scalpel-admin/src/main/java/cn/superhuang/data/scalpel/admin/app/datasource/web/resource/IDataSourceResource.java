@@ -10,7 +10,7 @@ import cn.superhuang.data.scalpel.admin.app.datasource.web.resource.request.Data
 import cn.superhuang.data.scalpel.admin.app.datasource.web.resource.request.DatasourceGetItemMetadataRequestVO;
 import cn.superhuang.data.scalpel.admin.app.datasource.web.resource.request.DatasourceValidateRequestVO;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
 import cn.superhuang.data.scalpel.model.DataTable;
 import cn.superhuang.data.scalpel.model.GenericResult;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;

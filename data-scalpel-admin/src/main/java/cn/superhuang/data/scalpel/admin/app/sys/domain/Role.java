@@ -1,13 +1,11 @@
 package cn.superhuang.data.scalpel.admin.app.sys.domain;
 
-import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
-import cn.superhuang.data.scalpel.admin.repository.converter.ListConverter;
-import cn.superhuang.data.scalpel.admin.repository.converter.MapConverter;
+import cn.superhuang.data.scalpel.domain.AbstractAuditingEntity;
+import cn.superhuang.data.scalpel.converter.ListConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.List;

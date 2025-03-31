@@ -2,8 +2,6 @@ package cn.superhuang.data.scalpel.admin.app.sys.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.util.StrUtil;
-import cn.superhuang.data.scalpel.admin.BaseException;
 import cn.superhuang.data.scalpel.admin.app.sys.domain.Catalog;
 import cn.superhuang.data.scalpel.admin.app.sys.model.CatalogTreeNode;
 import cn.superhuang.data.scalpel.admin.app.sys.repository.CatalogRepository;

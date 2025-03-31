@@ -14,8 +14,8 @@ import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskDefini
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskUpdateRequestVO;
 import cn.superhuang.data.scalpel.admin.app.task.model.TaskDTO;
 import cn.superhuang.data.scalpel.admin.app.task.model.TaskUpdateDTO;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
-import cn.superhuang.data.scalpel.admin.resource.impl.BaseResource;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
+import cn.superhuang.data.scalpel.impl.BaseResource;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;

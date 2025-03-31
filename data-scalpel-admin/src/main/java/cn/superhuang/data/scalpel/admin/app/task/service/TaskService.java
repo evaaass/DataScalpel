@@ -9,7 +9,7 @@ import cn.superhuang.data.scalpel.admin.app.task.service.job.NativeSQLJob;
 import cn.superhuang.data.scalpel.admin.app.task.service.job.SparkJob;
 import cn.superhuang.data.scalpel.model.enumeration.TaskType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cn.superhuang.data.scalpel.admin.BaseException;
+import cn.superhuang.data.scalpel.exception.BaseException;
 import cn.superhuang.data.scalpel.admin.app.datasource.repository.DatasourceRepository;
 import cn.superhuang.data.scalpel.admin.app.model.repository.ModelRepository;
 import cn.superhuang.data.scalpel.admin.app.task.model.enumeration.TaskScheduleType;

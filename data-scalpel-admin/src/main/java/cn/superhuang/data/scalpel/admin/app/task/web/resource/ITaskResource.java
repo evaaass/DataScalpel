@@ -6,7 +6,7 @@ import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.CanvasPreR
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskCreateRequestVO;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskDefinitionUpdateRequestVO;
 import cn.superhuang.data.scalpel.admin.app.task.web.resource.request.TaskUpdateRequestVO;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;

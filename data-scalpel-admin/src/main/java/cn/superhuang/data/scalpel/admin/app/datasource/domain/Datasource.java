@@ -2,18 +2,16 @@ package cn.superhuang.data.scalpel.admin.app.datasource.domain;
 
 import cn.superhuang.data.scalpel.admin.app.datasource.model.enumeration.DatasourceCategory;
 import cn.superhuang.data.scalpel.admin.app.datasource.model.enumeration.DatasourceState;
-import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
-import cn.superhuang.data.scalpel.admin.repository.converter.MapConverter;
+import cn.superhuang.data.scalpel.domain.AbstractAuditingEntity;
+import cn.superhuang.data.scalpel.converter.MapConverter;
 import cn.superhuang.data.scalpel.model.enumeration.DatasourceType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 

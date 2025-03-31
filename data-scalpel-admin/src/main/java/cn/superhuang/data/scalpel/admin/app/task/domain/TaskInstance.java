@@ -1,16 +1,14 @@
 package cn.superhuang.data.scalpel.admin.app.task.domain;
 
-import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
+import cn.superhuang.data.scalpel.domain.AbstractAuditingEntity;
 import cn.superhuang.data.scalpel.model.enumeration.TaskInstanceExecutionStatus;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  * A TaskInstance.

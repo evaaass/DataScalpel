@@ -2,7 +2,7 @@ package cn.superhuang.data.scalpel.admin.app.task.web.resource;
 
 import cn.superhuang.data.scalpel.admin.app.task.domain.TaskInstance;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
 import cn.superhuang.data.scalpel.model.task.TaskLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;

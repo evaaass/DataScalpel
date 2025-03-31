@@ -2,13 +2,13 @@ package cn.superhuang.data.scalpel.admin.app.sys.web.resource;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.superhuang.data.scalpel.admin.BaseException;
+import cn.superhuang.data.scalpel.exception.BaseException;
 import cn.superhuang.data.scalpel.admin.app.sys.domain.Dict;
 import cn.superhuang.data.scalpel.admin.app.sys.repository.DictRepository;
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.DictCreateRequestVO;
 import cn.superhuang.data.scalpel.admin.app.sys.web.resource.request.DictUpdateRequestVO;
-import cn.superhuang.data.scalpel.admin.model.web.GenericSearchRequestDTO;
-import cn.superhuang.data.scalpel.admin.resource.impl.BaseResource;
+import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
+import cn.superhuang.data.scalpel.impl.BaseResource;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotNull;

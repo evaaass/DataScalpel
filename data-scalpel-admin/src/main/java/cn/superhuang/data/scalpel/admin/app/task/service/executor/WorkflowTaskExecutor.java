@@ -55,7 +55,7 @@ public class WorkflowTaskExecutor extends TaskBaseExecutor {
             Set<WorkflowNode> startNodes = getStartNodes(definition);
             Map<String, WorkflowNode> nodeMap = definition.getNodes().stream().collect(Collectors.toMap(WorkflowNode::getId, t -> t));
             recursionRun(startNodes, nodeMap, definition.getLines());
-            applicationEventPublisher.publishEvent(new TaskInstanceCompleteEvent(this, TaskResult.builder().taskId(task.getId()).taskInstanceId(taskInstance.getId()).success(true).startTime(startTime).endTime(new Date()).build()));
+            applicationEventPublisher.publishEvent(new TaskInstanceCompleteEvent(this, TaskResult.builder().taskId(task.getId()).taskInstanceId(taskInstance.getId()).success(true).startTime(startTime).endTime(new Date()).build(), null));
         });
         runningTaskMap.put(channelId, future);
         applicationEventPublisher.publishEvent(new TaskInstanceTriggerCompleteEvent(this, TaskTriggerResult.builder().taskId(task.getId()).taskInstanceId(taskInstance.getId()).success(true).channelId(channelId).build()));
@@ -67,12 +67,12 @@ public class WorkflowTaskExecutor extends TaskBaseExecutor {
             }
             future.cancel(true);
             //TODO 是不是应该加个逻辑，强行结束正在运行的任务
-            applicationEventPublisher.publishEvent(new TaskInstanceCompleteEvent(this, TaskResult.builder().taskId(task.getId()).taskInstanceId(taskInstance.getId()).success(false).message("任务运行时间超过%s，强制中断".formatted(taskTimeout)).build()));
+            applicationEventPublisher.publishEvent(new TaskInstanceCompleteEvent(this, TaskResult.builder().taskId(task.getId()).taskInstanceId(taskInstance.getId()).success(false).message("任务运行时间超过%s，强制中断".formatted(taskTimeout)).build(), null));
         }, taskTimeout, TimeUnit.MINUTES);
     }
 
     @Override
-    public void kill(String channelId)  {
+    public void kill(String channelId) {
         if (!runningTaskMap.containsKey(channelId)) {
             return;
         }

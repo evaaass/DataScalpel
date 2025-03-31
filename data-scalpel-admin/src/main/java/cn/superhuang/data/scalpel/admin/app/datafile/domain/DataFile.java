@@ -2,8 +2,8 @@ package cn.superhuang.data.scalpel.admin.app.datafile.domain;
 
 import cn.superhuang.data.scalpel.admin.app.datafile.model.enumeration.DataFileState;
 import cn.superhuang.data.scalpel.admin.app.datafile.model.enumeration.DataFileType;
-import cn.superhuang.data.scalpel.admin.domain.AbstractAuditingEntity;
-import cn.superhuang.data.scalpel.admin.repository.converter.MapConverter;
+import cn.superhuang.data.scalpel.domain.AbstractAuditingEntity;
+import cn.superhuang.data.scalpel.converter.MapConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Cache;
