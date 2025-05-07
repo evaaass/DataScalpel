@@ -1,7 +1,6 @@
 package cn.superhuang.data.scalpel.admin.app.service.service;
 
 import cn.superhuang.data.scalpel.admin.app.service.domain.RestService;
-import cn.superhuang.data.scalpel.admin.app.service.model.RestServiceMappingItem;
 import cn.superhuang.data.scalpel.admin.app.service.web.BaseServiceRequestHandler;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;

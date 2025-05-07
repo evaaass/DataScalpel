@@ -8,15 +8,9 @@ import cn.superhuang.data.scalpel.actuator.canvas.node.input.configuration.Model
 import cn.superhuang.data.scalpel.actuator.util.DatasetLoadUtil;
 import cn.superhuang.data.scalpel.actuator.util.DatasetTimeRangeUtil;
 import cn.superhuang.data.scalpel.app.model.model.ModelDTO;
-import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialects;
 import lombok.Data;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Data

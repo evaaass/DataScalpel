@@ -7,9 +7,8 @@ import cn.superhuang.data.scalpel.admin.app.datasource.service.DataSourcePoolSer
 import cn.superhuang.data.scalpel.admin.app.model.domain.Model;
 import cn.superhuang.data.scalpel.admin.app.model.repository.ModelRepository;
 import cn.superhuang.data.scalpel.admin.app.service.domain.RestService;
-import cn.superhuang.data.scalpel.admin.app.service.model.JdbcQueryDataArgs;
-import cn.superhuang.data.scalpel.admin.app.service.model.RestServiceMappingItem;
-import cn.superhuang.data.scalpel.admin.app.service.model.definition.StdServiceDefinition;
+import cn.superhuang.data.scalpel.model.common.jdbc.JdbcQueryDataArgs;
+import cn.superhuang.data.scalpel.model.service.definition.StdServiceDefinition;
 import cn.superhuang.data.scalpel.admin.app.service.repository.RestServiceRepository;
 import cn.superhuang.data.scalpel.admin.app.service.service.DynamicMappingService;
 import cn.superhuang.data.scalpel.admin.util.QueryDslUtil;

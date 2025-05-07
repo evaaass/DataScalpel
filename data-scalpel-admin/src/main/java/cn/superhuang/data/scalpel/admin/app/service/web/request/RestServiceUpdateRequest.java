@@ -1,7 +1,5 @@
 package cn.superhuang.data.scalpel.admin.app.service.web.request;
 
-import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceState;
-import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

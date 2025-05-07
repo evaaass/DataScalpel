@@ -31,7 +31,7 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.List;
 
-public class PostgresDialect extends SysJdbcDialect implements Serializable {
+public class PostgresDialect extends DsJdbcDialect implements Serializable {
     @Serial
     private static final long serialVersionUID = 6196131149975270415L;
 

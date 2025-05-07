@@ -3,9 +3,9 @@ package cn.superhuang.data.scalpel.admin.app.service.service.adapter;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.superhuang.data.scalpel.admin.app.datasource.repository.DatasourceRepository;
 import cn.superhuang.data.scalpel.admin.app.service.domain.RestService;
-import cn.superhuang.data.scalpel.admin.app.service.model.RestServiceTestResult;
-import cn.superhuang.data.scalpel.admin.app.service.model.definition.ScriptServiceDefinition;
-import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceType;
+import cn.superhuang.data.scalpel.model.service.ServiceTestResult;
+import cn.superhuang.data.scalpel.model.service.definition.ScriptServiceDefinition;
+import cn.superhuang.data.scalpel.model.service.enumeration.RestServiceType;
 import cn.superhuang.data.scalpel.admin.app.service.repository.RestServiceRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +23,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.ssssssss.magicapi.core.config.Constants.VAR_NAME_HEADER;
 
@@ -44,8 +43,8 @@ public class RestServiceScriptAdapter implements RestServiceAdapter, Initializin
     }
 
     @Override
-    public RestServiceTestResult test(RestService service, HttpServletRequest request, HttpServletResponse response) {
-        RestServiceTestResult serviceTestResult = new RestServiceTestResult();
+    public ServiceTestResult test(RestService service, HttpServletRequest request, HttpServletResponse response) {
+        ServiceTestResult serviceTestResult = new ServiceTestResult();
         try {
             ScriptServiceDefinition serviceDefinition = objectMapper.readValue(service.getServiceDefinition(), ScriptServiceDefinition.class);
 

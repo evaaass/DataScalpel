@@ -2,8 +2,8 @@ package cn.superhuang.data.scalpel.admin.app.service.web;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.superhuang.data.scalpel.admin.app.service.domain.RestService;
-import cn.superhuang.data.scalpel.admin.app.service.model.RestServiceDetail;
-import cn.superhuang.data.scalpel.admin.app.service.model.RestServiceTestResult;
+import cn.superhuang.data.scalpel.model.service.RestServiceDetail;
+import cn.superhuang.data.scalpel.model.service.ServiceTestResult;
 import cn.superhuang.data.scalpel.admin.app.service.repository.RestServiceRepository;
 import cn.superhuang.data.scalpel.admin.app.service.service.RestServiceManagerService;
 import cn.superhuang.data.scalpel.admin.app.service.web.request.RestServiceCreateRequest;
@@ -59,7 +59,7 @@ public class RestServiceResource implements IRestServiceResource {
     }
 
     @Override
-    public GenericResponse<RestServiceTestResult> test(RestServiceTestRequest testRequest) {
+    public GenericResponse<ServiceTestResult> test(RestServiceTestRequest testRequest) {
         return GenericResponse.ok(restServiceManagerService.testService(testRequest.getServiceDefinition()));
     }
 

@@ -3,8 +3,8 @@ package cn.superhuang.test;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
 import cn.superhuang.data.scalpel.model.enumeration.DatasourceType;
 import cn.superhuang.data.scalpel.model.enumeration.DbType;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialects;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialect;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialects;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
@@ -15,8 +15,8 @@ import java.util.Map;
 public class SparkSessionTest {
     public static void main(String[] args) {
 
-        SysJdbcDialect jdbcDialect = SysJdbcDialects.get(DbType.POSTGRESQL);
-        SysJdbcDialects.initSparkDialects();
+        DsJdbcDialect jdbcDialect = DsJdbcDialects.get(DbType.POSTGRESQL);
+        DsJdbcDialects.initSparkDialects();
 
         JdbcConfig jdbcConfig = new JdbcConfig();
         jdbcConfig.setDbType(DbType.POSTGRESQL);

@@ -12,7 +12,7 @@ public class OceanBaseMySQLDialect extends MySQLDialect implements Serializable 
 
     @Override
     public Boolean canHandle(DbType type) {
-        return type == DbType.OCEANBASE_MYSQL;
+        return type == DbType.OCEAN_BASE_MYSQL;
     }
 
     @Override

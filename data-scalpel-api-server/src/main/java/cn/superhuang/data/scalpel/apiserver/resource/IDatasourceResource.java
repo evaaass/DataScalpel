@@ -28,9 +28,9 @@ public interface IDatasourceResource {
     @GetMapping("/data-sources")
     GenericResponse<Page<Datasource>> search(@ParameterObject GenericSearchRequestDTO searchRequest);
 
-    @Operation(summary = "创建", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "3", parseValue = true)})})
+    @Operation(summary = "注册", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "3", parseValue = true)})})
     @PostMapping("/data-sources")
-    GenericResponse<Datasource> createDatasource(@Valid @RequestBody DatasourceCreateRequestVO createDatasourceRequest) throws Exception;
+    GenericResponse<Datasource> registerDatasource(@Valid @RequestBody DatasourceCreateRequestVO createDatasourceRequest) throws Exception;
 
     @Operation(summary = "修改", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "4", parseValue = true)})})
     @PutMapping("/data-sources/{id}")

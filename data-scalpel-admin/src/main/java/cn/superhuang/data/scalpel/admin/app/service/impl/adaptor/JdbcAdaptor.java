@@ -19,8 +19,8 @@ import cn.superhuang.data.scalpel.model.datasource.config.DatasourceConfig;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
 import cn.superhuang.data.scalpel.model.enumeration.ColumnType;
 import cn.superhuang.data.scalpel.model.enumeration.DbType;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialects;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialect;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialects;
 import cn.superhuang.data.scalpel.spark.core.util.ScalaUtil;
 import org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions;
 import org.apache.spark.sql.execution.datasources.jdbc.JdbcUtils;
@@ -64,7 +64,7 @@ public class JdbcAdaptor extends BaseDsAdaptor {
         DsCheckResult result = new DsCheckResult();
         try {
             JdbcConfig jdbcConfig = (JdbcConfig) datasourceConfig;
-            SysJdbcDialect jdbcDialect = SysJdbcDialects.get(jdbcConfig.getDbType());
+            DsJdbcDialect jdbcDialect = DsJdbcDialects.get(jdbcConfig.getDbType());
             Class.forName(jdbcDialect.getDriver());
             try (Connection conn = DriverManager.getConnection(jdbcDialect.buildUrl(jdbcConfig), jdbcConfig.getUsername(), jdbcConfig.getPassword())) {
                 result.setSuccess(true);
@@ -80,7 +80,7 @@ public class JdbcAdaptor extends BaseDsAdaptor {
     @Override
     public List<DsItem> listItem(DatasourceConfig datasourceConfig, DsListItemArgs listItemArgs) {
         JdbcConfig jdbcConfig = (JdbcConfig) datasourceConfig;
-        SysJdbcDialect jdbcDialect = SysJdbcDialects.get(jdbcConfig.getDbType());
+        DsJdbcDialect jdbcDialect = DsJdbcDialects.get(jdbcConfig.getDbType());
         try {
             Class.forName(jdbcDialect.getDriver());
             try (Connection conn = DriverManager.getConnection(jdbcDialect.buildUrl(jdbcConfig), jdbcConfig.getUsername(), jdbcConfig.getPassword())) {
@@ -113,7 +113,7 @@ public class JdbcAdaptor extends BaseDsAdaptor {
     @Override
     public DsItemMetadata getItemMetadata(DatasourceConfig datasourceConfig, DsGetItemMetadataArgs getItemMetadataArgs) {
         JdbcConfig jdbcConfig = (JdbcConfig) datasourceConfig;
-        SysJdbcDialect jdbcDialect = SysJdbcDialects.get(jdbcConfig.getDbType());
+        DsJdbcDialect jdbcDialect = DsJdbcDialects.get(jdbcConfig.getDbType());
         try {
             Class.forName(jdbcDialect.getDriver());
             DsItemMetadata dsItemMetadata = new DsItemMetadata();
@@ -162,7 +162,7 @@ public class JdbcAdaptor extends BaseDsAdaptor {
     @Override
     public DsItemPreviewResult getItemPreviewData(DatasourceConfig datasourceConfig, DsGetItemPreviewDataArgs getItemPreviewDataArgs) {
         JdbcConfig jdbcConfig = (JdbcConfig) datasourceConfig;
-        SysJdbcDialect jdbcDialect = SysJdbcDialects.get(jdbcConfig.getDbType());
+        DsJdbcDialect jdbcDialect = DsJdbcDialects.get(jdbcConfig.getDbType());
         try {
             try (Connection conn = DriverManager.getConnection(jdbcDialect.buildUrl(jdbcConfig), jdbcConfig.getUsername(), jdbcConfig.getPassword())) {
                 String tableName = jdbcDialect.getTableWithSchema(getItemPreviewDataArgs.getItem(), jdbcConfig);

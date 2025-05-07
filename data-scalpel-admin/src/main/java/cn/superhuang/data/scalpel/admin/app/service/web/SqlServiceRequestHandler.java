@@ -9,14 +9,13 @@ import cn.superhuang.data.scalpel.admin.app.datasource.service.DataSourcePoolSer
 import cn.superhuang.data.scalpel.admin.app.model.domain.Model;
 import cn.superhuang.data.scalpel.admin.app.model.repository.ModelRepository;
 import cn.superhuang.data.scalpel.admin.app.service.domain.RestService;
-import cn.superhuang.data.scalpel.admin.app.service.model.RestServiceMappingItem;
-import cn.superhuang.data.scalpel.admin.app.service.model.definition.SqlServiceDefinition;
+import cn.superhuang.data.scalpel.model.service.definition.SqlServiceDefinition;
 import cn.superhuang.data.scalpel.admin.app.service.service.DynamicMappingService;
 import cn.superhuang.data.scalpel.model.datasource.config.DatasourceConfig;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialects;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialect;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialects;
 import cn.superhuang.data.scalpel.spark.core.util.ScalaUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
@@ -69,7 +68,7 @@ public class SqlServiceRequestHandler implements BaseServiceRequestHandler {
 
         Datasource dataSource = datasourceRepository.getReferenceById(models.get(0).getDatasourceId());
         JdbcConfig jdbcConfig = (JdbcConfig) DatasourceConfig.getConfig(dataSource.getType(), dataSource.getProps());
-        SysJdbcDialect jdbcDialect = SysJdbcDialects.get(jdbcConfig.getDbType());
+        DsJdbcDialect jdbcDialect = DsJdbcDialects.get(jdbcConfig.getDbType());
 
 
         Map<String, String> jdbcOptionsMap = new HashMap<>();

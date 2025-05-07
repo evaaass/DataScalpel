@@ -7,7 +7,7 @@ import cn.superhuang.data.scalpel.spark.core.dialect.change.DmpAddPkChange;
 import cn.superhuang.data.scalpel.spark.core.dialect.change.DmpDropPkChange;
 import cn.superhuang.data.scalpel.spark.core.dialect.change.DmpUpdateColumnComment;
 import cn.superhuang.data.scalpel.model.enumeration.ColumnType;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialect;
 import org.apache.spark.sql.connector.catalog.TableChange;
 import org.apache.spark.sql.execution.datasources.jdbc.JdbcUtils;
 import org.apache.spark.sql.sedona_sql.UDT.GeometryUDT;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 public class JdbcDdlUtil {
 
-    public static String[] getCreateTableSql(SysJdbcDialect dialect, Model model, List<ModelField> fields) {
+    public static String[] getCreateTableSql(DsJdbcDialect dialect, Model model, List<ModelField> fields) {
         String schemaString = schemaString(dialect, fields);
         //TODO 后面用来扩展...
         String createTableOptions = "";
@@ -49,12 +49,12 @@ public class JdbcDdlUtil {
         return sqlList.toArray(sqlList.toArray(new String[0]));
     }
 
-    public static String[] getDropTableSql(SysJdbcDialect dialect, Model model) {
+    public static String[] getDropTableSql(DsJdbcDialect dialect, Model model) {
         String dropSql = "DROP TABLE " + dialect.quoteIdentifier(model.getName());
         return new String[]{dropSql};
     }
 
-    public static String[] getUpdateTableSql(SysJdbcDialect dialect, String tableName, List<ModelField> oldFields,
+    public static String[] getUpdateTableSql(DsJdbcDialect dialect, String tableName, List<ModelField> oldFields,
                                              List<ModelField> newFields, Integer dbMajorVersion) {
         List<TableChange> tableChanges = getTableChanges(oldFields, newFields);
         Seq<TableChange> tableChangeSeq = JavaConverters.asScalaIteratorConverter(tableChanges.iterator()).asScala()
@@ -64,7 +64,7 @@ public class JdbcDdlUtil {
     }
 
 
-    public static String schemaString(SysJdbcDialect dialect, List<ModelField> fields) {
+    public static String schemaString(DsJdbcDialect dialect, List<ModelField> fields) {
         return fields.stream().map(field -> {
             String name = field.getName();
             String nullableStr = field.getNullable() ? "" : "NOT NULL";

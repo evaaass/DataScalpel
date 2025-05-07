@@ -7,16 +7,10 @@ import cn.superhuang.data.scalpel.actuator.canvas.node.input.configuration.JdbcI
 import cn.superhuang.data.scalpel.actuator.canvas.node.input.configuration.JdbcInputItem;
 import cn.superhuang.data.scalpel.actuator.util.DatasetLoadUtil;
 import cn.superhuang.data.scalpel.actuator.util.DatasetTimeRangeUtil;
-import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialects;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Data

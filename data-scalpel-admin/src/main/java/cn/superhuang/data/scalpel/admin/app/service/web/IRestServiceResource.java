@@ -1,8 +1,8 @@
 package cn.superhuang.data.scalpel.admin.app.service.web;
 
 import cn.superhuang.data.scalpel.admin.app.service.domain.RestService;
-import cn.superhuang.data.scalpel.admin.app.service.model.RestServiceDetail;
-import cn.superhuang.data.scalpel.admin.app.service.model.RestServiceTestResult;
+import cn.superhuang.data.scalpel.model.service.RestServiceDetail;
+import cn.superhuang.data.scalpel.model.service.ServiceTestResult;
 import cn.superhuang.data.scalpel.admin.app.service.web.request.RestServiceCreateRequest;
 import cn.superhuang.data.scalpel.admin.app.service.web.request.RestServiceTestRequest;
 import cn.superhuang.data.scalpel.admin.app.service.web.request.RestServiceUpdateRequest;
@@ -50,7 +50,7 @@ public interface IRestServiceResource {
 
     @Operation(summary = "测试", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "10", parseValue = true)})})
     @PostMapping("/services/{id}/actions/test")
-    GenericResponse<RestServiceTestResult> test(@RequestBody RestServiceTestRequest testRequest);
+    GenericResponse<ServiceTestResult> test(@RequestBody RestServiceTestRequest testRequest);
 
     @Operation(summary = "上线", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "12", parseValue = true)})})
     @PostMapping("/services/{id}/actions/online")

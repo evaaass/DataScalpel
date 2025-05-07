@@ -51,6 +51,11 @@
             <artifactId>gt-main</artifactId>
             <version>29.6</version>
         </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-shapefile</artifactId>
+            <version>29.6</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.geotools/gt-shapefile -->
         <dependency>
             <groupId>org.geotools</groupId>

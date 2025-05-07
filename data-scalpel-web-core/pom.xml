@@ -43,11 +43,7 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-core</artifactId>
-            <version>5.0.0</version>
-        </dependency>
+
         <dependency>
             <groupId>cn.superhuang</groupId>
             <artifactId>data-scalpel-spark-core</artifactId>

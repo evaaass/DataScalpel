@@ -11,8 +11,8 @@ import cn.superhuang.data.scalpel.dsl.dsl.DslSpecification;
 import cn.superhuang.data.scalpel.dsl.dsl.DslSpecificationsBuilder;
 import cn.superhuang.data.scalpel.model.datasource.config.DatasourceConfig;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialects;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialect;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialects;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -53,7 +53,7 @@ public class ModeDataService {
                     List<ModelField> modelFields = modelFieldRepository.findAllByModelId(modelId);
                     PathBuilder[] fields = modelFields.stream().map(modelField -> pathBuilder.get(modelField.getName())).toArray(PathBuilder[]::new);
                     JdbcConfig jdbcConfig = (JdbcConfig) DatasourceConfig.getConfig(datasource.getType(), datasource.getProps());
-                    SysJdbcDialect jdbcDialect = SysJdbcDialects.get(jdbcConfig.getDbType());
+                    DsJdbcDialect jdbcDialect = DsJdbcDialects.get(jdbcConfig.getDbType());
                     Class.forName(jdbcDialect.getDriver());
                     try (Connection conn = DriverManager.getConnection(jdbcDialect.buildUrl(jdbcConfig), jdbcConfig.getUsername(), jdbcConfig.getPassword())) {
                         final SQLQuery<Object> rootSqlQuery = new SQLQuery<>(conn, jdbcDialect.getSQLTemplates());

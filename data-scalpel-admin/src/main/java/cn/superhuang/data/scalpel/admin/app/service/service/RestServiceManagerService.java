@@ -3,9 +3,9 @@ package cn.superhuang.data.scalpel.admin.app.service.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.superhuang.data.scalpel.admin.app.service.domain.RestService;
-import cn.superhuang.data.scalpel.admin.app.service.model.RestServiceDetail;
-import cn.superhuang.data.scalpel.admin.app.service.model.RestServiceTestResult;
-import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceState;
+import cn.superhuang.data.scalpel.model.service.RestServiceDetail;
+import cn.superhuang.data.scalpel.model.service.ServiceTestResult;
+import cn.superhuang.data.scalpel.model.service.enumeration.RestServiceState;
 import cn.superhuang.data.scalpel.admin.app.service.repository.RestServiceRepository;
 import cn.superhuang.data.scalpel.util.GenericSearchUtil;
 import jakarta.annotation.Resource;
@@ -54,8 +54,8 @@ public class RestServiceManagerService {
         return serviceRepository.findAll(spec, pageRequest);
     }
 
-    public RestServiceTestResult testService(String serviceDefinition) {
-        RestServiceTestResult result = new RestServiceTestResult();
+    public ServiceTestResult testService(String serviceDefinition) {
+        ServiceTestResult result = new ServiceTestResult();
         result.setSuccess(true);
         return result;
     }

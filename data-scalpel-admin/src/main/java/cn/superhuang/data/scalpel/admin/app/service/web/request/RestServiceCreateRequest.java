@@ -1,11 +1,7 @@
 package cn.superhuang.data.scalpel.admin.app.service.web.request;
 
-import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceState;
-import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceType;
+import cn.superhuang.data.scalpel.model.service.enumeration.RestServiceType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 @Data

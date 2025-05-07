@@ -1,8 +1,8 @@
 package cn.superhuang.data.scalpel.admin.app.datasource.service;
 
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialects;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialect;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialects;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class DataSourcePoolService {
     public DataSource getDataSource(JdbcConfig jdbcConfig) throws Exception {
         String id = jdbcConfig.getUniqueId();
         if (!dataSourceMap.containsKey(id)) {
-            SysJdbcDialect jdbcDialect = SysJdbcDialects.get(jdbcConfig.getDbType());
+            DsJdbcDialect jdbcDialect = DsJdbcDialects.get(jdbcConfig.getDbType());
             HikariConfig config = new HikariConfig();
             config.setDriverClassName(jdbcDialect.getDriver());
             config.setJdbcUrl(jdbcDialect.buildUrl(jdbcConfig)); // 数据库URL

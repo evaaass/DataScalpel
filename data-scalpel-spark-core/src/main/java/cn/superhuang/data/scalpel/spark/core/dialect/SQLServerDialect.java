@@ -27,7 +27,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.HashMap;
 
-public class SQLServerDialect extends SysJdbcDialect implements Serializable {
+public class SQLServerDialect extends DsJdbcDialect implements Serializable {
     @Serial
     private static final long serialVersionUID = 8831783637423728123L;
 

@@ -30,7 +30,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.HashMap;
 
-public class MySQLDialect extends SysJdbcDialect implements Serializable {
+public class MySQLDialect extends DsJdbcDialect implements Serializable {
     @Serial
     private static final long serialVersionUID = 3886451344956819656L;
 

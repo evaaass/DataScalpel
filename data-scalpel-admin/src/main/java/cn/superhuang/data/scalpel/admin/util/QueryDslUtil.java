@@ -2,12 +2,12 @@ package cn.superhuang.data.scalpel.admin.util;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.db.meta.Column;
-import cn.superhuang.data.scalpel.admin.app.service.model.JdbcQueryDataArgs;
-import cn.superhuang.data.scalpel.admin.app.service.model.JdbcQueryDataOrder;
-import cn.superhuang.data.scalpel.admin.app.service.model.JdbcQueryDataOrderDirection;
+import cn.superhuang.data.scalpel.model.common.jdbc.JdbcQueryDataArgs;
+import cn.superhuang.data.scalpel.model.common.jdbc.JdbcQueryDataOrder;
+import cn.superhuang.data.scalpel.model.common.jdbc.JdbcQueryDataOrderDirection;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialects;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialect;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialects;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Order;
@@ -26,7 +26,7 @@ public class QueryDslUtil {
 
     public static List<Map<String, Object>> queryData(DataSource dataSource, JdbcQueryDataArgs queryDataArgs) throws Exception {
         JdbcConfig jdbcConfig = queryDataArgs.getJdbcConfig();
-        SysJdbcDialect jdbcDialect = SysJdbcDialects.get(jdbcConfig.getDbType());
+        DsJdbcDialect jdbcDialect = DsJdbcDialects.get(jdbcConfig.getDbType());
 
         List<Map<String, Object>> results = new ArrayList<>();
         AtomicReference<Long> count = new AtomicReference<>(0L);

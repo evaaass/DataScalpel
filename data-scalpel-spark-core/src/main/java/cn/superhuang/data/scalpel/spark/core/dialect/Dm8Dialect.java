@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static org.apache.spark.sql.types.DataTypes.BooleanType;
 
-public class Dm8Dialect extends SysJdbcDialect implements Serializable {
+public class Dm8Dialect extends DsJdbcDialect implements Serializable {
     @Serial
     private static final long serialVersionUID = 4824719886455270557L;
 

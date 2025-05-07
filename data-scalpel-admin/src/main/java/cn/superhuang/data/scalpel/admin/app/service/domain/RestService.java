@@ -1,8 +1,8 @@
 package cn.superhuang.data.scalpel.admin.app.service.domain;
 
-import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceMethod;
-import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceState;
-import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceType;
+import cn.superhuang.data.scalpel.model.service.enumeration.RestServiceMethod;
+import cn.superhuang.data.scalpel.model.service.enumeration.RestServiceState;
+import cn.superhuang.data.scalpel.model.service.enumeration.RestServiceType;
 import cn.superhuang.data.scalpel.domain.AbstractAuditingEntity;
 import jakarta.persistence.*;
 import lombok.Data;

@@ -8,7 +8,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class HiveDialect extends SysJdbcDialect implements Serializable {
+public class HiveDialect extends DsJdbcDialect implements Serializable {
     @Serial
     private static final long serialVersionUID = -4758449047543430979L;
 

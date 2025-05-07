@@ -6,8 +6,8 @@ import cn.superhuang.data.scalpel.admin.app.model.domain.Model;
 import cn.superhuang.data.scalpel.admin.app.model.domain.ModelField;
 import cn.superhuang.data.scalpel.admin.util.JdbcDdlUtil;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialects;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialect;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialects;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -23,20 +23,20 @@ public class ModelDdlService {
 
 
     public void createTable(JdbcConfig jdbcConfig, Model model, List<ModelField> fields) throws Exception {
-        SysJdbcDialect dialect = SysJdbcDialects.get(jdbcConfig.getDbType());
+        DsJdbcDialect dialect = DsJdbcDialects.get(jdbcConfig.getDbType());
         String[] sqlList = JdbcDdlUtil.getCreateTableSql(dialect, model, fields);
         Db.use(datasourcePoolService.getDataSource(jdbcConfig)).executeBatch(sqlList);
     }
 
     public void dropTable(JdbcConfig jdbcConfig, Model model) throws Exception {
-        SysJdbcDialect dialect = SysJdbcDialects.get(jdbcConfig.getDbType());
+        DsJdbcDialect dialect = DsJdbcDialects.get(jdbcConfig.getDbType());
         String[] sqlList = JdbcDdlUtil.getDropTableSql(dialect, model);
         Db.use(datasourcePoolService.getDataSource(jdbcConfig)).executeBatch(sqlList);
     }
 
     public void updateTable(JdbcConfig jdbcConfig, Model model, List<ModelField> oldFields, List<ModelField> newFields)
             throws Exception {
-        SysJdbcDialect dialect = SysJdbcDialects.get(jdbcConfig.getDbType());
+        DsJdbcDialect dialect = DsJdbcDialects.get(jdbcConfig.getDbType());
         DataSource dataSource = datasourcePoolService.getDataSource(jdbcConfig);
         Integer dbMajorVersion;
         try (Connection connection = dataSource.getConnection()) {

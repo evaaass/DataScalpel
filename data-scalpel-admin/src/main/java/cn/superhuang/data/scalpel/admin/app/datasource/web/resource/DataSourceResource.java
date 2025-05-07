@@ -39,8 +39,6 @@ import java.util.Optional;
 public class DataSourceResource extends BaseResource implements IDataSourceResource {
 
 	private final Logger log = LoggerFactory.getLogger(DataSourceResource.class);
-
-	private static final String ENTITY_NAME = "datasource";
 	@Resource
 	private DataSourceService datasourceService;
 	@Resource

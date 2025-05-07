@@ -14,6 +14,5 @@ public class BaseResource {
 
     protected PageRequest resolvePageRequest(String limit, String sort) {
         return GenericSearchUtil.resolvePageRequest(limit, sort);
-
     }
 }

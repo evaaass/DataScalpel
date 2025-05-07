@@ -9,7 +9,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class ClickhouseDialect extends SysJdbcDialect implements Serializable {
+public class ClickhouseDialect extends DsJdbcDialect implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -8905684848521642218L;

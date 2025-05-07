@@ -28,7 +28,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.HashMap;
 
-public class OracleDialect extends SysJdbcDialect implements Serializable {
+public class OracleDialect extends DsJdbcDialect implements Serializable {
 
 
     @Serial

@@ -7,10 +7,10 @@ import cn.superhuang.data.scalpel.admin.app.datasource.service.DataSourcePoolSer
 import cn.superhuang.data.scalpel.admin.app.model.domain.Model;
 import cn.superhuang.data.scalpel.admin.app.model.repository.ModelRepository;
 import cn.superhuang.data.scalpel.admin.app.service.domain.RestService;
-import cn.superhuang.data.scalpel.admin.app.service.model.JdbcQueryDataArgs;
-import cn.superhuang.data.scalpel.admin.app.service.model.RestServiceTestResult;
-import cn.superhuang.data.scalpel.admin.app.service.model.definition.StdServiceDefinition;
-import cn.superhuang.data.scalpel.admin.app.service.model.enumeration.RestServiceType;
+import cn.superhuang.data.scalpel.model.common.jdbc.JdbcQueryDataArgs;
+import cn.superhuang.data.scalpel.model.service.ServiceTestResult;
+import cn.superhuang.data.scalpel.model.service.definition.StdServiceDefinition;
+import cn.superhuang.data.scalpel.model.service.enumeration.RestServiceType;
 import cn.superhuang.data.scalpel.admin.app.service.repository.RestServiceRepository;
 import cn.superhuang.data.scalpel.admin.app.service.service.DynamicMappingService;
 import cn.superhuang.data.scalpel.admin.app.service.web.StdServiceRequestHandler;
@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class RestServiceStdAdapter implements RestServiceAdapter, InitializingBean {
@@ -54,8 +53,8 @@ public class RestServiceStdAdapter implements RestServiceAdapter, InitializingBe
     }
 
     @Override
-    public RestServiceTestResult test(RestService service, HttpServletRequest request, HttpServletResponse response) {
-        RestServiceTestResult serviceTestResult = new RestServiceTestResult();
+    public ServiceTestResult test(RestService service, HttpServletRequest request, HttpServletResponse response) {
+        ServiceTestResult serviceTestResult = new ServiceTestResult();
         try {
             String sdContent = service.getServiceDefinition();
             StdServiceDefinition serviceDefinition = objectMapper.readValue(sdContent, StdServiceDefinition.class);

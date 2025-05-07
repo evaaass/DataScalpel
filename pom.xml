@@ -23,6 +23,7 @@
         <module>data-scalpel-model</module>
         <module>data-scalpel-api-server</module>
         <module>data-scalpel-web-core</module>
+        <module>data-scalpel-lib-jdbc-query</module>
         <!--        <module>data-scalpel-admin-spark</module>-->
     </modules>
     <properties>

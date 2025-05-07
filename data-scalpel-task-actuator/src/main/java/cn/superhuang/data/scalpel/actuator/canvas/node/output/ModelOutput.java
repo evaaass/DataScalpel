@@ -10,8 +10,8 @@ import cn.superhuang.data.scalpel.actuator.canvas.node.output.configuration.Mode
 import cn.superhuang.data.scalpel.app.model.model.ModelDTO;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
 import cn.superhuang.data.scalpel.model.enumeration.DataSaveMode;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialects;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialect;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialects;
 import cn.superhuang.data.scalpel.spark.core.util.SparkUtil;
 import lombok.Data;
 import org.apache.spark.sql.Column;
@@ -34,7 +34,7 @@ public class ModelOutput extends CanvasNode {
             ModelDTO model = getContext().getTaskConfiguration().getModelMap().get(outputMapping.getTargetItem());
             JdbcConfig jdbcConfig = (JdbcConfig) getContext().getTaskConfiguration().getDatasourceMap().get(model.getDatasourceId());
 
-            SysJdbcDialect jdbcDialect = SysJdbcDialects.get(jdbcConfig.getDbType());
+            DsJdbcDialect jdbcDialect = DsJdbcDialects.get(jdbcConfig.getDbType());
 
             CanvasTable table = inputData.getTableMap().get(outputMapping.getSourceTable());
 

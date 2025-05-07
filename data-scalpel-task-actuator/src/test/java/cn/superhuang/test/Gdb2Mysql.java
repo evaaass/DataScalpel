@@ -3,8 +3,8 @@ package cn.superhuang.test;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
 import cn.superhuang.data.scalpel.model.enumeration.DatasourceType;
 import cn.superhuang.data.scalpel.model.enumeration.DbType;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialect;
-import cn.superhuang.data.scalpel.spark.core.dialect.SysJdbcDialects;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialect;
+import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialects;
 import com.esri.gdb.FileGDB;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.spark.sql.Dataset;
@@ -26,8 +26,8 @@ public class Gdb2Mysql {
             return;
         }
 
-        SysJdbcDialect jdbcDialect = SysJdbcDialects.get(DbType.MYSQL);
-        SysJdbcDialects.initSparkDialects();
+        DsJdbcDialect jdbcDialect = DsJdbcDialects.get(DbType.MYSQL);
+        DsJdbcDialects.initSparkDialects();
 
         JdbcConfig jdbcConfig = new JdbcConfig();
         jdbcConfig.setDbType(DbType.MYSQL);

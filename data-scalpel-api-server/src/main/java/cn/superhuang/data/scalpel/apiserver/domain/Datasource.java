@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Data
 @Entity
-@Table(name = "admin_datasource")
+@Table(name = "api_datasource")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Datasource extends AbstractAuditingEntity<String> implements Serializable {

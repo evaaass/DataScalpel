@@ -8,7 +8,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class TDEngineRSDialect extends SysJdbcDialect implements Serializable {
+public class TDEngineRSDialect extends DsJdbcDialect implements Serializable {
     @Serial
     private static final long serialVersionUID = 3611418504839864962L;
 
