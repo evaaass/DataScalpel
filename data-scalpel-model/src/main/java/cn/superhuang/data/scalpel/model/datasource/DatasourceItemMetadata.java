@@ -8,6 +8,7 @@ import java.util.Set;
 @Data
 public class DatasourceItemMetadata {
     private String item;
+    private String alias;
     private String comment;
     private Set<String> pkNames;
     private List<DatasourceItemColumnMetadata> columns;

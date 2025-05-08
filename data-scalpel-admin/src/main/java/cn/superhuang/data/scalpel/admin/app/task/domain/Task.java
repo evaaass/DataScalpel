@@ -1,6 +1,7 @@
 package cn.superhuang.data.scalpel.admin.app.task.domain;
 
 import cn.hutool.core.util.StrUtil;
+import cn.superhuang.data.scalpel.config.RequestParamsErrorException;
 import cn.superhuang.data.scalpel.domain.AbstractAuditingEntity;
 import cn.superhuang.data.scalpel.admin.app.task.model.enumeration.TaskScheduleType;
 import cn.superhuang.data.scalpel.admin.app.task.model.enumeration.TaskStatus;

@@ -20,6 +20,7 @@ import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialects;
 import cn.superhuang.data.scalpel.spark.core.dialect.TDEngineDialect;
 import cn.superhuang.data.scalpel.spark.core.dialect.TDEngineRSDialect;
 import cn.superhuang.data.scalpel.spark.core.util.ScalaUtil;
+import cn.superhuang.data.scalpel.spark.core.util.SchemaUtil;
 import com.google.common.collect.Lists;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.*;
@@ -74,7 +75,7 @@ public class JdbcDataQueryUtil {
         AtomicReference<StructType> schemaRef = new AtomicReference<>();
         List<Entity> entities = DbUtil.use(dataSource).query(sql, (RsHandler<List<Entity>>) rs -> {
             if (schemaRef.get() == null) {
-                schemaRef.set(JdbcUtils.getSchema(rs, jdbcDialect, true, false));
+                schemaRef.set(JdbcUtils.getSchema(null, rs, jdbcDialect, true, false));
             }
             return HandleHelper.handleRs(rs, new ArrayList<>(), true);
         });
@@ -305,7 +306,7 @@ public class JdbcDataQueryUtil {
             AtomicReference<StructType> schemaRef = new AtomicReference<>();
             List<Entity> entities = SqlExecutor.query(conn, sql, (RsHandler<List<Entity>>) rs -> {
                 if (schemaRef.get() == null) {
-                    schemaRef.set(JdbcUtils.getSchema(rs, jdbcDialect, true, false));
+                    schemaRef.set(JdbcUtils.getSchema(conn, rs, jdbcDialect, true, false));
                 }
                 return HandleHelper.handleRs(rs, new ArrayList<>(), false);
             }, sqlQuery.getSQL().getNullFriendlyBindings().toArray());

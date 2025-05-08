@@ -1,0 +1,58 @@
+package cn.superhuang.data.scalpel.apiserver.config;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
+import com.jxstjh.common.core.serialize.JavaTimeModule;
+import com.jxstjh.data.bank.api.server.app.inter.AuthInterceptor;
+import com.jxstjh.data.bank.api.server.app.inter.ServiceAbnormalInterceptor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+
+/**
+ * 扩展webmvc配置
+ *
+ * @author real
+ * @date 2024/7/15
+ */
+@Slf4j
+@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
+
+    @Resource
+    private ObjectMapper objectMapper;
+    @Resource
+    private ServiceAbnormalInterceptor serviceAbnormalInterceptor;
+    @Resource
+    private AuthInterceptor authInterceptor;
+
+
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.removeIf(MappingJackson2HttpMessageConverter.class::isInstance);
+        MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+//        SimpleModule simpleModule = new SimpleModule();
+//        simpleModule.addSerializer(DmdbNClob.class, new JacksonCustomizerConfig.DmdbNClobSerializer());
+//        objectMapper.registerModule(simpleModule);
+//        // 反序列化时忽略多余字段
+//        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.registerModule(new JavaTimeModule());
+        mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper);
+        mappingJackson2HttpMessageConverter.setSupportedMediaTypes(Lists.newArrayList(MediaType.valueOf("application/json")));
+        converters.add(0, mappingJackson2HttpMessageConverter);
+    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(serviceAbnormalInterceptor).addPathPatterns("/**")
+               .excludePathPatterns("/v1/service/**", "/v1/service/script-service/**");
+        registry.addInterceptor(authInterceptor);
+    }
+}

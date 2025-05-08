@@ -1,12 +1,11 @@
 package cn.superhuang.data.scalpel.converter;
 
-import cn.superhuang.data.scalpel.admin.util.JsonUtil;
+import cn.superhuang.data.scalpel.util.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import jakarta.persistence.AttributeConverter;
 
 import java.util.List;
-import java.util.Map;
 
 
 public class ListConverter implements AttributeConverter<List<String>, String> {

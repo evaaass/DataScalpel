@@ -1,7 +1,7 @@
 package cn.superhuang.data.scalpel.dsl.specification;
 
 import cn.hutool.core.util.ReflectUtil;
-import cn.superhuang.data.scalpel.admin.BaseException;
+import cn.superhuang.data.scalpel.exception.BaseException;
 import jakarta.persistence.Embedded;
 
 import java.lang.reflect.Field;

@@ -2,9 +2,9 @@ package cn.superhuang.data.scalpel.admin.util;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.db.meta.Column;
-import cn.superhuang.data.scalpel.model.common.jdbc.JdbcQueryDataArgs;
-import cn.superhuang.data.scalpel.model.common.jdbc.JdbcQueryDataOrder;
-import cn.superhuang.data.scalpel.model.common.jdbc.JdbcQueryDataOrderDirection;
+import cn.superhuang.data.scalpel.lib.jdbc.model.jdbc.JdbcQueryDataArgs;
+import cn.superhuang.data.scalpel.lib.jdbc.model.jdbc.JdbcQueryDataOrder;
+import cn.superhuang.data.scalpel.lib.jdbc.model.jdbc.JdbcQueryDataOrderDirection;
 import cn.superhuang.data.scalpel.model.datasource.config.JdbcConfig;
 import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialect;
 import cn.superhuang.data.scalpel.spark.core.dialect.DsJdbcDialects;
@@ -96,7 +96,7 @@ public class QueryDslUtil {
         sqlQuery = sqlQuery.limit(pageSize).offset(pageNo * pageSize);
         if (CollUtil.isNotEmpty(orders)) {
             OrderSpecifier[] orderSpecifiers = orders.stream().map(order -> {
-                Order direction = order.getDirection() == JdbcQueryDataOrderDirection.desc ? Order.DESC : Order.ASC;
+                Order direction = order.getDirection() == JdbcQueryDataOrderDirection.DESC ? Order.DESC : Order.ASC;
                 return new OrderSpecifier(direction, pathBuilder.get(order.getColumn()));
             }).toArray(OrderSpecifier[]::new);
             sqlQuery = sqlQuery.orderBy(orderSpecifiers);

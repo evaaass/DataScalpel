@@ -19,6 +19,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.dameng</groupId>
+            <artifactId>DmJdbcDriver18</artifactId>
+        </dependency>
+        <dependency>
             <groupId>cn.superhuang</groupId>
             <artifactId>data-scalpel-web-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
@@ -37,6 +41,12 @@
         <dependency>
             <groupId>cn.superhuang</groupId>
             <artifactId>data-scalpel-lib-jdbc-query</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.superhuang</groupId>
+            <artifactId>data-scalpel-admin</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

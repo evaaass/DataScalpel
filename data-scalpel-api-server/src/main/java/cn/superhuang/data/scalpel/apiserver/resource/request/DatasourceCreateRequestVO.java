@@ -1,12 +1,9 @@
 package cn.superhuang.data.scalpel.apiserver.resource.request;
 
-import cn.superhuang.data.scalpel.admin.app.datasource.model.enumeration.DatasourceCategory;
-import cn.superhuang.data.scalpel.model.enumeration.DatasourceType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 
 import java.util.Map;
 
