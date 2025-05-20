@@ -1,4 +1,4 @@
-package cn.superhuang.data.scalpel.admin.app.service.impl.adaptor;
+package cn.superhuang.data.scalpel.admin.app.datasource.service.adaptor;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.StrUtil;

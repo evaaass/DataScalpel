@@ -9,20 +9,26 @@ import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "api-server-services")
+@Table(name = "api_server_services")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class RestService extends AbstractAuditingEntity<String> implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -7837805246932903874L;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id")
+    @Column
     private String id;
 
-    @Column(name = "catalog_id")
+    @Column
     private String catalogId;
+
+    @Column
+    private String engineId;
 
     @Enumerated(EnumType.STRING)
     @Column

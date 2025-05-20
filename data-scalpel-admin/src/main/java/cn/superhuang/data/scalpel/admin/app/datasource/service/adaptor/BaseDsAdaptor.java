@@ -1,4 +1,4 @@
-package cn.superhuang.data.scalpel.admin.app.service.impl.adaptor;
+package cn.superhuang.data.scalpel.admin.app.datasource.service.adaptor;
 
 import cn.superhuang.data.scalpel.admin.app.datasource.DsAdaptorException;
 import cn.superhuang.data.scalpel.admin.app.datasource.dto.*;

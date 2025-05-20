@@ -5,7 +5,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.superhuang.data.scalpel.exception.BaseException;
 import cn.superhuang.data.scalpel.admin.app.datasource.dto.*;
-import cn.superhuang.data.scalpel.admin.app.service.impl.adaptor.BaseDsAdaptor;
+import cn.superhuang.data.scalpel.admin.app.datasource.service.adaptor.BaseDsAdaptor;
 import cn.superhuang.data.scalpel.admin.app.datasource.dto.DatasourceAddDTO;
 import cn.superhuang.data.scalpel.admin.app.datasource.dto.DatasourceUpdateDTO;
 import cn.superhuang.data.scalpel.admin.app.datasource.repository.DatasourceRepository;

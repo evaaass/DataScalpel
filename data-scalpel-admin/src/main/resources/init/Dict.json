@@ -306,4 +306,10 @@
     "name": "数据服务",
     "value": "SERVICE"
   }
+//,
+//  {
+//    "type": "SystemConfig",
+//    "name": "系统配置",
+//    "value": "S"
+//  }
 ]
