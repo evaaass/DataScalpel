@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.ssssssss.magicapi.core.config.MagicConfiguration;
@@ -24,13 +26,12 @@ import org.ssssssss.magicapi.core.context.RequestEntity;
 import org.ssssssss.magicapi.core.model.ApiInfo;
 import org.ssssssss.magicapi.core.model.BaseDefinition;
 import org.ssssssss.magicapi.core.model.DataType;
-import org.ssssssss.magicapi.core.model.Options;
-import org.ssssssss.magicapi.servlet.javaee.MagicJavaEEHttpServletResponse;
+
+import org.ssssssss.magicapi.servlet.jakarta.MagicJakartaHttpServletResponse;
+
 import org.ssssssss.magicapi.utils.ScriptManager;
 import org.ssssssss.script.MagicScriptContext;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,7 @@ public class ServiceScriptAdminService implements ServiceAdmin, InitializingBean
         try {
             ScriptServiceDefinition serviceDefinition = objectMapper.readValue(service.getServiceDefinition(), ScriptServiceDefinition.class);
             RequestEntity requestEntity = RequestEntity.create()
-                    .response(new MagicJavaEEHttpServletResponse(response));
+                    .response(new MagicJakartaHttpServletResponse(response));
             RequestContext.setRequestEntity(requestEntity);
 
             //TODO 从service里面拿出参数放进去

@@ -18,12 +18,12 @@ import cn.superhuang.data.scalpel.model.service.ServiceTestResult;
 import cn.superhuang.data.scalpel.model.service.definition.StdServiceDefinition;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.InitializingBean;
 import org.ssssssss.magicapi.core.model.BaseDefinition;
 import org.ssssssss.magicapi.core.model.DataType;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;

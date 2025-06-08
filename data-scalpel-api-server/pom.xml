@@ -26,6 +26,12 @@
             <groupId>cn.superhuang</groupId>
             <artifactId>data-scalpel-web-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>javax.servlet-api</artifactId>
+                    <groupId>javax.servlet</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -44,12 +50,22 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>cn.superhuang</groupId>
-            <artifactId>data-scalpel-admin</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.0</version>
+                <configuration>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                    <parameters>true</parameters>
+                </configuration>
+
+            </plugin>
+        </plugins>
+    </build>
 </project>

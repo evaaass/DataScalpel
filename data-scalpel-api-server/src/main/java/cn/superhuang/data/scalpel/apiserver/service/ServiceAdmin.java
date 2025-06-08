@@ -4,9 +4,9 @@ import cn.superhuang.data.scalpel.apiserver.domain.Service;
 import cn.superhuang.data.scalpel.apiserver.model.ServiceDTO;
 import cn.superhuang.data.scalpel.apiserver.model.enums.ServiceType;
 import cn.superhuang.data.scalpel.model.service.ServiceTestResult;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public interface ServiceAdmin {
 

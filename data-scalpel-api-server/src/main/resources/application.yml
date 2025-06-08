@@ -1,0 +1,43 @@
+server:
+  port: 9999
+magic-api:
+  #配置web页面入口
+  web: /magic/web
+  resource:
+    type: database
+    datasource: sys-db
+  show-sql: true
+  show-url: true
+  response-code:
+    success: 0 #执行成功的code值
+    invalid: 400 #参数验证未通过的code值
+    exception: 500 #执行出现异常的code值
+  auto-import-module: db,dmp
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://home.superhuang.cn:5432/api-server-01
+    username: postgres
+    password: Gistack@123
+    druid:
+      driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate.jdbc.time_zone: UTC
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      # modify batch size as necessary
+      hibernate.jdbc.batch_size: 25
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+      hibernate.query.fail_on_pagination_over_collection_fetch: true
+      hibernate.query.in_clause_parameter_padding: true
+
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

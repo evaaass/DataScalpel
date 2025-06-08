@@ -9,13 +9,13 @@ import cn.superhuang.data.scalpel.impl.BaseResource;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class ServiceResource extends BaseResource implements IServiceResource {
