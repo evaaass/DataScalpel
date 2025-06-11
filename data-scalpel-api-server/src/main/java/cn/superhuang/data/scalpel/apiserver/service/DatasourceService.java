@@ -12,10 +12,14 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.ssssssss.magicapi.datasource.model.MagicDynamicDataSource;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,11 +27,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class DatasourceService {
+@Transactional
+public class DatasourceService implements InitializingBean {
     @Resource
     private MagicDynamicDataSource dynamicDataSource;
     public Map<String, DataSource> dataSourceMap = new ConcurrentHashMap<>();
-    private Map<String, Datasource> dmpDsMap = null;
+    private Map<String, Datasource> dmpDsMap = new HashMap<>();
 
     @Resource
     private DatasourceRepository datasourceRepository;
@@ -65,19 +70,52 @@ public class DatasourceService {
     }
 
     public void register(Datasource datasource) {
+        JdbcConfig jdbcConfig = (JdbcConfig) DatasourceConfig.getConfig(DatasourceType.JDBC, datasource.getProps());
+        String id = jdbcConfig.getUniqueId();
+        datasource.setId(id);
         datasourceRepository.save(datasource);
-        //TODO 这里要维护标准服务和magic-api的连接池
+
+        HikariConfig config = getHikariConfig(jdbcConfig);
+        HikariDataSource dataSource = new HikariDataSource(config);
+        dataSourceMap.put(datasource.getId(), dataSource);
+        dynamicDataSource.add(datasource.getName(), dataSource);
+
+
     }
 
     public void update(Datasource datasource) {
-        datasourceRepository.save(datasource);
-        //TODO 这里要维护标准服务和magic-api的连接池
+        Datasource exampleDatasource = new Datasource();
+        exampleDatasource.setName(datasource.getName());
+        Example<Datasource> example = Example.of(exampleDatasource);
+        datasourceRepository.findOne(example).ifPresent(po -> {
+            datasourceRepository.deleteById(po.getId());
+            if (dataSourceMap.containsKey(po.getId())) {
+                dataSourceMap.remove(po.getId());
+            }
+            if (dmpDsMap.containsKey(po.getName())) {
+                dynamicDataSource.delete(po.getName());
+            }
 
+            JdbcConfig jdbcConfig = (JdbcConfig) DatasourceConfig.getConfig(DatasourceType.JDBC, datasource.getProps());
+            String id = jdbcConfig.getUniqueId();
+            datasource.setId(id);
+            datasourceRepository.save(datasource);
+        });
     }
 
     public void delete(String id) {
         //无需判断是否有服务在使用，如果删除了服务异常了，重新注册回来就可以
-        datasourceRepository.deleteById(id);
+        datasourceRepository.findById(id).ifPresent(datasource -> {
+            datasourceRepository.deleteById(id);
+            if (dataSourceMap.containsKey(datasource.getId())) {
+                dataSourceMap.remove(datasource.getId());
+            }
+            if (dmpDsMap.containsKey(datasource.getName())) {
+                dynamicDataSource.delete(datasource.getName());
+            }
+
+        });
+
         //TODO 这里要维护标准服务和magic-api的连接池
     }
 
@@ -96,6 +134,12 @@ public class DatasourceService {
         config.setLeakDetectionThreshold(2000); // 泄漏检测时间，单位是毫秒
         config.setValidationTimeout(5000); // 5秒
         config.setSchema(jdbcDialect.getSchema(jdbcConfig));
+        jdbcConfig.getParamsExcludeSys().forEach(config::addDataSourceProperty);
         return config;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        init();
     }
 }

@@ -1,7 +1,10 @@
 package cn.superhuang.data.scalpel.apiserver.resource;
 
 import cn.superhuang.data.scalpel.apiserver.domain.Datasource;
+import cn.superhuang.data.scalpel.apiserver.domain.Service;
 import cn.superhuang.data.scalpel.apiserver.model.ServiceDTO;
+import cn.superhuang.data.scalpel.model.common.TestResult;
+import cn.superhuang.data.scalpel.model.service.ServiceTestResult;
 import cn.superhuang.data.scalpel.model.web.GenericResponse;
 import cn.superhuang.data.scalpel.web.GenericSearchRequestDTO;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
@@ -26,11 +29,11 @@ public interface IServiceResource {
 
     @Operation(summary = "查询", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "1", parseValue = true)})})
     @GetMapping("/services")
-    GenericResponse<Page<Datasource>> search(@ParameterObject GenericSearchRequestDTO searchRequest);
+    GenericResponse<Page<Service>> search(@ParameterObject GenericSearchRequestDTO searchRequest);
 
     @Operation(summary = "服务测试", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "10", parseValue = true)})})
     @PostMapping("/services/actions/test")
-    public GenericResponse testService(@RequestBody ServiceDTO service, HttpServletRequest request, HttpServletResponse response);
+    public GenericResponse<ServiceTestResult> testService(@RequestBody ServiceDTO service, HttpServletRequest request, HttpServletResponse response);
 
     @Operation(summary = "注册服务", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "10", parseValue = true)})})
     @PostMapping("/services")

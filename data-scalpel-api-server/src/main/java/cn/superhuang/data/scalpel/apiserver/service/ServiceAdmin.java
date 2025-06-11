@@ -14,7 +14,7 @@ public interface ServiceAdmin {
 
     public ServiceTestResult test(Service service, HttpServletRequest request, HttpServletResponse response);
 
-    public void up(Service service) throws NoSuchMethodException, Exception;
+    public void up(Service service) throws Exception;
 
     public void down(Service service);
 }

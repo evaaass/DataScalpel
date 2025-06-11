@@ -15,13 +15,14 @@ magic-api:
   auto-import-module: db,dmp
 spring:
   datasource:
+    type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://home.superhuang.cn:5432/api-server-01
     username: postgres
     password: Gistack@123
-    druid:
-      driver-class-name: org.postgresql.Driver
-    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      poolName: Hikari
+      auto-commit: false
   jpa:
     open-in-view: false
     properties:
@@ -41,3 +42,21 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: order
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: cn.superhuang.data.scalpel.apiserver
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+    enableDynamicParameter: true

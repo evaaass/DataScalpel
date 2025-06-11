@@ -73,7 +73,7 @@ public class ServiceStdAdminService implements ServiceAdmin, InitializingBean {
             serviceTestResult.setRequestBody(objectMapper.writeValueAsString(new JdbcQueryDataArgs()));
             serviceTestResult.setResponseBody(objectMapper.writeValueAsString(jxslStdQueryResult));
             serviceTestResult.setRequestBodyDefinition(objectMapper.writeValueAsString(getRequestDefinition()));
-            //serviceTestResult.setResponseBodyDefinition(objectMapper.writeValueAsString(getResponseDefinition(service.getModelFields())));
+            serviceTestResult.setResponseBodyDefinition(objectMapper.writeValueAsString(getResponseDefinition()));
         } catch (Exception e) {
             e.printStackTrace();
             serviceTestResult.setSuccess(false);
@@ -140,7 +140,7 @@ public class ServiceStdAdminService implements ServiceAdmin, InitializingBean {
         return requestDefinitions;
     }
 
-    private List<BaseDefinition> getResponseDefinition(List<DataTableColumn> modelFields) {
+    private List<BaseDefinition> getResponseDefinition() {
         List<BaseDefinition> definitions = new ArrayList<>();
         definitions.add(DefinitionUtil.buildDefinition("pageNo", null, DataType.Integer, "起始页码，默认从1开始", false));
         definitions.add(DefinitionUtil.buildDefinition("pageSize", null, DataType.Integer, "分页值", false));
@@ -148,17 +148,17 @@ public class ServiceStdAdminService implements ServiceAdmin, InitializingBean {
         BaseDefinition resultDef = DefinitionUtil.buildDefinition("resultList", null, DataType.Array, "数据排序", false);
         resultDef.setChildren(new ArrayList<>());
         definitions.add(resultDef);
-        if (!modelFields.isEmpty()) {
-            for (DataTableColumn modelField : modelFields) {
-                DataType dataType = DefinitionUtil.dmpTypeToMagicDataType(modelField.getType());
-                StringBuilder desc = new StringBuilder(modelField.getAlias());
-                if (StrUtil.isNotBlank(modelField.getRemark())) {
-                    desc.append("|").append(modelField.getRemark());
-                }
-                resultDef.getChildren().add(DefinitionUtil.buildDefinition(modelField.getName(), null, dataType, desc.toString(), true));
-
-            }
-        }
+//        if (!modelFields.isEmpty()) {
+//            for (DataTableColumn modelField : modelFields) {
+//                DataType dataType = DefinitionUtil.dmpTypeToMagicDataType(modelField.getType());
+//                StringBuilder desc = new StringBuilder(modelField.getAlias());
+//                if (StrUtil.isNotBlank(modelField.getRemark())) {
+//                    desc.append("|").append(modelField.getRemark());
+//                }
+//                resultDef.getChildren().add(DefinitionUtil.buildDefinition(modelField.getName(), null, dataType, desc.toString(), true));
+//
+//            }
+//        }
         return definitions;
     }
 

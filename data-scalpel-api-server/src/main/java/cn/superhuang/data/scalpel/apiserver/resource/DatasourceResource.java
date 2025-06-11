@@ -1,5 +1,6 @@
 package cn.superhuang.data.scalpel.apiserver.resource;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.superhuang.data.scalpel.apiserver.domain.Datasource;
 import cn.superhuang.data.scalpel.apiserver.domain.repository.DatasourceRepository;
 import cn.superhuang.data.scalpel.apiserver.resource.request.DatasourceCreateRequestVO;
@@ -35,21 +36,26 @@ public class DatasourceResource extends BaseResource implements IDatasourceResou
 
     @Override
     public GenericResponse<Datasource> registerDatasource(DatasourceCreateRequestVO createDatasourceRequest) throws Exception {
-        return null;
+        Datasource datasource = BeanUtil.copyProperties(createDatasourceRequest, Datasource.class);
+        datasourceService.register(datasource);
+        return GenericResponse.ok(datasource);
     }
 
     @Override
-    public GenericResponse<Void> updateDatasource(String id, DatasourceUpdateRequestVO datasourceUpdateRequest) throws URISyntaxException {
-        return null;
+    public GenericResponse<Void> updateDatasource( DatasourceUpdateRequestVO datasourceUpdateRequest) throws URISyntaxException {
+        Datasource datasource = BeanUtil.copyProperties(datasourceUpdateRequest, Datasource.class);
+        datasourceService.update(datasource);
+        return GenericResponse.ok();
     }
 
     @Override
     public GenericResponse<Void> deleteDatasource(String id) {
-        return null;
+        datasourceService.delete(id);
+        return GenericResponse.ok();
     }
 
     @Override
     public GenericResponse<GenericResult> validateDatasource() {
-        return null;
+        return GenericResponse.ok();
     }
 }

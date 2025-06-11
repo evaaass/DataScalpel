@@ -26,13 +26,12 @@ public class Datasource extends AbstractAuditingEntity<String> implements Serial
     @Serial
     private static final long serialVersionUID = 2877831147094851129L;
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id")
+    @Column(name = "id", length = 255)
     private String id;
-    
+
     @Column(name = "name", unique = true)
     private String name;
-    
+
     @Convert(converter = MapConverter.class)
     @Column(name = "prop_value", length = 1000)
     private Map<String, String> props;

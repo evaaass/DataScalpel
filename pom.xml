@@ -239,7 +239,11 @@
                 <artifactId>sedona-sql-3.0_2.13</artifactId>
                 <version>1.4.1</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-sql</artifactId>
+                <version>5.0.0-superhuang</version>
+            </dependency>
             <!--            <dependency>-->
             <!--                <groupId>org.scala-lang</groupId>-->
             <!--                <artifactId>scala-library</artifactId>-->

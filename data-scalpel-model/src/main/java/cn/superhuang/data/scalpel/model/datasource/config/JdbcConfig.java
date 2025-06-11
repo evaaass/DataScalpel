@@ -1,18 +1,19 @@
 package cn.superhuang.data.scalpel.model.datasource.config;
 
+import cn.hutool.core.codec.Base64;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.superhuang.data.scalpel.model.enumeration.DatasourceType;
 import cn.superhuang.data.scalpel.model.enumeration.DbType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
-@JsonIgnoreProperties({"schema","password","port","host","database","username","dbtype","uniqueId","options"})
+@JsonIgnoreProperties({"schema", "password", "port", "host", "database", "username", "dbtype", "uniqueId", "options"})
 public class JdbcConfig extends DatasourceConfig {
     public static final String JDBC_OPTIONS_KEY_SCHEMA = "SYS_SCHEMA";
     public static final String JDBC_OPTIONS_KEY_ORACLE_CONNECTION_TYPE = "SYS_CONNECTION_TYPE";
@@ -33,7 +34,7 @@ public class JdbcConfig extends DatasourceConfig {
     public static final String JDBC_USERNAME = "username";
     public static final String JDBC_PASSWORD = "password";
 
-    public JdbcConfig(){
+    public JdbcConfig() {
         setType(DatasourceType.JDBC);
     }
 
@@ -100,7 +101,18 @@ public class JdbcConfig extends DatasourceConfig {
         if (schema == null) {
             schema = "";
         }
-        return getHost() + "_" + getPort() + "_" + getDatabase() + "_" + getSchema() + "_" + getUsername();
+        List<String> items = new ArrayList<>();
+        items.add(DatasourceType.JDBC.name());
+        items.add(getHost());
+        items.add(getPort().toString());
+        items.add(getDatabase());
+        items.add(schema);
+        items.add(getUsername());
+        items.add(getPassword());
+        getParams().forEach((k, v) -> {
+            items.add(k + "=" + v);
+        });
+        return Base64.encode(CollUtil.join(items, "|"));
     }
 
     @JsonIgnore

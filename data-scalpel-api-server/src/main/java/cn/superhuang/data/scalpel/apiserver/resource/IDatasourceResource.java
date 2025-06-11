@@ -33,11 +33,8 @@ public interface IDatasourceResource {
     GenericResponse<Datasource> registerDatasource(@Valid @RequestBody DatasourceCreateRequestVO createDatasourceRequest) throws Exception;
 
     @Operation(summary = "修改", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "4", parseValue = true)})})
-    @PutMapping("/data-sources/{id}")
-    GenericResponse<Void> updateDatasource(
-            @PathVariable(value = "id", required = false) final String id,
-            @Valid @RequestBody DatasourceUpdateRequestVO datasourceUpdateRequest
-    ) throws URISyntaxException;
+    @PutMapping("/data-sources/action/update")
+    GenericResponse<Void> updateDatasource(@Valid @RequestBody DatasourceUpdateRequestVO datasourceUpdateRequest) throws URISyntaxException;
 
     @Operation(summary = "删除", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "5", parseValue = true)})})
     @DeleteMapping("/data-sources/{id}")
