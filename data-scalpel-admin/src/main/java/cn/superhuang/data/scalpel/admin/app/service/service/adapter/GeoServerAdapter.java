@@ -14,17 +14,24 @@ public class GeoServerAdapter implements ServiceEngineAdapter {
     }
 
     @Override
-    public TestResult test(Map<String, String> props) {
+    public TestResult testServer(Map<String, String> props) {
         return TestResult.builder().valid(true).build();
     }
 
     @Override
-    public void online() {
+    public TestResult testService(Map<String, String> props, String serviceDefinition) {
+        return null;
+    }
+
+    @Override
+    public void onlineService(Map<String, String> props, String serviceDefinition) {
 
     }
 
     @Override
-    public void offline() {
+    public void offlineService(Map<String, String> props, String serviceDefinition) {
 
     }
+
+
 }

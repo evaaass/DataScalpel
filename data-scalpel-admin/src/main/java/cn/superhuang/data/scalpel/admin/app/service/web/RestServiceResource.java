@@ -60,7 +60,8 @@ public class RestServiceResource implements IRestServiceResource {
 
     @Override
     public GenericResponse<ServiceTestResult> test(RestServiceTestRequest testRequest) {
-        return GenericResponse.ok(restServiceManagerService.testService(testRequest.getServiceDefinition()));
+        return null;
+        //return GenericResponse.ok(restServiceManagerService.testService(testRequest.getEngineId(), testRequest.getType(),testRequest.getServiceDefinition()));
     }
 
     @Override

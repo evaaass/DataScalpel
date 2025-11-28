@@ -24,10 +24,10 @@ public class ServiceEngineService {
     @Resource
     private List<ServiceEngineAdapter> engineAdapters;
 
-    public TestResult testService(ServiceEngine serviceEngine) {
+    public TestResult testEngine(ServiceEngine serviceEngine) {
         //TODO 判断名字是否重名
         ServiceEngineAdapter engineAdapter = getEngineAdapter(serviceEngine.getType());
-        return engineAdapter.test(serviceEngine.getProps());
+        return engineAdapter.testServer(serviceEngine.getProps());
     }
 
     public ServiceEngine registerEngine(ServiceEngine serviceEngine) {
@@ -53,7 +53,7 @@ public class ServiceEngineService {
         });
     }
 
-    private ServiceEngineAdapter getEngineAdapter(ServiceEngineType type) {
+    public ServiceEngineAdapter getEngineAdapter(ServiceEngineType type) {
         for (ServiceEngineAdapter engineAdapter : engineAdapters) {
             if (engineAdapter.support(type))
                 return engineAdapter;
@@ -63,7 +63,7 @@ public class ServiceEngineService {
 
     private ServiceEngine testAndSaveServiceEngine(ServiceEngine serviceEngine) {
         ServiceEngineAdapter engineAdapter = getEngineAdapter(serviceEngine.getType());
-        TestResult testResult = engineAdapter.test(serviceEngine.getProps());
+        TestResult testResult = engineAdapter.testServer(serviceEngine.getProps());
         if (testResult.getValid()) {
             serviceEngine.setState(ServiceEngineState.OK);
         } else {

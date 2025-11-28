@@ -19,4 +19,6 @@ public interface ServiceRepository extends JpaRepository<Service, String>, JpaSp
 
     public List<Service> findAllByType(ServiceType type);
 
+    public Service findOneByMethodAndUri(String method, String uri);
+
 }

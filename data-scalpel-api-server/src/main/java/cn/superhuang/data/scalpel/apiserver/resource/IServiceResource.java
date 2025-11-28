@@ -35,11 +35,15 @@ public interface IServiceResource {
     @PostMapping("/services/actions/test")
     public GenericResponse<ServiceTestResult> testService(@RequestBody ServiceDTO service, HttpServletRequest request, HttpServletResponse response);
 
-    @Operation(summary = "注册服务", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "10", parseValue = true)})})
+    @Operation(summary = "注册服务", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "11", parseValue = true)})})
     @PostMapping("/services")
     public GenericResponse<Void> upService(@RequestBody ServiceDTO service) throws Exception;
 
-    @Operation(summary = "删除服务", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "10", parseValue = true)})})
+    @Operation(summary = "删除服务", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "12", parseValue = true)})})
     @DeleteMapping("/services/down")
     public GenericResponse<Void> downService(@RequestBody ServiceDTO service);
+
+    @Operation(summary = "删除服务", extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "13", parseValue = true)})})
+    @DeleteMapping("/services/{id}")
+    public GenericResponse<Void> deleteServiceById(@PathVariable("id") String id);
 }

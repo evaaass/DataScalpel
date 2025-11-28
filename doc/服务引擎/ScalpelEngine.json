@@ -1,0 +1,6 @@
+{
+  "adminUrl": "http://localhost:9999",
+  "publicUrl": "http://localhost:9999",
+  "username": "admin",
+  "password": "Admin@123"
+}

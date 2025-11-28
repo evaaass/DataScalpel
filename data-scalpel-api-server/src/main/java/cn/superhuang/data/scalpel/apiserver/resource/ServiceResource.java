@@ -41,18 +41,24 @@ public class ServiceResource extends BaseResource implements IServiceResource {
 
     @Override
     public GenericResponse<ServiceTestResult> testService(ServiceDTO service, HttpServletRequest request, HttpServletResponse response) {
-        return GenericResponse.ok(serviceService.test(BeanUtil.copyProperties(service,Service.class), request, response));
+        return GenericResponse.ok(serviceService.test(BeanUtil.copyProperties(service, Service.class), request, response));
     }
 
     @Override
     public GenericResponse<Void> upService(ServiceDTO service) throws Exception {
-        serviceService.create(BeanUtil.copyProperties(service,Service.class));
+        serviceService.create(BeanUtil.copyProperties(service, Service.class));
         return GenericResponse.ok();
     }
 
     @Override
     public GenericResponse<Void> downService(ServiceDTO service) {
-        serviceService.delete(BeanUtil.copyProperties(service,Service.class));
+        serviceService.deleteByMethodAndUri(service.getMethod(), service.getUri());
+        return GenericResponse.ok();
+    }
+
+    @Override
+    public GenericResponse<Void> deleteServiceById(String id) {
+        serviceService.deleteById(id);
         return GenericResponse.ok();
     }
 }

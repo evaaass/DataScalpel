@@ -21,10 +21,15 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.ssssssss.magicapi.core.model.BaseDefinition;
 import org.ssssssss.magicapi.core.model.DataType;
+import org.ssssssss.magicapi.core.servlet.MagicHttpServletRequest;
+import org.ssssssss.magicapi.core.servlet.MagicHttpServletResponse;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,11 +90,6 @@ public class ServiceStdAdminService implements ServiceAdmin, InitializingBean {
 
     @Override
     public void up(Service service) throws Exception {
-//        RequestMappingInfo requestMappingInfo = RequestMappingInfo
-//                .paths(service.getUri())
-//                .methods(RequestMethod.POST)
-//                .build();
-//        Method method = StdServiceRequestHandler.class.getDeclaredMethod("invoke", MagicHttpServletRequest.class, MagicHttpServletResponse.class, Map.class, Map.class, Map.class);
         dynamicMappingService.register(service, requestHandler);
     }
 

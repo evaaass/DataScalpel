@@ -27,11 +27,22 @@ public class Service extends AbstractAuditingEntity<String> implements Serializa
     private String uri;
     private String method;
     private String description;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String serviceDefinition;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String requestBody;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String requestBodyDefinition;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String responseBodyDefinition;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String responseBody;
+    @Column(length = 1000)
     private String config;
     private String datasourceId;
 }

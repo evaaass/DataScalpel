@@ -6,6 +6,7 @@ import cn.superhuang.data.scalpel.apiserver.model.ServiceDTO;
 import cn.superhuang.data.scalpel.apiserver.model.ServiceMappingItem;
 import cn.superhuang.data.scalpel.apiserver.resource.BaseServiceRequestHandler;
 import jakarta.annotation.Resource;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -26,6 +27,10 @@ public class DynamicMappingService {
 
 
     public void register(Service service, BaseServiceRequestHandler requestHandler) throws NoSuchMethodException {
+        String mappingKey = getKey(service);
+        if (mappingMap.containsKey(mappingKey)) {
+            throw new DuplicateKeyException("已存在服务路径：" + mappingKey);
+        }
         RequestMappingInfo requestMappingInfo = RequestMappingInfo
                 .paths(service.getUri())
                 .methods(RequestMethod.valueOf(service.getMethod()))

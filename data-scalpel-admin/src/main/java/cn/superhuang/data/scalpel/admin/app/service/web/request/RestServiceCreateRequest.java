@@ -9,6 +9,8 @@ public class RestServiceCreateRequest {
 
     @Schema(description = "目录ID")
     private String catalogId;
+    @Schema(description = "服务引擎ID")
+    private String engineId;
     @Schema(description = "服务类型")
     private RestServiceType type;
     @Schema(description = "服务地址（相对）")

@@ -6,7 +6,8 @@ import lombok.Data;
 
 @Data
 public class RestServiceTestRequest {
-
+    @Schema(description = "服务引擎ID")
+    private String engineId;
     @Schema(description = "服务类型")
     private RestServiceType type;
     @Schema(description = "服务详细定义")

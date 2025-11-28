@@ -3,10 +3,13 @@ package cn.superhuang.data.scalpel.admin.app.service.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.superhuang.data.scalpel.admin.app.service.domain.RestService;
+import cn.superhuang.data.scalpel.admin.app.service.domain.ServiceEngine;
+import cn.superhuang.data.scalpel.admin.app.service.repository.ServiceEngineRepository;
 import cn.superhuang.data.scalpel.model.service.RestServiceDetail;
 import cn.superhuang.data.scalpel.model.service.ServiceTestResult;
 import cn.superhuang.data.scalpel.model.service.enumeration.RestServiceState;
 import cn.superhuang.data.scalpel.admin.app.service.repository.RestServiceRepository;
+import cn.superhuang.data.scalpel.model.service.enumeration.ServiceEngineType;
 import cn.superhuang.data.scalpel.util.GenericSearchUtil;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
@@ -14,11 +17,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class RestServiceManagerService {
 
     @Resource
     private RestServiceRepository serviceRepository;
+    @Resource
+    private ServiceEngineService engineService;
+    @Resource
+    private ServiceEngineRepository engineRepository;
 
     public RestService createService(RestService service) {
         return serviceRepository.save(service);
@@ -54,7 +63,13 @@ public class RestServiceManagerService {
         return serviceRepository.findAll(spec, pageRequest);
     }
 
-    public ServiceTestResult testService(String serviceDefinition) {
+    public ServiceTestResult testService(String engineId, ServiceEngineType type, String serviceDefinition) {
+        ServiceEngine engine = engineRepository.findById(engineId).get();
+        return testService(engine.getType(), engine.getProps(), serviceDefinition);
+    }
+
+    public ServiceTestResult testService(ServiceEngineType engineType, Map<String, String> props, String serviceDefinition) {
+        engineService.getEngineAdapter(engineType).testService(props, serviceDefinition);
         ServiceTestResult result = new ServiceTestResult();
         result.setSuccess(true);
         return result;

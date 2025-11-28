@@ -9,9 +9,11 @@ public interface ServiceEngineAdapter {
 
     public Boolean support(ServiceEngineType type);
 
-    public TestResult test(Map<String, String> props);
+    public TestResult testServer(Map<String, String> props);
 
-    public void online();
+    public TestResult testService(Map<String, String> props,String serviceDefinition);
 
-    public void offline();
+    public void onlineService(Map<String, String> props,String serviceDefinition);
+
+    public void offlineService(Map<String, String> props,String serviceDefinition);
 }

@@ -63,6 +63,6 @@ public class ServiceEngineResource implements IServiceEngineResource {
     @Override
     public GenericResponse<TestResult> test(ServiceEngineTestRequest testRequest) throws Exception {
         ServiceEngine serviceEngine = BeanUtil.copyProperties(testRequest, ServiceEngine.class);
-        return GenericResponse.ok(serviceEngineService.testService(serviceEngine));
+        return GenericResponse.ok(serviceEngineService.testEngine(serviceEngine));
     }
 }
